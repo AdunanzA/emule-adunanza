@@ -8,9 +8,9 @@
 #define AduRU(M, m) _T(#M) _T("-") _T(#m)
 #define _AduRU(M, m) AduRU(M,m)
 #define ADU_VER_MAJ   3
-#define ADU_VER_MIN   19
+#define ADU_VER_MIN   20
 #define ADU_VER_RL _AduV(ADU_VER_MAJ, ADU_VER_MIN)
-#define ADU_BETA_MAJ 3
+#define ADU_BETA_MAJ 1
 #define ADU_BETA_MIN ""
 
 #define BETA //definire questo se si desidera attivare tutti gli avvisi nella verbose.
@@ -121,27 +121,6 @@ enum tipo_fastweb {ADSL, FIBRA, SCONOSCIUTO};
 #else
 	#define ADU_UPD_URL        _T("http://update.adunanza.net/adupdater.adu")	
 #endif
-
-// Definizione zone italia FW
-#define MAN_MILANO 1
-#define MAN_MILANO_H_NORD 2
-#define MAN_GENOVA 5
-#define FASTWEB_ROUTERS 10
-#define MAN_VENETO 11
-#define MAN_MILANO_H_SUD 14
-#define MAN_ANCONA 21
-#define MAN_GROSSETO 22
-#define MAN_ROMA 23
-#define MAN_TOSCANA 27
-#define MAN_PIEMONTE_BIS 28
-#define MAN_TRIVENETO 29
-#define MAN_BARI 31
-#define MAN_SICILIA 36
-#define MAN_BOLOGNA 37
-#define MAN_NAPOLI 39
-#define MAN_TORINO 41
-#define MAN_REGGIO_EMILIA 42
-#define MAN_SARDEGNA 51
 
 
 UINT		ConfiguraPerNuoviUtenti(LPVOID lpParameter);

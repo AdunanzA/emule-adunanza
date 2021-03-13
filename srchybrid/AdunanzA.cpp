@@ -57,52 +57,30 @@ bool isnew = false;
 uint32 porttcp = NULL;
 uint32 portudp = NULL;
 
-bool AduIsFastWebLANIP(register uint32 ip)
+bool AduIsFastWebLANIP(uint32 ip)
 { 
-	switch (ip & 0xff) 
-	{
-		case MAN_ROMA:
-		case MAN_MILANO:
-		case MAN_MILANO_H_NORD:
-		case MAN_MILANO_H_SUD:
-		case MAN_GENOVA:
-		case MAN_TRIVENETO:
-		case MAN_BARI:
-		case MAN_BOLOGNA:
-		case MAN_NAPOLI:
-		case MAN_TORINO:
-		case MAN_REGGIO_EMILIA:
-		case MAN_TOSCANA:
-		case MAN_VENETO:
-		case MAN_GROSSETO:
-		case MAN_SICILIA:
-		case MAN_ANCONA:
-		case MAN_PIEMONTE_BIS:
-		case MAN_SARDEGNA:
-		case FASTWEB_ROUTERS:
+	constexpr uchar manFastwebList[] = { 0x01, 0x02, 0x05, 0x0A, 0x0B, 0x0E, 0x15, 0x16, 0x17, 0x1B, 0x1C, 0x1D, 0x1F, 0x24, 0x25, 0x27, 0x29, 0x2A, 0x33, 0x64 };
+
+	for(const auto& manFastweb : manFastwebList)
+		if(manFastweb == (ip & 0xFF))
 			return true;
-		default:
-			return false;
-	}
+
+	return false;
 }
 
-bool AduIsFastWebIP(register uint32 ip)
+bool AduIsFastWebIP(uint32 ip)
 {
 	if (AduIsFastWebLANIP(ip)) 
 		return true;
 
-	// match rapido: (ip & mask) == netid
-	if ((ip & 0x00e0ffff) == 0x00008cd5 || // netid 213.140.0.0/19	- netid (hex) 0x00008cd5 / mask 0x00e0ffff *** da 213.140.0.1 a 213.140.31.254 
-		(ip & 0x00e0ffff) == 0x00209cd5 || // netid 213.156.32.0/19	- netid (hex) 0x00209cd5 / mask 0x00e0ffff *** da 213.156.32.1 a 213.156.63.254
-		(ip & 0x00c0ffff) == 0x0040653e || // netid 62.101.64.0/18	- netid (hex) 0x0040653e / mask 0x00c0ffff *** da 62.101.64.1 a 62.101.127.254
-		(ip & 0x0080ffff) == 0x0000d051 || // netid 81.208.0.0/17	- netid (hex) 0x0000d051 / mask 0x0080ffff *** da 81.208.0.1 a 81.208.127.254
-		(ip & 0x0080ffff) == 0x00006753 || // netid 83.103.0.0/17	- netid (hex) 0x00006753 / mask 0x0080ffff *** da 83.103.0.1 a 83.103.127.254
-		(ip & 0x0000ffff) == 0x00001255 || // netid 85.18.0.0/16    - netid (hex) 0x00001255 / mask 0x0000ffff *** da 85.18.0.1 a 85.18.255.254
-		(ip & 0x0000feff) == 0x00006059 || // netid 89.96.0.0/15    - netid (hex) 0x00006059 / mask 0x0000feff *** da 89.96.0.1 a 89.97.255.254
-		(ip & 0x0000e0ff) == 0x0000205D    // netid 93.32.0.0/11    - netid (hex) 0x0000205d / mask 0x0000e0ff *** da 93.32.0.1 a 93.63.255.254
-	    )return true; 
-
-	return false;
+	return((ip & 0x00e0ffff) == 0x00008cd5 || // netid 213.140.0.0/19	- netid (hex) 0x00008cd5 / mask 0x00e0ffff *** da 213.140.0.1 a 213.140.31.254 
+				 (ip & 0x00e0ffff) == 0x00209cd5 || // netid 213.156.32.0/19	- netid (hex) 0x00209cd5 / mask 0x00e0ffff *** da 213.156.32.1 a 213.156.63.254
+				 (ip & 0x00c0ffff) == 0x0040653e || // netid 62.101.64.0/18	- netid (hex) 0x0040653e / mask 0x00c0ffff *** da 62.101.64.1 a 62.101.127.254
+				 (ip & 0x0080ffff) == 0x0000d051 || // netid 81.208.0.0/17	- netid (hex) 0x0000d051 / mask 0x0080ffff *** da 81.208.0.1 a 81.208.127.254
+				 (ip & 0x0080ffff) == 0x00006753 || // netid 83.103.0.0/17	- netid (hex) 0x00006753 / mask 0x0080ffff *** da 83.103.0.1 a 83.103.127.254
+				 (ip & 0x0000ffff) == 0x00001255 || // netid 85.18.0.0/16    - netid (hex) 0x00001255 / mask 0x0000ffff *** da 85.18.0.1 a 85.18.255.254
+				 (ip & 0x0000feff) == 0x00006059 || // netid 89.96.0.0/15    - netid (hex) 0x00006059 / mask 0x0000feff *** da 89.96.0.1 a 89.97.255.254
+				 (ip & 0x0000e0ff) == 0x0000205D);   // netid 93.32.0.0/11    - netid (hex) 0x0000205d / mask 0x0000e0ff *** da 93.32.0.1 a 93.63.255.254
 }
 /*
 sarà da implementare nella versione successiva effettuando un parsing del codice html della myfastpage. 

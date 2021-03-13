@@ -1201,6 +1201,9 @@ void CIrcWnd::OnChatTextChange()
 
 void CIrcWnd::ParseChangeMode(const CString& sChannel, const CString& sChanger, CString sCommands, const CString& sParams)
 {
+  if (sChanger.IsEmpty())
+    return;
+
 	CString sCommandsOrig = sCommands;
 	CString sParamsOrig = sParams;
 	try

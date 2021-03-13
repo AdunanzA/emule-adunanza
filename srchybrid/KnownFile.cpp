@@ -577,12 +577,12 @@ bool CKnownFile::CreateFromFile(LPCTSTR in_directory, LPCTSTR in_filename, LPVOI
 		VERIFY( PostMessage(theApp.emuledlg->GetSafeHwnd(), TM_FILEOPPROGRESS, uProgress, (LPARAM)pvProgressParam) );
 	}
 
-	// set lastwrite date
-	struct _stat fileinfo;
-	if (_fstat(_get_osfhandle(_fileno(file)), &fileinfo) == 0){
-		m_tUtcLastModified = fileinfo.st_mtime;
-		AdjustNTFSDaylightFileTime(m_tUtcLastModified, strFilePath);
-	}
+  // set lastwrite date
+  struct _stat64 fileinfo;
+  if (statUTC(_fileno(file), fileinfo) == 0) {
+    m_tUtcLastModified = (time_t)fileinfo.st_mtime;
+    AdjustNTFSDaylightFileTime(m_tUtcLastModified, (LPCTSTR)strFilePath);
+  }
 
 	fclose(file);
 	file = NULL;

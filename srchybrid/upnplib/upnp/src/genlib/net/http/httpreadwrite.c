@@ -1785,7 +1785,8 @@ http_MakeMessage( INOUT membuffer * buf,
 
             //DBGONLY(UpnpPrintf(UPNP_ALL,HTTP,__FILE__,__LINE__,"Adding a char Buffer starting with: %c\n", s[0]);)
             assert( s );
-            length = ( size_t ) va_arg( argp, size_t );
+            length = ( int ) va_arg( argp, int);
+
             if( membuffer_append( buf, s, length ) != 0 ) {
                 goto error_handler;
             }
