@@ -66,7 +66,7 @@ CString CastItoXBytes(uint32 count, bool isK = false, bool isPerSec = false, uin
 CString CastItoXBytes(uint64 count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
 CString CastItoXBytes(float count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
 CString CastItoXBytes(double count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
-#if defined(_DEBUG) && defined(USE_DEBUG_EMFILESIZE)
+#if defined(ADU_BETA) && defined(USE_DEBUG_EMFILESIZE)
 CString CastItoXBytes(EMFileSize count, bool isK = false, bool isPerSec = false, uint32 decimal = 2);
 #endif
 CString CastItoIShort(uint16 count, bool isK = false, uint32 decimal = 2);
@@ -179,6 +179,7 @@ int GetSystemErrorString(DWORD dwError, CString &rstrError);
 int GetModuleErrorString(DWORD dwError, CString &rstrError, LPCTSTR pszModule);
 int GetErrorMessage(DWORD dwError, CString &rstrErrorMsg, DWORD dwFlags = 0);
 CString GetErrorMessage(DWORD dwError, DWORD dwFlags = 0);
+BOOL GetExceptionMessage(const CException& ex, LPTSTR lpszErrorMsg, UINT nMaxError);
 LPCTSTR	GetShellExecuteErrMsg(DWORD dwShellExecError);
 CString DbgGetHexDump(const uint8* data, UINT size);
 void DbgSetThreadName(LPCSTR szThreadName, ...);
@@ -234,10 +235,13 @@ int GetMaxWindowsTCPConnections();
 #define _WINVER_VISTA_	0x0600	// 6.0
 #define _WINVER_7_		0x0601	// 6.1
 #define	_WINVER_S2008_	0x0601	// 6.1
+#define _WINVER_8_		0x0602	// 6.2
+#define _WINVER_8_1_	0x0603	// 6.3
+#define _WINVER_10_		0x0a00	// 10.0
 
 WORD		DetectWinVersion();
-int			IsRunningXPSP2();
-int			IsRunningXPSP2OrHigher();
+bool		IsRunningXPSP2();
+bool		IsRunningXPSP2OrHigher();
 uint64		GetFreeDiskSpaceX(LPCTSTR pDirectory);
 ULONGLONG	GetDiskFileSize(LPCTSTR pszFilePath);
 int			GetAppImageListColorFlag();
@@ -245,7 +249,7 @@ int			GetDesktopColorDepth();
 bool		IsFileOnFATVolume(LPCTSTR pszFilePath);
 void		ClearVolumeInfoCache(int iDrive = -1);
 bool		AddIconGrayscaledToImageList(CImageList& rList, HICON hIcon);
-
+CString GetResNoAmp(RESSTRIDTYPE uStringID);
 
 ///////////////////////////////////////////////////////////////////////////////
 // MD4/MD5 helpers

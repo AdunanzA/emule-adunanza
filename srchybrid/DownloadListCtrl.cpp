@@ -49,12 +49,6 @@
 #include "AdunanzA.h"
 #include "DAMessageBox.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 //STREAMING
 bool AduStream = true;
 bool StreamSTOP = false;
@@ -2467,7 +2461,7 @@ BOOL CDownloadListCtrl::OnCommand(WPARAM wParam, LPARAM /*lParam*/)
 					break;
 /*
 // ZZ:DownloadManager -->
-#ifdef _DEBUG
+#ifdef ADU_BETA
 				case MP_A4AF_CHECK_THIS_NOW: {
 					CPartFile* file = (CPartFile*)content->owner;
 					if (file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)

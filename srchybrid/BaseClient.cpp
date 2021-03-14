@@ -15,7 +15,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "stdafx.h"
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "DebugHelpers.h"
 #endif
 #include "emule.h"
@@ -65,10 +65,10 @@
 #include "AdunanzA.h"       // Needed for AduIsFastWebIP
 #include "RemoteSettings.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 #define URLINDICATOR	_T("http:|www.|.de |.net |.com |.org |.to |.tk |.cc |.fr |ftp:|ed2k:|https:|ftp.|.info|.biz|.uk|.eu|.es|.tv|.cn|.tw|.ws|.nu|.jp|.it")
@@ -855,17 +855,16 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer){
 	  //
 	  // Invio il nuovo tag di riconoscimento 
 	  DWORD dwServerIp = 0;
-  	  if (theApp.serverconnect->IsConnected())
+		if (theApp.serverconnect->IsConnected())
 	    dwServerIp = theApp.serverconnect->GetCurrentServer()->GetIP();
 	  if (!AduIsFastWebIP(dwServerIp))
-		dwTagValue = ADUNANZA_EXTERN;    // E' connesso in esterno
+			dwTagValue = ADUNANZA_EXTERN;    // E' connesso in esterno
 	  else
-		dwTagValue = ADUNANZA_FASTWEB;  // E' connesso ad Adunanza
+			dwTagValue = ADUNANZA_FASTWEB;  // E' connesso ad Adunanza
 
-//#ifdef _DEBUG || _BETA // TheKing0 - per avere + info ...
-#if defined(_DEBUG) || defined(_BETA) 
+#if defined(ADU_BETA)
   	AddDebugLogLine( DLP_LOW, false, _T("Invio al client %s:%d (%s) ET_SUPERADU3=%d"), ipstr( m_dwUserIP ), m_nUserPort, GetUserName(), dwTagValue );
-#endif //_DEBUG
+#endif //ADU_BETA
 	CTag tagSuperAdu3(ET_SUPERADU3, dwTagValue);
     tagSuperAdu3.WriteTagToFile(&data);
     // Fine modifica
@@ -1083,10 +1082,10 @@ void CUpDownClient::ProcessMuleInfoPacket(const uchar* pachPacket, uint32 nSize)
 				if (!aduver)
 					aduver = ADU_VER_CODE(3, 7, 0);
 				// Fine Mod Adu
-//#ifdef _DEBUG || _BETA // TheKing0 - per avere + info ...
-#if defined(_DEBUG) || defined(_BETA) 
+
+#if defined(ADU_BETA)
 				AddDebugLogLine( DLP_LOW, false, _T("Il client %s:%d (%s) mi ha inviato ET_SUPERADU3=%d"), ipstr( m_dwUserIP ), m_nUserPort, GetUserName(), tagval );
-#endif //_DEBUG
+#endif //ADU_BETA
 
 				break;
 				// fine mod Adu
@@ -1181,17 +1180,16 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
  		// Devo mandare un lowid
  		if (theApp.serverconnect->IsConnected())
  			clientid = theApp.serverconnect->GetClientID();
-		//#ifdef _DEBUG || _BETA // TheKing0 - per avere + info ...
-#if defined(_DEBUG) || defined(_BETA) 
+
+#if defined(ADU_BETA)
  		AddDebugLogLine( DLP_VERYLOW, false, _T("Spedisco un Low ID (%u) a %s:%d (%s)"), clientid, ipstr( tmpIp ), tmpPort, GetUserName() );
-#endif //_DEBUG
+#endif //ADU_BETA
  	}
  	else
  	{
-		//#ifdef _DEBUG || _BETA // TheKing0 - per avere + info ...
-#if defined(_DEBUG) || defined(_BETA) 
+#if defined(ADU_BETA)
  		AddDebugLogLine( DLP_VERYLOW, false, _T("Spedisco un High ID (%u) a %s:%d (%s)"), clientid, ipstr( tmpIp ), tmpPort, GetUserName() );
-#endif //_DEBUG
+#endif //ADU_BETA
  	}
  	// Fine modifica Adu
  	
@@ -1318,7 +1316,7 @@ void CUpDownClient::SendHelloTypePacket(CSafeMemFile* data)
 	if (theApp.serverconnect->IsConnected()){
 		dwIP = theApp.serverconnect->GetCurrentServer()->GetIP();
 		nPort = theApp.serverconnect->GetCurrentServer()->GetPort();
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		if (dwIP == theApp.serverconnect->GetLocalIP()){
 			dwIP = 0;
 			nPort = 0;
@@ -1643,7 +1641,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon, bool bNoCallbacks, CRuntime
 	if (incompatible) {
 	// Fine Mod Adu
 			
-#if defined(_DEBUG) || defined(_BETA)// TheKing0 - per avere + info ...
+#if defined(ADU_BETA)
 		// TODO: Remove after testing
 		AddDebugLogLine(DLP_DEFAULT, false, _T("Rejected outgoing connection because CryptLayer-Setting (Obfuscation) was incompatible %s"), DbgGetClientInfo() );
 #endif
@@ -2679,18 +2677,14 @@ bool CUpDownClient::SendPacket(Packet* packet, bool bDeletePacket, bool bVerifyC
 	}
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CUpDownClient::AssertValid() const
 {
-	CObject::AssertValid();
-
 	CHECK_OBJ(socket);
 	CHECK_PTR(credits);
 	CHECK_PTR(m_Friend);
 	CHECK_OBJ(reqfile);
 	(void)m_abyUpPartStatus;
-	m_OtherRequests_list.AssertValid();
-	m_OtherNoNeeded_list.AssertValid();
 	(void)m_lastPartAsked;
 	(void)m_cMessagesReceived;
 	(void)m_cMessagesSent;
@@ -2726,8 +2720,6 @@ void CUpDownClient::AssertValid() const
 	(void)m_dwLastAskedForSources;
     (void)m_iFileListRequested;
 	(void)m_byCompatibleClient;
-	m_WaitingPackets_list.AssertValid();
-	m_DontSwap_list.AssertValid();
 	(void)m_lastRefreshedDLDisplay;
 	ASSERT( m_SecureIdentState >= IS_UNAVAILABLE && m_SecureIdentState <= IS_KEYANDSIGNEEDED );
 	(void)m_dwLastSignatureIP;
@@ -2746,10 +2738,6 @@ void CUpDownClient::AssertValid() const
 	(void)s_UpStatusBar;
 	(void)requpfileid;
     (void)m_lastRefreshedULDisplay;
-	m_AvarageUDR_list.AssertValid();
-	m_BlockRequests_queue.AssertValid();
-	m_DoneBlocks_list.AssertValid();
-	m_RequestedFiles_list.AssertValid();
 	ASSERT( m_nDownloadState >= DS_DOWNLOADING && m_nDownloadState <= DS_NONE );
 	(void)m_cDownAsked;
 	(void)m_abyPartStatus;
@@ -2773,24 +2761,20 @@ void CUpDownClient::AssertValid() const
 	CHECK_BOOL(m_bTransferredDownMini);
 	CHECK_BOOL(m_bUnicodeSupport);
 	ASSERT( m_nKadState >= KS_NONE && m_nKadState <= KS_CONNECTING_FWCHECK_UDP);
-	m_AvarageDDR_list.AssertValid();
 	(void)m_nSumForAvgUpDataRate;
-	m_PendingBlocks_list.AssertValid();
-	m_DownloadBlocks_list.AssertValid();
 	(void)s_StatusBar;
 	ASSERT( m_nChatstate >= MS_NONE && m_nChatstate <= MS_UNABLETOCONNECT );
 	(void)m_strFileComment;
 	(void)m_uFileRating;
-	CHECK_BOOL(m_bCollectionUploadSlot);
 #undef CHECK_PTR
 #undef CHECK_BOOL
 }
 #endif
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CUpDownClient::Dump(CDumpContext& dc) const
 {
-	CObject::Dump(dc);
+
 }
 #endif
 

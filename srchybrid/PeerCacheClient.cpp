@@ -32,12 +32,6 @@
 #include "UploadQueue.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define HTTP_STATUS_INV_RANGE	416
 
 UINT GetPeerCacheSocketUploadTimeout()
@@ -262,7 +256,7 @@ void CPeerCacheUpSocket::OnClose(int nErrorCode)
 	}
 }
 
-#ifndef _DEBUG
+#ifndef ADU_BETA
 #pragma warning(disable:4702) // unreachable code
 #endif
 bool CPeerCacheUpSocket::ProcessHttpResponse()
@@ -274,7 +268,7 @@ bool CPeerCacheUpSocket::ProcessHttpResponse()
 
 	return true;
 }
-#ifndef _DEBUG
+#ifndef ADU_BETA
 #pragma warning(default:4702) // unreachable code
 #endif
 

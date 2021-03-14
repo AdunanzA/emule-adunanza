@@ -24,10 +24,10 @@
 #include "../../clientlist.h"
 #include "../Kademlia/Kademlia.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 using namespace Kademlia;
@@ -82,7 +82,7 @@ bool CPacketTracking::IsTrackedOutListRequestPacket(uint8 byOpcode) const
 }
 
 bool CPacketTracking::IsOnOutTrackList(uint32 dwIP, uint8 byOpcode, bool bDontRemove){
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		if (!IsTrackedOutListRequestPacket(byOpcode))
 			ASSERT( false ); // code error / bug
 #endif

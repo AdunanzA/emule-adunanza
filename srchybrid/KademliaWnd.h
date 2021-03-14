@@ -49,11 +49,11 @@ public:
 
 protected:
 	CIconStatic					m_ctrlBootstrap;
-	CKadContactHistogramCtrl*	m_contactHistogramCtrl;
-	CKadLookupGraph*			m_kadLookupGraph; 
-	CCustomAutoComplete*		m_pacONBSIPs;
+	CKadContactHistogramCtrl* m_contactHistogramCtrl;
+	CKadLookupGraph* m_kadLookupGraph;
+	CCustomAutoComplete* m_pacONBSIPs;
 	HICON						icon_kadsea;
-	CDropDownButton*			m_pbtnWnd;
+	CDropDownButton* m_pbtnWnd;
 
 	void		SetAllIcons();
 	void		UpdateButtonTitle(bool bLookupGraph);
@@ -71,7 +71,7 @@ protected:
 	afx_msg void OnEnSetfocusBootstrapNodesdat();
 	afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnNMDblclkSearchlist(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnListModifiedSearchlist(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnNMDblclkSearchlist(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnListModifiedSearchlist(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnConnect();
 };

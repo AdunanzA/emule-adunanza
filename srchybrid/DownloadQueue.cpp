@@ -42,10 +42,10 @@
 #include "PartFile.h"
 #include "KnownFileList.h" //>>> ::Indicate already downloaded files
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -718,7 +718,7 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source){
 	// filter sources which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
 	if ( (source->RequiresCryptLayer() && (!thePrefs.IsClientCryptLayerSupported() || !source->HasValidHash())) || (thePrefs.IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash())))
 	{
-#if defined(_DEBUG) || defined(_BETA)
+#if defined(ADU_BETA)
 		//if (thePrefs.GetDebugSourceExchange()) // TODO: Uncomment after testing
 			AddDebugLogLine(DLP_DEFAULT, false, _T("Rejected source because CryptLayer-Setting (Obfuscation) was incompatible for file %s : %s"), sender->GetFileName(), source->DbgGetClientInfo() );
 #endif
@@ -758,15 +758,16 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source){
 	//if yes the known client will be attached to the var "source"
 	//and the old sourceclient will be deleted
 	if (theApp.clientlist->AttachToAlreadyKnown(&source,0)){
-#ifdef _DEBUG
-		if (thePrefs.GetVerbose() && source->GetRequestFile()){
+#ifdef ADU_BETA
+		const CPartFile* srcfile = source->GetRequestFile();
+		if (thePrefs.GetVerbose() && srcfile) {
 			// if a client sent us wrong sources (sources for some other file for which we asked but which we are also
 			// downloading) we may get a little in trouble here when "moving" this source to some other partfile without
 			// further checks and updates.
-			if (md4cmp(source->GetRequestFile()->GetFileHash(), sender->GetFileHash()) != 0)
-				AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. filehash) to file \"%s\""), source->GetUserIDHybrid(), sender->GetFileName());
-			if (source->GetRequestFile()->GetPartCount() != 0 && source->GetRequestFile()->GetPartCount() != sender->GetPartCount())
-				AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. partcount) to file \"%s\""), source->GetUserIDHybrid(), sender->GetFileName());
+			if (!md4equ(srcfile->GetFileHash(), sender->GetFileHash()))
+				AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. filehash) to file \"%s\""), source->GetUserIDHybrid(), (LPCTSTR)sender->GetFileName());
+			if (srcfile->GetPartCount() != 0 && srcfile->GetPartCount() != sender->GetPartCount())
+				AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- added potential wrong source (%u)(diff. partcount) to file \"%s\""), source->GetUserIDHybrid(), (LPCTSTR)sender->GetFileName());
 		}
 #endif
 		source->SetRequestFile(sender);
@@ -778,7 +779,7 @@ bool CDownloadQueue::CheckAndAddSource(CPartFile* sender,CUpDownClient* source){
 		theApp.clientlist->AddClient(source,true);
 	}
 	
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (thePrefs.GetVerbose() && source->GetPartCount()!=0 && source->GetPartCount()!=sender->GetPartCount()){
 		DEBUG_ONLY(AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddSource -- New added source (%u, %s) had still value in partcount"), source->GetUserIDHybrid(), sender->GetFileName()));
 	}
@@ -813,7 +814,7 @@ bool CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	// filter sources which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
 	if ( (source->RequiresCryptLayer() && (!thePrefs.IsClientCryptLayerSupported() || !source->HasValidHash())) || (thePrefs.IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash())))
 	{
-#if defined(_DEBUG) || defined(_BETA)
+#if defined(ADU_BETA)
 		//if (thePrefs.GetDebugSourceExchange()) // TODO: Uncomment after testing
 			AddDebugLogLine(DLP_DEFAULT, false, _T("Rejected source because CryptLayer-Setting (Obfuscation) was incompatible for file %s : %s"), sender->GetFileName(), source->DbgGetClientInfo() );
 #endif
@@ -849,15 +850,16 @@ bool CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 			return false;
 		}
 	}
-#ifdef _DEBUG
-	if (thePrefs.GetVerbose() && source->GetRequestFile()){
+#ifdef ADU_BETA
+	const CPartFile* srcfile = source->GetRequestFile();
+	if (thePrefs.GetVerbose() && srcfile) {
 		// if a client sent us wrong sources (sources for some other file for which we asked but which we are also
 		// downloading) we may get a little in trouble here when "moving" this source to some other partfile without
 		// further checks and updates.
-		if (md4cmp(source->GetRequestFile()->GetFileHash(), sender->GetFileHash()) != 0)
-			AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddKnownSource -- added potential wrong source (%u)(diff. filehash) to file \"%s\""), source->GetUserIDHybrid(), sender->GetFileName());
-		if (source->GetRequestFile()->GetPartCount() != 0 && source->GetRequestFile()->GetPartCount() != sender->GetPartCount())
-			AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddKnownSource -- added potential wrong source (%u)(diff. partcount) to file \"%s\""), source->GetUserIDHybrid(), sender->GetFileName());
+		if (!md4equ(srcfile->GetFileHash(), sender->GetFileHash()))
+			AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddKnownSource -- added potential wrong source (%u)(diff. filehash) to file \"%s\""), source->GetUserIDHybrid(), (LPCTSTR)sender->GetFileName());
+		if (srcfile->GetPartCount() != 0 && srcfile->GetPartCount() != sender->GetPartCount())
+			AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddKnownSource -- added potential wrong source (%u)(diff. partcount) to file \"%s\""), source->GetUserIDHybrid(), (LPCTSTR)sender->GetFileName());
 	}
 #endif
 	source->SetRequestFile(sender);
@@ -871,7 +873,7 @@ bool CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 	source->SetSourceFrom(SF_PASSIVE);
 	if (thePrefs.GetDebugSourceExchange())
 		AddDebugLogLine(false, _T("SXRecv: Passively added source; %s, File=\"%s\""), source->DbgGetClientInfo(), sender->GetFileName());
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (thePrefs.GetVerbose() && source->GetPartCount()!=0 && source->GetPartCount()!=sender->GetPartCount()){
 		DEBUG_ONLY(AddDebugLogLine(false, _T("*** CDownloadQueue::CheckAndAddKnownSource -- New added source (%u, %s) had still value in partcount"), source->GetUserIDHybrid(), sender->GetFileName()));
 	}
@@ -1019,7 +1021,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CSafeMemFile* data, bool bExt2P
 
 	if (cur_udpserver)
 	{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		int iPacketSize = (int)data->GetLength();
 #endif
 		Packet packet(data);
@@ -2021,7 +2023,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		ctemp->SetConnectOptions(byCryptOptions);
 		CheckAndAddSource(temp, ctemp);
 	}
-#if ADU_BETA_MAJ > 0 && defined BETA
+#if ADU_BETA_MAJ > 0
 	// Mod Adunanza: Scrivo i dettagli nel caso il tipo del pacchetto sia == 3
 
 	if (type == 3)

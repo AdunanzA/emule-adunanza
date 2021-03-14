@@ -821,6 +821,7 @@
 #define IDS_WEB_BADLOGINATTEMPT         895
 #define IDS_ERR_TOOLARGEFILE            896
 #define IDS_MSGONLYFRIENDS              897
+#define IDS_BOOTSTRAPFAILED             4000
 #define IDS_GLOBAL_ON                   898
 #define IDS_STRING898                   898
 #define IDS_SLOTFOCUS                   898

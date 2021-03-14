@@ -43,13 +43,6 @@
 #include "AdunanzA.h"
 #include "FirewallOpener.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // CClientUDPSocket
 
 CClientUDPSocket::CClientUDPSocket()
@@ -186,7 +179,7 @@ void CClientUDPSocket::OnReceive(int nErrorCode)
 				error->Delete();
 				strError = _T("General packet error");
 			}
-	#ifndef _DEBUG
+	#ifndef ADU_BETA
 			catch(...)
 			{
 				strError = _T("Unknown exception");
@@ -573,7 +566,7 @@ bool CClientUDPSocket::SendPacket(Packet* packet, uint32 dwIP, uint16 nPort, boo
 	if (bEncrypt && AduIsFastWebIP(dwIP))
 		AddDebugLogLine( DLP_LOW, false, _T("Encrypted UDP packet sent to IP %s"), ipstr( dwIP ));	
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (newpending->packet->size > UDP_KAD_MAXFRAGMENT)
 		DebugLogWarning(_T("Sending UDP packet > UDP_KAD_MAXFRAGMENT, opcode: %X, size: %u"), packet->opcode, packet->size);
 #endif

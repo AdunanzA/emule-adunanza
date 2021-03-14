@@ -60,7 +60,6 @@ public:
 	static bool enableAduStats;
 	static CString UpdateURL;
 	static uint32 m_AduValRipBanda_Std;
-	static CString SpeedTestUrl;
 	static CString UpdateMessage;
 	static CString HomeAduBrowser;
 	static CString splashUrl;

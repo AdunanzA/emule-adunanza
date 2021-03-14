@@ -103,13 +103,6 @@
 
 extern CString GetErrorMessage(DWORD dwError, DWORD dwFlags);
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #define BUFSIZE     8192
 #define DEFAULT_LEN 0
 #define TIMEOUT     3000

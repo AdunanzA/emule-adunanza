@@ -40,12 +40,6 @@
 #include "updownclient.h"
 #include "AdunanzA.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define CLIENTS_MET_FILENAME	_T("clients.met")
 
 CClientCredits::CClientCredits(CreditStruct* in_credits)
@@ -869,7 +863,7 @@ bool CClientCreditsList::CryptoAvailable()
 }
 
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 bool CClientCreditsList::Debug_CheckCrypting()
 {
 	// create random key

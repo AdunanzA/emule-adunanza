@@ -18,13 +18,6 @@
 #include "RARFile.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 CRARFile::CRARFile()
 {
 	m_hLibUnRar = NULL;

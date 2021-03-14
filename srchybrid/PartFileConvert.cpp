@@ -29,12 +29,6 @@
 #include "opcodes.h"
 #include "MuleListCtrl.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 enum convstatus{
 	CONV_OK				=0,
 	CONV_QUEUE,

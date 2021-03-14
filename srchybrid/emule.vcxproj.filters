@@ -5,18 +5,12 @@
       <UniqueIdentifier>{0d7962c6-8e9e-4940-8016-dcb53d9ac8a6}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm</Extensions>
     </Filter>
-    <Filter Include="Source Files\KAdu">
-      <UniqueIdentifier>{99be5d0a-b0b6-415f-98af-ca069f3b4a1d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\IRC">
       <UniqueIdentifier>{c9891d6a-3ed8-403b-9283-39dab4266a4f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{b168fb16-152c-43b2-8057-21b47ea352e0}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
-    </Filter>
-    <Filter Include="Header Files\KAdu">
-      <UniqueIdentifier>{fd908c76-748e-4d5c-94ed-da8136e4a72c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\IRC">
       <UniqueIdentifier>{8d49892a-73f7-4487-818f-828e4dda5913}</UniqueIdentifier>
@@ -60,6 +54,9 @@
     </Filter>
     <Filter Include="Interface Source\IRC">
       <UniqueIdentifier>{97b184d6-d88f-439c-8c2d-bda454c0f2ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdunanzA\KAdu">
+      <UniqueIdentifier>{fe50da65-9160-4447-a493-5939232a7378}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -326,72 +323,6 @@
     </ClCompile>
     <ClCompile Include="ZIPFile.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\io\BufferedFileIO.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\io\ByteIO.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\routing\Contact.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\io\DataIO.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\kademlia\Entry.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\io\FileIO.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\kademlia\Indexed.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\io\IOException.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\kademlia\Kademlia.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\net\KademliaUDPListener.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\utils\LittleEndian.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\utils\LookupHistory.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\utils\MiscUtils.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\net\PacketTracking.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\kademlia\Prefs.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\routing\RoutingBin.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\routing\RoutingZone.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\kademlia\Search.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\kademlia\SearchManager.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\utils\ThreadName.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\kademlia\UDPFirewallTester.cpp">
-      <Filter>Source Files\KAdu</Filter>
-    </ClCompile>
-    <ClCompile Include="kademlia\utils\UInt128.cpp">
-      <Filter>Source Files\KAdu</Filter>
     </ClCompile>
     <ClCompile Include="IrcMain.cpp">
       <Filter>Source Files\IRC</Filter>
@@ -830,6 +761,72 @@
     </ClCompile>
     <ClCompile Include="IrcWnd.cpp">
       <Filter>Interface Source\IRC</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\kademlia\Entry.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\kademlia\Indexed.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\kademlia\Kademlia.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\kademlia\Prefs.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\kademlia\Search.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\kademlia\SearchManager.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\kademlia\UDPFirewallTester.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\net\KademliaUDPListener.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\net\PacketTracking.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\routing\Contact.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\routing\RoutingBin.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\routing\RoutingZone.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\utils\LittleEndian.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\utils\LookupHistory.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\utils\MiscUtils.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\utils\ThreadName.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\utils\UInt128.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\io\BufferedFileIO.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\io\ByteIO.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\io\DataIO.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\io\FileIO.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClCompile>
+    <ClCompile Include="kademlia\io\IOException.cpp">
+      <Filter>AdunanzA\KAdu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1762,12 +1759,6 @@
     <ClInclude Include="IPFilter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="kademlia\utils\KadClientSearcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\utils\KadUDPKey.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="KnownFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1947,84 +1938,6 @@
     </ClInclude>
     <ClInclude Include="ZIPFile.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\io\BufferedFileIO.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\io\ByteIO.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\routing\Contact.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\io\DataIO.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Defines.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Entry.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Error.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\io\FileIO.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Indexed.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\io\IOException.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Kademlia.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\net\KademliaUDPListener.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\utils\LittleEndian.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\utils\LookupHistory.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\routing\Maps.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\utils\MiscUtils.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\net\PacketTracking.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Prefs.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\routing\RoutingBin.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\routing\RoutingZone.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Search.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\SearchManager.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\Tag.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\utils\ThreadName.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\kademlia\UDPFirewallTester.h">
-      <Filter>Header Files\KAdu</Filter>
-    </ClInclude>
-    <ClInclude Include="kademlia\utils\UInt128.h">
-      <Filter>Header Files\KAdu</Filter>
     </ClInclude>
     <ClInclude Include="IrcMain.h">
       <Filter>Header Files\IRC</Filter>
@@ -2499,6 +2412,90 @@
     </ClInclude>
     <ClInclude Include="qedit.h">
       <Filter>Interface Header</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Defines.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Entry.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Error.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Indexed.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Kademlia.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Prefs.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Search.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\SearchManager.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\Tag.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\kademlia\UDPFirewallTester.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\net\KademliaUDPListener.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\net\PacketTracking.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\routing\Contact.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\routing\Maps.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\routing\RoutingBin.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\routing\RoutingZone.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\utils\KadClientSearcher.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\utils\KadUDPKey.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\utils\LittleEndian.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\utils\LookupHistory.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\utils\MiscUtils.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\utils\ThreadName.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\utils\UInt128.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\io\BufferedFileIO.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\io\ByteIO.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\io\DataIO.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\io\FileIO.h">
+      <Filter>AdunanzA\KAdu</Filter>
+    </ClInclude>
+    <ClInclude Include="kademlia\io\IOException.h">
+      <Filter>AdunanzA\KAdu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,13 +18,6 @@
 #include "StringConversion.h"
 #include <atlenc.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 int utf8towc(LPCSTR pcUtf8, UINT uUtf8Size, LPWSTR pwc, UINT uWideCharSize)
 {
 	LPWSTR pwc0 = pwc;

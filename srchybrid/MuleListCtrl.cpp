@@ -35,12 +35,6 @@
 #include "ListViewSearchDlg.h"
 #include <atlimage.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define MAX_SORTORDERHISTORY 4
 #define MLC_BLEND(A, B, X) ((A + B * (X-1) + ((X+1)/2)) / X)
 

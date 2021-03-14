@@ -32,13 +32,6 @@
 #include "SharedFileList.h"
 #include "ListenSocket.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 IMPLEMENT_DYNAMIC(CDownloadClientsCtrl, CMuleListCtrl)
 
 BEGIN_MESSAGE_MAP(CDownloadClientsCtrl, CMuleListCtrl)

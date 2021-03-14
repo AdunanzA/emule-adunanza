@@ -27,12 +27,6 @@
 #include "emule.h"
 #include "MenuCmds.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define DELAYED_EVALUATE_TIMER_ID	1
 #define ICON_LEFTSPACE				20
 

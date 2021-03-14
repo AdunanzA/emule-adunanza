@@ -44,10 +44,10 @@ there client on the eMule forum..
 #include "../../MD5Sum.h"
 #include "../../OtherFunctions.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 using namespace Kademlia;
@@ -242,20 +242,20 @@ void CPrefs::SetKademliaFiles()
 	theApp.serverlist->GetAvgFile( nServerAverage );
 	uint32 nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 
 	CString method;
 #endif
 
 	if( nServerAverage > nKadAverage )
 	{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		method.Format(_T("Kad file estimate used Server avg(%u)"), nServerAverage);
 #endif
 
 		nKadAverage = nServerAverage;
 	}
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	else
 	{
 		method.Format(_T("Kad file estimate used Kad avg(%u)"), nKadAverage);
@@ -263,13 +263,13 @@ void CPrefs::SetKademliaFiles()
 #endif
 	if( nKadAverage < 108 )
 	{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		method.Format(_T("Kad file estimate used default avg(108)"));
 #endif
 
 		nKadAverage = 108;
 	}
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	AddDebugLogLine(DLP_VERYLOW, false, method);
 #endif
 

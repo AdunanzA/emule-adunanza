@@ -134,12 +134,6 @@
 #include "SearchExpr.h"
 #include "scanner.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define YY_	_T
 
 extern CStringArray g_astrParserErrors;

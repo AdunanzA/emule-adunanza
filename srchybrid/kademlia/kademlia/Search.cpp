@@ -60,10 +60,10 @@ there client on the eMule forum..
 #include "../../RemoteSettings.h"
 #include "../../AdunanzA.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 using namespace Kademlia;
@@ -279,76 +279,60 @@ void CSearch::PrepareToStop()
 
 void CSearch::JumpStart()
 {
-	// If we had a response within the last 3 seconds, no need to jumpstart the search.
-	if (m_uLastResponse + SEC(3) > (uint32)time(NULL))
+	// If we had a response within the last 3 seconds, no need to jump-start the search.
+	if (time(NULL) < m_uLastResponse + SEC(3))
 		return;
 
 	// If we ran out of contacts, stop search.
-	if (m_mapPossible.empty())
-	{
+	if (m_mapPossible.empty()) {
 		PrepareToStop();
 		return;
 	}
 
 	// Is this a find lookup and are the best two (=KADEMLIA_FIND_VALUE) nodes dead/unreachable?
 	// In this case try to discover more close nodes before using our other results
-	// The reason for this is that we may not have found the closest node alive due to results beeing limited to 2 contacts,
-	// which could very well have been the duplicates of our dead closest nodes [link paper]
-	bool bLookupCloserNodes = false;
-	if (pRequestedMoreNodesContact == NULL && GetRequestContactCount() == theApp.rm->kadFindValue && m_mapTried.size() >= 3*theApp.rm->kadFindValue)
-	{
-		ContactMap::const_iterator itContactMap = m_mapTried.begin();
-		bLookupCloserNodes = true;
-		for (uint32 i = 0; i < theApp.rm->kadFindValue; i++)
-		{
-			if (m_mapResponded.count(itContactMap->first) > 0)
-			{
+	// The reason for this is that we may not have found the closest node alive due to results being limited
+	// to 2 contacts, which could very well have been the duplicates of our dead closest nodes [link paper]
+	if (pRequestedMoreNodesContact == NULL && GetRequestContactCount() == theApp.rm->kadFindValue && m_mapTried.size() >= 3 * theApp.rm->kadFindValue) {
+		ContactMap::const_iterator itTriedMap = m_mapTried.begin();
+		bool bLookupCloserNodes = true;
+		for (int i = KADEMLIA_FIND_VALUE; --i >= 0;) {
+			if (m_mapResponded.find(itTriedMap->first) != m_mapResponded.end()) {
 				bLookupCloserNodes = false;
 				break;
 			}
-			itContactMap++;
+			++itTriedMap;
 		}
 		if (bLookupCloserNodes)
-		{
-			while (itContactMap != m_mapTried.end())
-			{
-				if (m_mapResponded.count(itContactMap->first) > 0)
-				{
-					DEBUG_ONLY( DebugLogWarning(_T("Best theApp.rm->kadFindValue nodes for LookUp (%s) were unreachable or dead, reasking closest for more"), GetGUIName()) );
-					SendFindValue(itContactMap->second, true);
+			for (; itTriedMap != m_mapTried.end(); ++itTriedMap)
+				if (m_mapResponded.find(itTriedMap->first) != m_mapResponded.end()) {
+					DEBUG_ONLY(DebugLogWarning(_T("Best KADEMLIA_FIND_VALUE nodes for LookUp (%s) were unreachable or dead, re-asking closest for more"), (LPCTSTR)(CString)GetGUIName()));
+					SendFindValue(itTriedMap->second, true);
 					return;
 				}
-				itContactMap++;
-			}
-		}
 	}
 
-	// Search for contacts that can be used to jumpstart a stalled search.
-	while(!m_mapPossible.empty())
-	{
+	// Search for contacts that can be used to jump-start a stalled search.
+	while (!m_mapPossible.empty()) {
+		const ContactMap::const_iterator itPossibleMap = m_mapPossible.begin();
 		// Get a contact closest to our target.
-		CContact* pContact = m_mapPossible.begin()->second;
+		CContact* pContact = itPossibleMap->second;
 
-		// Have we already tried to contact this node.
-		if (m_mapTried.count(m_mapPossible.begin()->first) > 0)
-		{
-			// Did we get a response from this node, if so, try to store or get info.
-			if(m_mapResponded.count(m_mapPossible.begin()->first) > 0)
-			{
-				StorePacket();
-			}
-			// Remove from possible list.
-			m_mapPossible.erase(m_mapPossible.begin());
-		}
-		else
-		{
+		// Have we already tried to contact this node?
+		if (m_mapTried.find(itPossibleMap->first) == m_mapTried.end()) {
 			// Add to tried list.
-			m_mapTried[m_mapPossible.begin()->first] = pContact;
-			// Send the KadID so other side can check if I think it has the right KadID. (Saftey net)
+			m_mapTried[itPossibleMap->first] = pContact;
+			// Send the KadID so other side can check if I think it has the right KadID. (Safety net)
 			// Send request
 			SendFindValue(pContact);
-			break;
+			return;
 		}
+		// Did we get a response from this node? if so, try to store or get info.
+		if (m_mapResponded.find(itPossibleMap->first) != m_mapResponded.end())
+			StorePacket();
+
+		// Remove from possible list.
+		m_mapPossible.erase(itPossibleMap);
 	}
 }
 
@@ -1236,6 +1220,9 @@ void CSearch::ProcessResultNotes(const CUInt128 &uAnswer, TagList *plistInfo)
 
 void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, uint32 uFromIP, uint16 uFromPort)
 {
+#if ADU_BETA_MAJ > 0
+	AddDebugLogLine(DLP_LOW, false, _T("CSearch::ProcessResultKeyword"));
+#endif
 	// Find the contact who sent the answer - we need to know its protocol version
 	// Special publish answer tags need to be filtered based on its remote protocol version, because if an old node is not aware
 	// of those special tags, it doesn't knows it is not supposed accept and store such tags on publish request, so a malicious
@@ -1282,8 +1269,11 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
 
 		if (!pTag->m_name.Compare(TAG_FILENAME))
 		{
-			// Set flag based on last tag we saw.
 			sName = pTag->GetStr();
+#if ADU_BETA_MAJ > 0
+			AddDebugLogLine(DLP_LOW, false, _T("CSearch::ProcessResultKeyword TAG_FILENAME: %s"), sName.GetString());
+#endif
+			// Set flag based on last tag we saw
 			if( sName != L"" )
 				bFileName = true;
 			else
@@ -1295,6 +1285,9 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
 				uSize = *((uint64*)pTag->GetBsob());
 			else
 				uSize = pTag->GetInt();
+#if ADU_BETA_MAJ > 0
+			AddDebugLogLine(DLP_LOW, false, _T("CSearch::ProcessResultKeyword TAG_FILESIZE: %llu"), uSize);
+#endif
 
 			// Set flag based on last tag we saw.
 			if(uSize)
@@ -1340,7 +1333,7 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
 				// we don't keep this as tag, but as a member property of the searchfile, as we only need its informations
 				// in the search list and don't want to carry the tag over when downloading the file (and maybe even wrongly publishing it)
 				uPublishInfo = (uint32)pTag->GetInt();
-/*#ifdef _DEBUG
+/*#ifdef ADU_BETA
 				uint32 byDifferentNames = (uPublishInfo & 0xFF000000) >> 24;
 				uint32 byPublishersKnown = (uPublishInfo & 0x00FF0000) >> 16;
 				uint32 wTrustValue = uPublishInfo & 0x0000FFFF;
@@ -1387,16 +1380,14 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
 
 	// Mod Adu
  	// lupz
-	//  -> 01/12/2011
  	// Normalizzazione della stima ricevuta
 	// Incrementiamo il valore in proporzione da quando è "cominciata" la stima
-
-#if ADU_BETA_MAJ > 0 && defined BETA
+#if ADU_BETA_MAJ > 0
 	float old_kadavailability = kadavailability, old_ckadavailability = ckadavailability;
 #endif
  
-	kadavailability = sqrt((sqrt(NormalizzaStima(kadavailability, first, last))*kadavailability));
-	ckadavailability = sqrt((sqrt(NormalizzaStima(ckadavailability, first, last))*ckadavailability));
+	kadavailability  = NormalizzaStima(kadavailability, first, last)   * kadavailability;
+	ckadavailability = NormalizzaStima(ckadavailability, first, last)  * ckadavailability;
 
 	if (kadavailability > 65500)
 		kadavailability = 65500;
@@ -1454,21 +1445,19 @@ void CSearch::ProcessResultKeyword(const CUInt128 &uAnswer, TagList *plistInfo, 
  	// lupz
  	// visualizzo come fonti quelle stimate tramite publish rate
  	// e come fonti complete quelle "contate" dai client che scaricano
- 	// entrambe sono fonti complete comunque solo che le seconde dovrebbero essere piÃ¹
+ 	// entrambe sono fonti complete comunque solo che le seconde dovrebbero essere piu
  	// basse perchè sono tutte connesse contemporaneamente
  	//
  	// con il publish rate stimiamo le fonti complete totali (ma non quelle connesse al momento della ricerca)
  	// con l'altro metodo il massimo numero di quelle viste contemporaneamente connesse
-#if ADU_BETA_MAJ > 0 && defined BETA
-	if (kadavailability > 5.0f)
-		AddDebugLogLine(DLP_LOW, false, _T("%.0f/%.0f(%u) [%.0f/%.0f(%u)] %s"),
-			kadavailability,
-			ckadavailability,
-			uAvailability,
-			old_kadavailability,
-			old_ckadavailability,
-			uAvailability,
-			sName);
+#if ADU_BETA_MAJ > 0
+	AddDebugLogLine(DLP_LOW, false, _T("debug ricerche: kadavailability: %u ckadavailability: %u uAvailability: %u [old_kadavailability: %f old_ckadavailability: %f] %s"),
+		kadavailability,
+		ckadavailability,
+		uAvailability,
+		old_kadavailability,
+		old_ckadavailability,
+		sName.GetString());
 #endif
 	theApp.searchlist->KademliaSearchKeyword(m_uSearchID, &uAnswer, sName, uSize, sType, uPublishInfo
 		, aAICHHashs, aAICHHashPopularity, m_pSearchTerm, 10,

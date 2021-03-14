@@ -27,10 +27,10 @@
 #include "Kademlia/Kademlia/Kademlia.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -275,7 +275,7 @@ bool CFriend::TryToConnect(CFriendConnectionListener* pConnectionReport)
 }
 void CFriend::UpdateFriendConnectionState(EFriendConnectReport eEvent)
 {
-/*#ifdef _DEBUG
+/*#ifdef ADU_BETA
 	CString strDbg;
 	strDbg.Format(_T("*** Debug: UpdateFriendConnectionState, Report: %u, CurrentState: %u \n"), eEvent, m_FriendConnectState); 
 	for (POSITION pos = m_liConnectionReport.GetHeadPosition(); pos != 0;)

@@ -22,13 +22,6 @@
 #include "FriendList.h"
 #include "Preferences.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // CAddFriend dialog
 
 IMPLEMENT_DYNAMIC(CAddFriend, CDialog)

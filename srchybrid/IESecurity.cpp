@@ -17,13 +17,6 @@
 #include "stdafx.h"
 #include "IESecurity.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // CMuleBrowserControlSite
 
@@ -78,13 +71,13 @@ void CMuleBrowserControlSite::InitInternetSecurityZone()
 }
 
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #define DUMPIID(iid, name) DumpIID(iid, name)
 #else
 #define DUMPIID(iid, name) /**/
 #endif
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void DumpIID(REFIID iid, LPCTSTR pszClassName)
 {
   CRegKey key;

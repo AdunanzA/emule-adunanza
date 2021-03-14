@@ -43,13 +43,6 @@
 #include "IPFilter.h"
 //### ::searchCatch []
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #define SPAMFILTER_FILENAME		_T("SearchSpam.met")
 #define STOREDSEARCHES_FILENAME	_T("StoredSearches.met")
 #define STOREDSEARCHES_VERSION	1
@@ -500,7 +493,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse, uint32 dwF
 			}
 			if (bAdd && theApp.clientlist->IsBannedClient(userid))
 			{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 				if (thePrefs.GetLogBannedClients())
 				{
 					CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
@@ -620,7 +613,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse, uint32 dwF
 			// gestisco il secondo stimatore
 			uint32 uOrigSources = (uint32)-1;
 			bool bHasOrigSources = toadd->GetIntTagValue(FT_KADSOURCES, uOrigSources);
-#if ADU_BETA_MAJ > 0 && defined BETA
+#if ADU_BETA_MAJ > 0
 			/*if (toadd->IsKademlia())
 				AddDebugLogLine(DLP_LOW, false, _T("ricevute:%u (%u complete) [%s]"), uAvail, uCompleteSources, parent->GetFileName() );*/
 #endif
@@ -952,7 +945,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	CTag tagName(FT_FILENAME, name);
 	tagName.WriteTagToFile(temp, eStrEncode);
 	tagcount++;
-	verifierEntry.SetFileName(name);
+	verifierEntry.SetFileName(Kademlia::CKadTagValueString(name));
 
 	CTag tagSize(FT_FILESIZE, size, true); 
 	tagSize.WriteTagToFile(temp, eStrEncode);
@@ -1138,7 +1131,7 @@ void CSearchList::DoSpamRating(CSearchFile* pSearchFile, bool bIsClientFile, boo
 
 	if (!bSureNegative && bMarkAsNoSpam)
 		m_mapKnownSpamHashs.SetAt(CSKey(pSearchFile->GetFileHash()), false);
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	else if (bSureNegative && !bMarkAsNoSpam)
 	{
 #endif
@@ -1322,7 +1315,7 @@ void CSearchList::DoSpamRating(CSearchFile* pSearchFile, bool bIsClientFile, boo
 				}		
 			}
 		}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	}
 #endif
 

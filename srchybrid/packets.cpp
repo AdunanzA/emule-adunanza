@@ -23,13 +23,6 @@
 #include "emule.h"
 #include "RemoteSettings.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #pragma pack(1)
 struct Header_Struct{
 	uint8	eDonkeyID;
@@ -882,11 +875,9 @@ CString CTag::GetFullInfo(CString (*pfnDbgGetFileMetaTagName)(UINT uMetaTagID)) 
 	return strTag;
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CTag::AssertValid() const
 {
-	CObject::AssertValid();
-
 	ASSERT( m_uType != 0 );
 	ASSERT( m_uName != 0 && m_pszName == NULL || m_uName == 0 && m_pszName != NULL );
 	ASSERT( m_pszName == NULL || AfxIsValidString(m_pszName) );
@@ -900,6 +891,6 @@ void CTag::AssertValid() const
 
 void CTag::Dump(CDumpContext& dc) const
 {
-	CObject::Dump(dc);
+
 }
 #endif

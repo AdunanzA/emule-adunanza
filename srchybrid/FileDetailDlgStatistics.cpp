@@ -25,12 +25,6 @@
 #include "UploadQueue.h"
 #include "emuledlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define REFRESH_TIMER_ID	9042
 
 IMPLEMENT_DYNAMIC(CFileDetailDlgStatistics, CResizablePage)

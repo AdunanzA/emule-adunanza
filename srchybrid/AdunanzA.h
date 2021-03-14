@@ -13,14 +13,12 @@
 #define ADU_BETA_MAJ 1
 #define ADU_BETA_MIN ""
 
-#define BETA //definire questo se si desidera attivare tutti gli avvisi nella verbose.
 #if ADU_BETA_MAJ > 0
 	#define ADU_VER ADU_VER_RL _T("b") _AduB(ADU_BETA_MAJ, ADU_BETA_MIN)
 #else
 	#define ADU_VER ADU_VER_RL _T("")
 #endif
 
-#define ADU_SPEED_TEST_URL _T("http://debian.fastweb.it/debian-cd/3.1_r2/i386/jigdo-dvd/debian-31r2-i386-binary-1.template")
 #define ADU_MESSAGE_UPDATE _T("È disponibile una nuova versione di eMule AdunanzA. Aggiornare ora?")
 #define ADU_HOME_PAGE_BROWSER _T("http://www.adunanza.net/")
 
@@ -122,24 +120,21 @@ enum tipo_fastweb {ADSL, FIBRA, SCONOSCIUTO};
 	#define ADU_UPD_URL        _T("http://update.adunanza.net/adupdater.adu")	
 #endif
 
-
-UINT		ConfiguraPerNuoviUtenti(LPVOID lpParameter);
 void		AduUpdate();
 UINT		CheckKadCallThread(LPVOID lpParameter);
-void		StartAdunanzaTest_Settings();
-bool		AduIsFastWebIP(register uint32 ip);
-bool		AduIsFastWebLANIP(register uint32 ip);
+bool		AduIsFastWebIP(uint32 ip);
+bool		AduIsFastWebLANIP(uint32 ip);
 DWORD		AduGetTypeBand();
-bool		AduIsValidKaduAddress(register uint32 host);
+bool		AduIsValidKaduAddress(uint32 host);
 DWORD		AduGetCurrentIP(void);
 bool		IsFibraAdunanzA(void);
 void		AduTipLowUp(void);
-void		AduTipBlock(register uint32 adutip);
-bool		AduTipShow(register uint32 adutip);
+void		AduTipBlock(uint32 adutip);
+bool		AduTipShow(uint32 adutip);
 DWORD		AduNextClient();
-void		CalcolaRatio (register bool updatepage);
-float		CalcolaStima(register float avail, uint32& firstPublish, register uint32 publishInterval, register uint32 pubkRTK, register bool sameIP, register uint32 now);
-float		NormalizzaStima(register float avail, register uint32 from, register uint32 to);
+void		CalcolaRatio (bool updatepage);
+float		CalcolaStima(float avail, uint32& firstPublish, uint32 publishInterval, uint32 pubkRTK, bool sameIP, uint32 now);
+float		NormalizzaStima(float avail, uint32 from, uint32 to);
 
 // Define utili per la versione del mulo
 #define ADU_CUR_MAJ_NUM ADU_VER_MAJ

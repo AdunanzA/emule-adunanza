@@ -212,7 +212,7 @@ public:
 	// Any combination of FD_READ, FD_WRITE, FD_CLOSE, FD_ACCEPT, FD_CONNECT and FD_FORCEREAD is valid for lEvent.
 	BOOL TriggerEvent(long lEvent);
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	// Diagnostic Support
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

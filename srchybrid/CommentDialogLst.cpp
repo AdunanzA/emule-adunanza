@@ -27,13 +27,6 @@
 #include "InputBox.h"
 #include "DownloadQueue.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 IMPLEMENT_DYNAMIC(CCommentDialogLst, CResizablePage) 
 
 BEGIN_MESSAGE_MAP(CCommentDialogLst, CResizablePage) 

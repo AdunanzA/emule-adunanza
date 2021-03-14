@@ -21,10 +21,10 @@
 #include "log.h"
 #include "VisualStylesXP.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 #define DFLT_DRAWTEXT_FLAGS	(DT_NOPREFIX | DT_EXTERNALLEADING | DT_END_ELLIPSIS)

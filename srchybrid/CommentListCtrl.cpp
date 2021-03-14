@@ -23,10 +23,10 @@
 #include "UpDownClient.h"
 #include "kademlia/kademlia/Entry.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 enum ECols
@@ -230,11 +230,11 @@ void CCommentListCtrl::AddItem(const CUpDownClient* client)
 void CCommentListCtrl::AddItem(const Kademlia::CEntry* entry)
 {
 	const void* pClientCookie = entry;
-	if (FindClientComment(pClientCookie) != -1)
+	if (FindClientComment(pClientCookie) >= 0)
 		return;
-	int iRating = (int)entry->GetIntTagValue(TAG_FILERATING);
-	SComment* pComment = new SComment(pClientCookie, iRating, entry->GetStrTagValue(TAG_DESCRIPTION),
-									  entry->GetCommonFileName(), _T(""), 1/*Kad*/);
+	int iRating = (int)entry->GetIntTagValue(Kademlia::CKadTagNameString(TAG_FILERATING));
+	SComment* pComment = new SComment(pClientCookie, iRating, entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION))
+		, entry->GetCommonFileName(), _T(""), 1/*Kad*/);
 	AddComment(pComment);
 }
 

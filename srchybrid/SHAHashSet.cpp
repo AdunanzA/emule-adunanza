@@ -29,12 +29,6 @@
 #include "partfile.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 // for this version the limits are set very high, they might be lowered later
 // to make a hash trustworthy, at least 10 unique Ips (255.255.128.0) must have send it
@@ -1077,7 +1071,7 @@ CAICHRequestedData CAICHRecoveryHashSet::GetAICHReqDetails(const  CUpDownClient*
 
 void CAICHRecoveryHashSet::AddStoredAICHHash(CAICHHash Hash)
 {
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (m_liAICHHashsStored.Find(Hash) != NULL)
 	{
 		theApp.QueueDebugLogLine(false, _T("AICH hash storing is not unique - %s"), Hash.GetString());
@@ -1103,7 +1097,7 @@ bool CAICHRecoveryHashSet::IsPartDataAvailable(uint64 nPartStartPos){
 }
 
 void CAICHRecoveryHashSet::DbgTest(){
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	//define TESTSIZE 4294567295
 	uint8 maxLevel = 0;
 	uint32 cHash = 1;

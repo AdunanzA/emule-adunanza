@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "DebugHelpers.h"
 #endif
 #include "emule.h"
@@ -57,8 +57,22 @@ bool isnew = false;
 uint32 porttcp = NULL;
 uint32 portudp = NULL;
 
+bool FileExist(LPCTSTR filename)
+{
+	WIN32_FIND_DATA findData;
+	ZeroMemory(&findData, sizeof(findData));
+	HANDLE hFind = FindFirstFile(filename, &findData);
+	if (hFind == INVALID_HANDLE_VALUE)
+		return false;
+
+	FindClose(hFind);
+	hFind = NULL;
+	return true;
+}
+
 bool AduIsFastWebLANIP(uint32 ip)
-{ 
+{
+	/*
 	constexpr uchar manFastwebList[] = { 0x01, 0x02, 0x05, 0x0A, 0x0B, 0x0E, 0x15, 0x16, 0x17, 0x1B, 0x1C, 0x1D, 0x1F, 0x24, 0x25, 0x27, 0x29, 0x2A, 0x33, 0x64 };
 
 	for(const auto& manFastweb : manFastwebList)
@@ -66,11 +80,15 @@ bool AduIsFastWebLANIP(uint32 ip)
 			return true;
 
 	return false;
+	*/
+	return true;
 }
 
 bool AduIsFastWebIP(uint32 ip)
 {
-	if (AduIsFastWebLANIP(ip)) 
+	return true;
+	/*
+	if(AduIsFastWebLANIP(ip)) 
 		return true;
 
 	return((ip & 0x00e0ffff) == 0x00008cd5 || // netid 213.140.0.0/19	- netid (hex) 0x00008cd5 / mask 0x00e0ffff *** da 213.140.0.1 a 213.140.31.254 
@@ -80,168 +98,13 @@ bool AduIsFastWebIP(uint32 ip)
 				 (ip & 0x0080ffff) == 0x00006753 || // netid 83.103.0.0/17	- netid (hex) 0x00006753 / mask 0x0080ffff *** da 83.103.0.1 a 83.103.127.254
 				 (ip & 0x0000ffff) == 0x00001255 || // netid 85.18.0.0/16    - netid (hex) 0x00001255 / mask 0x0000ffff *** da 85.18.0.1 a 85.18.255.254
 				 (ip & 0x0000feff) == 0x00006059 || // netid 89.96.0.0/15    - netid (hex) 0x00006059 / mask 0x0000feff *** da 89.96.0.1 a 89.97.255.254
-				 (ip & 0x0000e0ff) == 0x0000205D);   // netid 93.32.0.0/11    - netid (hex) 0x0000205d / mask 0x0000e0ff *** da 93.32.0.1 a 93.63.255.254
-}
-/*
-sarà da implementare nella versione successiva effettuando un parsing del codice html della myfastpage. 
-In questo modo è possibile configurare il mulo in modo automatico. Stessa cosa da fare per lo speedtest.
-(dalla myfastpage) Per info chiedere ad Hammon che abbiamo discusso sulla questione del prelievo dati dalla myfastpage. 
-(ricordo che nome utente e password della myfastpage non servono più accedendo via locale).*/
-UINT ConfiguraPerNuoviUtenti(LPVOID lpParameter) 
-{
-	try 
-	{
-		while (true) 
-		{
-			::Sleep(10);
-			if (WizardNotOpen) 
-			{
-				isnew = false;
-				portudp = NULL;
-				porttcp = NULL;
-				::Sleep(5000);
-				CString IP = ipstr(theApp.GetPublicIP());
-				static LPWSTR sName;
-				DWORD dwLen = sizeof(sName);
-				GetComputerName(sName, &dwLen);
-				HOSTENT *host = gethostbyname(CT2CA(sName));
-				DWORD dwIP = 0;
-				dwIP |= (BYTE)(host->h_addr_list[0][3]); //La mia terzina :P
-				AskPort obj;
-				//Configurazione porte automatico basato sul riconoscimento di indirizzi IP.
-				IP.Delete(4,IP.GetLength()); //la stringa e prendo il primo pezzettino partendo dall'inizio (primi 4 caratteri)
-				if(!IP.Compare(_T("93.5")) || !IP.Compare(_T("2.22")) || !IP.Compare(_T("2.23"))) 
-				{
-					isnew = true;
-					if((thePrefs.udpport == (4672 + (dwIP - 128))) || (thePrefs.port == 4662 + (dwIP - 128))) //Alcuni IP anche se iniziano con 93.5 o 2.23 non necessitano del cambio delle porte.
-					{
-						::AfxEndThread(0);
-						return 0;
-					}
-					portudp = 4672 + (dwIP - 128);
-					porttcp = 4662 + (dwIP - 128);
-					if(obj.DoModal()) {
-						thePrefs.port = porttcp;
-						thePrefs.udpport = portudp;
-						CDAMessageBox message_box(NULL, _T("Riavviare eMule AdunanzA per rendere effettivo il settaggio delle porte."), false, false);
-						message_box.DoModal();
-						::AfxEndThread(0);
-						return 0;
-					}
-				}
-				else if(!IP.Compare(_T("0.0."))) {continue;}
-				else 
-				{ 
-					//Utente standard. Le porte rimangono quelle.
-					if(obj.DoModal()) 
-					{
-						thePrefs.port = 4662;
-						thePrefs.udpport = 4672;
-						::AfxEndThread(0);
-						return 0;
-					}
-				}
-			}
-		}
-	}
-	catch(...) { ::AfxEndThread(0); } // meglio stoppare...
-} 
-
-void StartAdunanzaTest_Settings() 
-{
-		theApp.emuledlg->CloseConnection();
-		thePrefs.m_AduNoTips = true;
-		extern bool WizardAdunanzA(); // Configurazione ADU
-		if (WizardAdunanzA()) 
-		{
-			extern bool X;
-			if (X) 
-			{
-				X = false;
-				CHttpDownloadDlg::X = false;
-				thePrefs.MaxConperFive = 150;
-				
-				extern bool escludi0;
-				extern bool escludi1;
-				extern bool escludi2;
-				extern bool escludi3;
-				extern bool escludi4;
-				extern bool escludi5;
-				extern bool escludi6;
-				extern bool escludi7;
-				extern bool escludi8;
-				extern bool escludi9;
-				extern bool isAutomatic;
-				extern void ConfiguraAdunanza();
-
-				if (isAutomatic) 
-				{
-					if (escludi0 == true && escludi1 == true && escludi2 == true && escludi3 == true && escludi4 == true && escludi5 == true && escludi6 == true && escludi7 == true && escludi8 == true && escludi9 == true) 
-					{
-						AfxMessageBox(_T("Il server risulta essere offline. Verrà lanciata la configurazione manuale."));
-						AduWizard WizardPersonalizzato;
-						WizardPersonalizzato.DoModal();
-					}
-				}
-
-				ConfiguraAdunanza();
-				//AfxMessageBox(_T("La configurazione è stata effettuata correttamente. Per il corretto funzionamento della rete KAdu, si consiglia il riavvio di eMule AdunanzA."),MB_ICONINFORMATION);
-				
-				escludi0 = true;
-				escludi1 = true;
-				escludi2 = true;
-				escludi3 = true;
-				escludi4 = true;
-				escludi5 = true;
-				escludi6 = true;
-				escludi7 = true;
-				escludi8 = true;
-				escludi9 = true;
-
-				//imposto capacità max upload
-				switch (thePrefs.maxGraphUploadRate) 
-				{
-					case UPLOAD_ADSL: thePrefs.m_AduMaxUpSlots = UPLOAD_SLOT_ADSL; thePrefs.adsl_fiber = ADSL; break;
-					case UPLOAD_ADSL_LOW: thePrefs.m_AduMaxUpSlots = UPLOAD_SLOT_ADSL_LOW; thePrefs.adsl_fiber = ADSL; break;
-					case UPLOAD_FIBRA: thePrefs.m_AduMaxUpSlots = UPLOAD_SLOT_FIBRA; thePrefs.adsl_fiber = FIBRA; break;
-				}
-
-				theApp.emuledlg->statisticswnd->SetARange(false, thePrefs.GetMaxGraphUploadRate(true));
-				theApp.emuledlg->statisticswnd->SetARange(true, thePrefs.maxGraphDownloadRate);
-				theApp.scheduler->SaveOriginals();
-				theApp.emuledlg->preferenceswnd->m_wndConnection.LoadSettings();
-				theApp.emuledlg->preferenceswnd->m_wndAdunanzA.LoadSettings();
-				DeleteFile(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("speed_test.adu"));
-			}
-		}
-
-		else 
-		{
-			 AfxMessageBox(_T("Errore critico nel core di AdunanzA. Rivolgersi al supporto tecnico nel forum ufficiale di AdunanzA. codice: 1"),MB_ICONEXCLAMATION);
-			 exit(EXIT_FAILURE);
-		}
-
-		WizardNotOpen = true;
-		thePrefs.m_AduNoTips = false;
-		theApp.emuledlg->StartConnection();
-
-		switch(thePrefs.maxupload) 
-		{
-			case UPLOAD_ADSL_LOW:
-			case UPLOAD_ADSL:
-				thePrefs.adsl_fiber = ADSL;
-			break;
-			case UPLOAD_FIBRA:
-				thePrefs.adsl_fiber = FIBRA;
-		}
-
-		//Da implementare nella next version!!
-		//::AfxBeginThread(ConfiguraPerNuoviUtenti, NULL, 0, 0, 0, NULL);  //Controllo IP nuovi.
+				 (ip & 0x0000e0ff) == 0x0000205D);  // netid 93.32.0.0/11    - netid (hex) 0x0000205d / mask 0x0000e0ff *** da 93.32.0.1 a 93.63.255.254
+	*/
 }
 
-bool AduIsValidKaduAddress(register uint32 host)
+bool AduIsValidKaduAddress(uint32 host)
 {
-	return AduIsFastWebIP(ntohl(host));
+	return true; // AduIsFastWebIP(ntohl(host));
 }
 
 DWORD AduGetCurrentIP(void)
@@ -258,8 +121,8 @@ DWORD CUpDownClient::GetClientAduType(void) const
 	{
 		if (GetIsAduSoftware()) 
 			return ADUNANZA_ICON_ADU;
-		else 
-			return ADUNANZA_ICON_FW;
+		//else 
+			//return ADUNANZA_ICON_FW;
 	}
 	return ADUNANZA_ICON_NONE;
 }
@@ -505,7 +368,7 @@ UINT CheckKadCallThread(LPVOID lpParameter)
 			} 
 			else 
 			{
-				register uint32 ip = 0;
+				uint32 ip = 0;
 
 				if (Kademlia::CKademlia::GetPrefs())
 					ip = ntohl(Kademlia::CKademlia::GetPrefs()->GetIPAddress());
@@ -546,7 +409,7 @@ UINT CheckKadCallThread(LPVOID lpParameter)
 float CalcolaStima(float avail, uint32& firstPublish, uint32 publishInterval, uint32 pubkRTK, bool sameIP, uint32 now) 
 {
 	// Using this increment style, we can guess also if clients use different publish rates.
-	register float inc = (float)pubkRTK / theApp.rm->kadRepublishTimeK;
+	float inc = (float)pubkRTK / theApp.rm->kadRepublishTimeK;
 	
 	// Only old clients, with republishtimek == 24hrs don't publish their republishtimek.
 	if (inc == 0.f)
@@ -568,7 +431,7 @@ float CalcolaStima(float avail, uint32& firstPublish, uint32 publishInterval, ui
 
 float NormalizzaStima(float avail, uint32 from, uint32 to) 
 {
- 	register uint32 norm_factor = COEFFICENTE_STIMA;
+ 	uint32 norm_factor = COEFFICENTE_STIMA;
 	avail = min(avail, 100000);
 
 	if (avail > theApp.rm->kadFreshGuess_NoNorm) 

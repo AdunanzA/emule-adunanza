@@ -41,12 +41,6 @@
 
 //Modified for use with CAsyncProxySocket, removed tracing code
 
-#if defined( _DEBUG ) && ! defined( WFC_STL )
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 #define END_OF_BASE64_ENCODED_DATA           ('=')
 #define BASE64_END_OF_BUFFER                 (0xFD)
 #define BASE64_IGNORABLE_CHARACTER           (0xFE)

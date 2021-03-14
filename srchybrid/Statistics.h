@@ -202,7 +202,7 @@ private:
 
 extern CStatistics theStats;
 
-#if !defined(_DEBUG) && !defined(_AFXDLL) && _MFC_VER==0x0710
+#if !defined(ADU_BETA) && !defined(_AFXDLL) && _MFC_VER==0x0710
 //#define USE_MEM_STATS
 #define	ALLOC_SLOTS	20
 extern ULONGLONG g_aAllocStats[ALLOC_SLOTS];

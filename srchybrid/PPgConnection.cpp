@@ -36,13 +36,6 @@
 #include "PreferencesDlg.h"
 #include "RemoteSettings.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 IMPLEMENT_DYNAMIC(CPPgConnection, CPropertyPage)
 
 BEGIN_MESSAGE_MAP(CPPgConnection, CPropertyPage)
@@ -663,7 +656,8 @@ void CPPgConnection::OnBnClickedButton1()
 		AfxMessageBox(_T("Disabilitare lo streaming prima di effettuare questa operazione."));
 		return;
 	}
-		StartAdunanzaTest_Settings();
+	extern bool WizardAdunanzA();
+		WizardAdunanzA();
 		if(!nonchiudereopzioni)
 			EndDialog(IDD_PPG_CONNECTION);
 		SetModified(0);

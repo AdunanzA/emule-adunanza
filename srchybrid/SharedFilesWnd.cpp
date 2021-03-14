@@ -32,10 +32,10 @@
 #include "MetaDataDlg.h"
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 #define	SPLITTER_RANGE_MIN		100
@@ -207,7 +207,7 @@ void CSharedFilesWnd::OnStnDblClickFilesIco()
 void CSharedFilesWnd::OnBnClickedReloadSharedFiles()
 {
 	CWaitCursor curWait;
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (GetAsyncKeyState(VK_CONTROL) < 0) {
 		theApp.sharedfiles->RebuildMetaData();
 		sharedfilesctrl.Invalidate();

@@ -27,10 +27,10 @@
 #include "Log.h"
 #include "md5sum.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 #define COLLECTION_FILE_VERSION1_INITIAL		0x01

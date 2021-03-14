@@ -21,13 +21,6 @@
 #include "OtherFunctions.h"
 #include "Opcodes.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // define mask color
 #define MASK_RGB	(COLORREF)0xFFFFFF
 
@@ -356,7 +349,7 @@ void CCreditsThread::InitFonts()
 	lf.lfHeight = 16;
 	lf.lfWeight = 700;
 	//lf.lfItalic = TRUE;
-	lf.lfQuality = afxIsWin95() ? NONANTIALIASED_QUALITY : ANTIALIASED_QUALITY;
+	lf.lfQuality = ANTIALIASED_QUALITY;
 	_tcscpy(lf.lfFaceName, _T("MS Shell Dlg"));
 	font2->CreateFontIndirect(&lf);
 	m_arFonts.Add(font2);
@@ -370,7 +363,7 @@ void CCreditsThread::InitFonts()
 	memset((void*)&lf, 0, sizeof(lf));
 	lf.lfHeight = 25;
 	lf.lfWeight = 900;
-	lf.lfQuality = afxIsWin95() ? NONANTIALIASED_QUALITY : ANTIALIASED_QUALITY;
+	lf.lfQuality = ANTIALIASED_QUALITY;
 	_tcscpy(lf.lfFaceName, _T("MS Shell Dlg"));
 	font3->CreateFontIndirect(&lf);
 	m_arFonts.Add(font3);

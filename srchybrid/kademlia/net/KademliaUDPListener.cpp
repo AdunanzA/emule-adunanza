@@ -57,17 +57,13 @@ there client on the eMule forum..
 #include "../utils/KadUDPKey.h"
 #include "../utils/KadClientSearcher.h"
 #include "../../RemoteSettings.h"
-
-// inizio mod Adu
 #include "AdunanzA.h"
-#define ADU_TRACK_REDIRECT
-// Fine Mod adu
 #include "../../ipfilter.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 extern LPCSTR g_aszInvKadKeywordCharsA;
@@ -616,7 +612,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_HELLO_REQ (const byte *pbyPacketDat
 		// Kad Version 7 doesnt supports HELLO_RES_ACK, but sender/receiver keys, so send a ping to validate
 		AddLegacyChallenge(uContactID, (ULONG)0, uIP, KADEMLIA2_PING);
 		SendNullPacket(KADEMLIA2_PING, uIP, uUDPPort, senderUDPKey, NULL);
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		CContact* pContact = CKademlia::GetRoutingZone()->GetContact(uContactID);
 		if (pContact != NULL){
 			if (pContact->GetType() < 2)
@@ -1138,7 +1134,7 @@ void CKademliaUDPListener::Process_KADEMLIA2_SEARCH_KEY_REQ (const byte *pbyPack
 	{
 		try
 		{
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 			s_pstrDbgSearchExpr = (thePrefs.GetDebugServerSearchesLevel() > 0) ? new CString : NULL;
 #endif
 			pSearchTerms = CreateSearchExpressionTree(fileIO, 0);
@@ -2152,7 +2148,7 @@ void CKademliaUDPListener::SendLegacyChallenge(uint32 uIP, uint16 uUDPPort, cons
 	// Because those versions don'T support any direct validating, we sent a KAD_REQ with a random ID,
 	// which is our challenge. If we receive an answer packet for this request, we can be sure the
 	// contact is not spoofed
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	CContact* pContact = CKademlia::GetRoutingZone()->GetContact(uContactID);
 	if (pContact != NULL){
 		if (pContact->GetType() < 2)

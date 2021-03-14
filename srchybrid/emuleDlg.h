@@ -127,7 +127,8 @@ public:
 	virtual void TrayMinimizeToTrayChange();
 	virtual void RestoreWindow();
 	virtual void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F);
-
+	// Splash screen
+	CSplashScreen* m_pSplashWnd;
 	AduWebBrowser*  iebrowser; 
 	CTransferDlg*	transferwnd;
 	CServerWnd*		serverwnd;
@@ -187,8 +188,6 @@ protected:
 	HICON			m_ovlIcon;
 #endif
 
-	// Splash screen
-	CSplashScreen *m_pSplashWnd;
 	DWORD m_dwSplashTime;
 	void ShowSplash();
 	void DestroySplash();

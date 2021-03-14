@@ -127,7 +127,7 @@
 	}
 }*/
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 
 #pragma pack(4)
 class _CHandleMap
@@ -173,10 +173,10 @@ public:
 
 #endif
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void Mfc_IdleFreeTempMaps()
 {
-#if defined(_DEBUG) && !defined(_AFX_NO_DEBUG_CRT)
+#if defined(ADU_BETA) && !defined(_AFX_NO_DEBUG_CRT)
 	// check MFC's allocator (before idle)
 	if (_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) & _CRTDBG_CHECK_ALWAYS_DF)
 		ASSERT(AfxCheckMemory());
@@ -190,7 +190,7 @@ void Mfc_IdleFreeTempMaps()
 #endif
 	if (pState->m_nTempMapLock == 0)
 	{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #define _chSTR(x)		#x
 #define chSTR(x)		_chSTR(x)
 
@@ -242,56 +242,10 @@ void Mfc_IdleFreeTempMaps()
 			DUMP_MAP_STATE(m_pmapHIMAGELIST, m_permanentMap);
 			DUMP_MAP_STATE(m_pmapHIMAGELIST, m_temporaryMap);
 		}
-
-
-#define SAVE_MAP_STATE(map, member) \
-		((_CHandleMap*)(pState->map))->member.AssertValid(); \
-		int iOld_##map##member = ((_CHandleMap*)(pState->map))->member.GetCount();
-
-		SAVE_MAP_STATE(m_pmapHWND, m_permanentMap);
-		SAVE_MAP_STATE(m_pmapHWND, m_temporaryMap);
-
-		SAVE_MAP_STATE(m_pmapHMENU, m_permanentMap);
-		SAVE_MAP_STATE(m_pmapHMENU, m_temporaryMap);
-
-		SAVE_MAP_STATE(m_pmapHDC, m_permanentMap);
-		SAVE_MAP_STATE(m_pmapHDC, m_temporaryMap);
-
-		SAVE_MAP_STATE(m_pmapHGDIOBJ, m_permanentMap);
-		SAVE_MAP_STATE(m_pmapHGDIOBJ, m_temporaryMap);
-
-		SAVE_MAP_STATE(m_pmapHIMAGELIST, m_permanentMap);
-		SAVE_MAP_STATE(m_pmapHIMAGELIST, m_temporaryMap);
-#endif
-
-		// free temp maps, OLE DLLs, etc.
-		//AfxLockTempMaps();
-		//AfxUnlockTempMaps();
-
-#ifdef _DEBUG
-#define CMP_MAP_STATE(map, member) \
-		int iNew_##map##member = ((_CHandleMap*)(pState->map))->member.GetCount(); \
-		if (iNew_##map##member != iOld_##map##member) \
-			TRACE(chSTR(map) "->" chSTR(member) ": %d\n", iNew_##map##member - iOld_##map##member);
-
-		CMP_MAP_STATE(m_pmapHWND, m_permanentMap);
-		CMP_MAP_STATE(m_pmapHWND, m_temporaryMap);
-
-		CMP_MAP_STATE(m_pmapHMENU, m_permanentMap);
-		CMP_MAP_STATE(m_pmapHMENU, m_temporaryMap);
-
-		CMP_MAP_STATE(m_pmapHDC, m_permanentMap);
-		CMP_MAP_STATE(m_pmapHDC, m_temporaryMap);
-
-		CMP_MAP_STATE(m_pmapHGDIOBJ, m_permanentMap);
-		CMP_MAP_STATE(m_pmapHGDIOBJ, m_temporaryMap);
-
-		CMP_MAP_STATE(m_pmapHIMAGELIST, m_permanentMap);
-		CMP_MAP_STATE(m_pmapHIMAGELIST, m_temporaryMap);
 #endif
 	}
 
-#if defined(_DEBUG) && !defined(_AFX_NO_DEBUG_CRT)
+#if defined(ADU_BETA) && !defined(_AFX_NO_DEBUG_CRT)
 	// check MFC's allocator (after idle)
 	if (_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) & _CRTDBG_CHECK_ALWAYS_DF)
 		ASSERT(AfxCheckMemory());

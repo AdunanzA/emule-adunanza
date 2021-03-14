@@ -36,13 +36,6 @@
 #pragma warning(disable:4018) // signed/unsigned mismatch
 #pragma warning(disable:4100) // unreferenced formal parameter
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // CHyperLink
 CHyperLink::CHyperLink(int iBegin, uint16 iEnd, const CString& sTitle, const CString& sCommand, const CString& sDirectory){
 	m_Type = lt_Shell;

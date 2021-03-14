@@ -34,11 +34,6 @@
 #include "FriendList.h"
 #include "ClientList.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #define	STATUS_MSG_COLOR		RGB(0,128,0)		// dark green
 #define	SENT_TARGET_MSG_COLOR	RGB(0,192,0)		// bright green

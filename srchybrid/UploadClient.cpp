@@ -40,13 +40,6 @@
 #include "Log.h"
 //#include "Collection.h"  -> non serve +
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
 //	 -> ditemi voi se c'è qualche scarsezza da sistemare nel codice.
@@ -1025,7 +1018,7 @@ void CUpDownClient::Ban(LPCTSTR pszReason)
 		if (thePrefs.GetLogBannedClients())
 			AddDebugLogLine(false,_T("Banned: %s; %s"), pszReason==NULL ? _T("Aggressive behaviour") : pszReason, DbgGetClientInfo());
 	}
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	else{
 		if (thePrefs.GetLogBannedClients())
 			AddDebugLogLine(false,_T("Banned: (refreshed): %s; %s"), pszReason==NULL ? _T("Aggressive behaviour") : pszReason, DbgGetClientInfo());

@@ -373,7 +373,7 @@ public:
 	uint16	ReleaseAllA4AF();
 	// NEO: MCM END <-- Xanatos --
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	// Diagnostic Support
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

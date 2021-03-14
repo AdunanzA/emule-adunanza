@@ -26,10 +26,10 @@
 #include "Kademlia/Kademlia/Tag.h"
 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 IMPLEMENT_DYNAMIC(CCollectionFile, CAbstractFile)
@@ -176,21 +176,16 @@ void CCollectionFile::UpdateFileRatingCommentAvail(bool /*bForceUpdate*/)
 	UINT uRatings = 0;
 	UINT uUserRatings = 0;
 
-	for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
-	{
-		Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
-		if (!m_bHasComment && !entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty())
+	for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;) {
+		const Kademlia::CEntry *entry = m_kadNotes.GetNext(pos);
+		if (!m_bHasComment && !entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION)).IsEmpty())
 			m_bHasComment = true;
-		UINT rating = (UINT)entry->GetIntTagValue(TAG_FILERATING);
-		if (rating != 0)
-		{
-			uRatings++;
+		UINT rating = (UINT)entry->GetIntTagValue(Kademlia::CKadTagNameString(TAG_FILERATING));
+		if (rating != 0) {
+			++uRatings;
 			uUserRatings += rating;
 		}
 	}
 
-	if (uRatings)
-		m_uUserRating = uUserRatings / uRatings;
-	else
-		m_uUserRating = 0;
+	m_uUserRating = uRatings ? uUserRatings / uRatings : 0;
 }

@@ -25,13 +25,6 @@
 //#pragma warning(default:4100) // unreferenced formal parameter
 //#pragma warning(default:4244) // conversion from 'type1' to 'type2', possible loss of data
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 BEGIN_MESSAGE_MAP(CKadContactHistogramCtrl, CWnd)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()

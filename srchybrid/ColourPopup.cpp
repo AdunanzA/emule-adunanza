@@ -35,13 +35,6 @@
 #include "ColourPopup.h"
 #include "UserMsgs.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #define DEFAULT_BOX_VALUE -3
 #define CUSTOM_BOX_VALUE  -2
 #define INVALID_COLOUR    -1

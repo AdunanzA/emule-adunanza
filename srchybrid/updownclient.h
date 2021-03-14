@@ -460,7 +460,7 @@ public:
 	void	GetUploadingAndUploadedPart(CArray<uint16>& arr, CArray<uint16>& arrHidden);
 	CString			IsBadModstring(CString modver); //Mod Adu - Ded - Ban modstring remote
 	bool	IsPowerShared() const;
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	// Diagnostic Support
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

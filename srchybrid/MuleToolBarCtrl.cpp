@@ -32,10 +32,10 @@
 #include "IrcWnd.h"
 #include "StatisticsDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -1089,7 +1089,7 @@ void CMuleToolbarCtrl::ForceRecalcLayout()
 	SetRedraw(TRUE);
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 
 void CMuleToolbarCtrl::Dump()
 {
@@ -1163,7 +1163,7 @@ void CMuleToolbarCtrl::Dump()
 void CMuleToolbarCtrl::AutoSize()
 {
 	CToolBarCtrl::AutoSize();
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	//Dump();
 #endif
 }

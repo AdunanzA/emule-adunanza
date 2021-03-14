@@ -42,13 +42,6 @@
 #include "Statistics.h"
 #include "Preferences.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 CClientList::CClientList(){
 	m_dwLastBannCleanUp = 0;
 	m_dwLastTrackedCleanUp = 0;
@@ -588,7 +581,7 @@ void CClientList::Process()
 				else {
 					if (thePrefs.GetDebugClientKadUDPLevel() > 0)
 						DebugSend("KADEMLIA_FIREWALLED_ACK_RES", cur_client->GetIP(), cur_client->GetKadPort());
-					Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, ntohl(cur_client->GetIP()), cur_client->GetKadPort(), 0, NULL);
+					Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, ntohl(cur_client->GetIP()), cur_client->GetKadPort(), Kademlia::CKadUDPKey(), NULL);
 				}
 				//We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
 				if (cur_client != NULL)
@@ -737,7 +730,7 @@ void CClientList::Process()
 	ProcessConnectingClientsList();
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CClientList::Debug_SocketDeleted(CClientReqSocket* deleted) const
 {
 	for (POSITION pos = list.GetHeadPosition(); pos != NULL;){

@@ -37,12 +37,6 @@
 #include "HTRichEditCtrl.h"
 #include "UserMsgs.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNAMIC(CIrcChannelTabCtrl, CClosableTabCtrl)
 
 BEGIN_MESSAGE_MAP(CIrcChannelTabCtrl, CClosableTabCtrl)
@@ -128,7 +122,7 @@ Channel* CIrcChannelTabCtrl::NewChannel(const CString& sName, Channel::EType eTy
 
 		CRect rcLog(rcChannelPane);
 		if (eType == Channel::ctNormal
-#ifdef _DEBUG
+#ifdef ADU_BETA
 //#define DEBUG_IRC_TEXT
 #endif
 #ifdef DEBUG_IRC_TEXT

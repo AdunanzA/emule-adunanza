@@ -28,13 +28,6 @@
 #include "preferences.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 /**
  * The constructor starts the thread.
  */
@@ -625,7 +618,7 @@ UINT UploadBandwidthThrottler::RunInternal() {
 
                 bytesToSpend = realBytesToSpend/1000;
 
-				#if ADU_BETA_MAJ > 0 && defined BETA
+				#if ADU_BETA_MAJ > 0
 				// debug message
 				
 				if (nextPrint < time(NULL)) {
@@ -837,7 +830,7 @@ UINT UploadBandwidthThrottler::RunInternal() {
 			sint64 estSendBytesTOld = estSendBytesT;
 			estSendBytesT -= (sint64)(estSendBytesT*(float)timeSinceLastSpent/(1000*avgPeriod));
 
-#if ADU_BETA_MAJ > 0 && defined BETA
+#if ADU_BETA_MAJ > 0
 			AddDebugLogLine(DLP_VERYLOW, false, _T("eSBT: %d eSBTO: %d tSLL: %u Rate: %.2f\n"), (int)estSendBytesT, (int)estSendBytesTOld, timeSinceLastSpent, (float)estSendBytesT/(1024*avgPeriod));
 #endif
 

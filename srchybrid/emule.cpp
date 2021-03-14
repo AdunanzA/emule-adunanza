@@ -14,7 +14,7 @@
 //You should have received a copy of the GNU General Public License
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
@@ -80,12 +80,11 @@ CEvent* CemuleApp::m_directoryWatcherCloseEvent;
 CEvent* CemuleApp::m_directoryWatcherReloadEvent;
 CCriticalSection CemuleApp::m_directoryWatcherCS;
 uint32 oldVer = 0;
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#ifdef ADU_BETA
 
+
+
+#endif
 
 #if _MSC_VER>=1400 && defined(_UNICODE)
 #if defined _M_IX86
@@ -294,21 +293,63 @@ CemuleApp::CemuleApp(LPCTSTR lpszAppName) :CWinApp(lpszAppName)
 	EnableHtmlHelp();
 }
 
+// Barry - To find out if app is running or shutting/shut down
+bool CemuleApp::IsRunning() const
+{
+	return m_app_state == APP_STATE_RUNNING || m_app_state == APP_STATE_ASKCLOSE;
+}
+
+bool CemuleApp::IsClosing() const
+{
+	return m_app_state == APP_STATE_SHUTTINGDOWN || m_app_state == APP_STATE_DONE;
+}
 
 CemuleApp theApp(_T("eMule"));
 
-void __cdecl __AfxSocketTerm()
+// Workaround for bugged 'AfxSocketTerm' (needed at least for MFC 7.0 - 14.14)
+void __cdecl __AfxSocketTerm() noexcept
 {
-#if defined(_AFXDLL) && (_MFC_VER==0x0700 || _MFC_VER==0x0710)
-	VERIFY( WSACleanup() == 0 );
-#else
 	_AFX_SOCK_STATE* pState = _afxSockState.GetData();
-	if (pState->m_pfnSockTerm != NULL){
-		VERIFY( WSACleanup() == 0 );
+	if (pState->m_pfnSockTerm != NULL) {
+		VERIFY(WSACleanup() == 0);
 		pState->m_pfnSockTerm = NULL;
 	}
-#endif
 }
+
+BOOL InitWinsock2(WSADATA* lpwsaData)
+{
+	_AFX_SOCK_STATE* pState = _afxSockState.GetData();
+	if (pState->m_pfnSockTerm == NULL) {
+		// initialize Winsock library
+		WSADATA wsaData;
+		if (lpwsaData == NULL)
+			lpwsaData = &wsaData;
+		static const WORD wVersionRequested = MAKEWORD(2, 2);
+		int nResult = WSAStartup(wVersionRequested, lpwsaData);
+		if (nResult != 0)
+			return FALSE;
+		if (lpwsaData->wVersion != wVersionRequested) {
+			WSACleanup();
+			return FALSE;
+		}
+		// setup for termination of sockets
+		pState->m_pfnSockTerm = &AfxSocketTerm;
+	}
+#ifndef _AFXDLL
+	//BLOCK: setup maps and lists specific to socket state
+	{
+		_AFX_SOCK_THREAD_STATE* pThreadState = _afxSockThreadState;
+		if (pThreadState->m_pmapSocketHandle == NULL)
+			pThreadState->m_pmapSocketHandle = new CMapPtrToPtr;
+		if (pThreadState->m_pmapDeadSockets == NULL)
+			pThreadState->m_pmapDeadSockets = new CMapPtrToPtr;
+		if (pThreadState->m_plistSocketNotifications == NULL)
+			pThreadState->m_plistSocketNotifications = new CPtrList;
+	}
+#endif
+	return TRUE;
+}
+
 
 // CemuleApp Initialisierung
 
@@ -320,7 +361,7 @@ BOOL CemuleApp::InitInstance()
 	///////////////////////////////////////////////////////////////////////////
 	// Install crash dump creation
 	//
-#ifndef _BETA
+#ifndef ADU_BETA
 	if (GetProfileInt(_T("eMule"), _T("CreateCrashDump"), 0))
 #endif
 		theCrashDumper.Enable(_T("eMule ") + m_strCurVersionLongDbg, true, thePrefs.GetMuleDirectory(EMULE_CONFIGDIR));
@@ -349,6 +390,18 @@ BOOL CemuleApp::InitInstance()
 	// XP SP3				6   0
 	// Vista SP1			6   16
 	InitCommonControls();
+	switch (thePrefs.GetWindowsVersion()) {
+	case _WINVER_2K_:
+		m_ullComCtrlVer = MAKEDLLVERULL(5, 81, 0, 0);
+		break;
+	case _WINVER_XP_:
+	case _WINVER_2003_:
+		m_ullComCtrlVer = MAKEDLLVERULL(6, 0, 0, 0);
+		break;
+	default:  //Vista .. Win10
+		m_ullComCtrlVer = MAKEDLLVERULL(6, 16, 0, 0);
+	};
+
 	/*DWORD dwComCtrlMjr = 4;
 	DWORD dwComCtrlMin = 0;
 	AtlGetCommCtrlVersion(&dwComCtrlMjr, &dwComCtrlMin);
@@ -387,16 +440,15 @@ BOOL CemuleApp::InitInstance()
 		}
 	}*/
 
-	m_sizSmallSystemIcon.cx = GetSystemMetrics(SM_CXSMICON);
-	m_sizSmallSystemIcon.cy = GetSystemMetrics(SM_CYSMICON);
+	m_sizSmallSystemIcon.cx = ::GetSystemMetrics(SM_CXSMICON);
+	m_sizSmallSystemIcon.cy = ::GetSystemMetrics(SM_CYSMICON);
 	UpdateLargeIconSize();
 	UpdateDesktopColorDepth();
 
 	CWinApp::InitInstance();
 
-	if (!AfxSocketInit())
-	{
-		AfxMessageBox(GetResString(IDS_SOCKETS_INIT_FAILED));
+	if (!InitWinsock2(&m_wsaData) && !AfxSocketInit(&m_wsaData)) {
+		AfxMessageBox(GetResString(IDS_SOCKETS_INIT_FAILED), MB_OK, 0);
 		return FALSE;
 	}
 
@@ -404,14 +456,12 @@ BOOL CemuleApp::InitInstance()
 
 	AfxEnableControlContainer();
 	
-	if (!AfxInitRichEdit2())
-	{
-		if (!AfxInitRichEdit())
-			AfxMessageBox(_T("Fatal Error: No Rich Edit control library found!")); // should never happen..
-	}
+	AfxEnableControlContainer();
+	if (!AfxInitRichEdit2() && !AfxInitRichEdit())
+		AfxMessageBox(_T("Fatal Error: No Rich Edit control library found!")); // should never happen.
 
-	if (!Kademlia::CKademlia::InitUnicode(AfxGetInstanceHandle())){
-		AfxMessageBox(_T("Fatal Error: Failed to load Unicode character tables for Kademlia!")); // should never happen..
+	if (!Kademlia::CKademlia::InitUnicode(AfxGetInstanceHandle())) {
+		AfxMessageBox(_T("Fatal Error: Failed to load Unicode character tables for Kademlia!")); // should never happen.
 		return FALSE; // DO *NOT* START !!!
 	}
 
@@ -1282,7 +1332,7 @@ HICON CemuleApp::LoadIcon(LPCTSTR lpszResourceName, int cx, int cy, UINT uFlags)
 	// Test using of 16 color icons. If 'LR_VGACOLOR' is specified _and_ the icon resource
 	// contains a 16 color version, that 16 color version will be loaded. If there is no
 	// 16 color version available, Windows will use the next (better) color version found.
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (g_bLowColorDesktop)
 		uFlags |= LR_VGACOLOR;
 #endif
@@ -1907,7 +1957,7 @@ void CemuleApp::CreateBackwardDiagonalBrush()
 void CemuleApp::UpdateDesktopColorDepth()
 {
 	g_bLowColorDesktop = (GetDesktopColorDepth() <= 8);
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (!g_bLowColorDesktop)
 		g_bLowColorDesktop = (GetProfileInt(_T("eMule"), _T("LowColorRes"), 0) != 0);
 #endif
@@ -2058,13 +2108,13 @@ void CemuleApp::ResetStandByIdleTimer()
 bool CemuleApp::IsXPThemeActive() const
 {
 	// TRUE: If an XP style (and only an XP style) is active
-	return theApp.m_ullComCtrlVer < MAKEDLLVERULL(6,16,0,0) && g_xpStyle.IsThemeActive() && g_xpStyle.IsAppThemed();
+	return theApp.m_ullComCtrlVer < MAKEDLLVERULL(6, 16, 0, 0) && g_xpStyle.IsThemeActive() && g_xpStyle.IsAppThemed();
 }
 
 bool CemuleApp::IsVistaThemeActive() const
 {
 	// TRUE: If a Vista (or better) style is active
-	return theApp.m_ullComCtrlVer >= MAKEDLLVERULL(6,16,0,0) && g_xpStyle.IsThemeActive() && g_xpStyle.IsAppThemed();
+	return theApp.m_ullComCtrlVer >= MAKEDLLVERULL(6, 16, 0, 0) && g_xpStyle.IsThemeActive() && g_xpStyle.IsAppThemed();
 }
 
 void CemuleApp::ResetDirectoryWatcher()

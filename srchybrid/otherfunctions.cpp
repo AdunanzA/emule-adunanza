@@ -51,13 +51,6 @@
 #include "Log.h"
 #include "CxImage/xImage.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 extern bool GetDRM(LPCTSTR pszFilePath);
 
 CWebServices theWebServices;
@@ -104,7 +97,7 @@ CString CastItoXBytes(uint64 count, bool isK, bool isPerSec, uint32 decimal){
 	return CastItoXBytes((double)count, isK, isPerSec, decimal);
 }
 
-#if defined(_DEBUG) && defined(USE_DEBUG_EMFILESIZE)
+#if defined(ADU_BETA) && defined(USE_DEBUG_EMFILESIZE)
 CString CastItoXBytes(EMFileSize count, bool isK, bool isPerSec, uint32 decimal){
 	return CastItoXBytes((double)count, isK, isPerSec, decimal);
 }
@@ -678,84 +671,83 @@ int GetMaxWindowsTCPConnections()
 
 	return -1;  //give the user the benefit of the doubt, most use NT+ anyway
 }
-
+#pragma warning(push)
+#pragma warning(disable: 4996) //GetVersionEx()
 WORD DetectWinVersion()
 {
 	OSVERSIONINFOEX osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if (!GetVersionEx((OSVERSIONINFO*)&osvi))
-	{
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+	osvi.dwOSVersionInfoSize = (DWORD)sizeof(OSVERSIONINFOEX);
+
+	if (!GetVersionEx((OSVERSIONINFO*)&osvi)) {
+		osvi.dwOSVersionInfoSize = (DWORD)sizeof(OSVERSIONINFO);
 		if (!GetVersionEx((OSVERSIONINFO*)&osvi))
-			return FALSE;
+			return 0;
 	}
 
-	switch (osvi.dwPlatformId)
-	{
-		case VER_PLATFORM_WIN32_NT:
-			if (osvi.dwMajorVersion <= 4)
-				return _WINVER_NT4_;
-			if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 0)
+	switch (osvi.dwPlatformId) {
+	case VER_PLATFORM_WIN32_NT:
+		if (osvi.dwMajorVersion <= 4)
+			return _WINVER_NT4_;
+		if (osvi.dwMajorVersion == 5) {
+			if (osvi.dwMinorVersion == 0)
 				return _WINVER_2K_;
-			if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1)
+			if (osvi.dwMinorVersion == 1)
 				return _WINVER_XP_;
-			if (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 2)
+			if (osvi.dwMinorVersion == 2)
 				return _WINVER_2003_;
-			if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0)
+		}
+		if (osvi.dwMajorVersion == 6) {
+			if (osvi.dwMinorVersion == 0)
 				return _WINVER_VISTA_;
-			if (osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 1)
+			if (osvi.dwMinorVersion == 1)
 				return _WINVER_7_;
-			return _WINVER_7_; // never return Win95 if we get the info about a NT system
+			if (osvi.dwMinorVersion == 2)
+				return _WINVER_8_;
+			if (osvi.dwMinorVersion == 3)
+				return _WINVER_8_1_;
+		}
+		if (osvi.dwMajorVersion == 10 && osvi.dwMinorVersion == 0)
+			return _WINVER_10_;
+		return _WINVER_7_; // never return Win95 if we get the info about a NT system
 
-		case VER_PLATFORM_WIN32_WINDOWS:
-			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 0)
+	case VER_PLATFORM_WIN32_WINDOWS:
+		if (osvi.dwMajorVersion == 4) {
+			if (osvi.dwMinorVersion == 0)
 				return _WINVER_95_;
-			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 10)
+			if (osvi.dwMinorVersion == 10)
 				return _WINVER_98_;
-			if (osvi.dwMajorVersion == 4 && osvi.dwMinorVersion == 90)
+			if (osvi.dwMinorVersion == 90)
 				return _WINVER_ME_;
-			break;
+		}
 	}
 
-	return _WINVER_95_;		// there should'nt be anything lower than this
+	return _WINVER_95_;		// there shouldn't be anything lower than this
 }
 
-int IsRunningXPSP2(){
-	OSVERSIONINFOEX osvi;
-	ZeroMemory(&osvi, sizeof(OSVERSIONINFOEX));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-	if(!GetVersionEx((OSVERSIONINFO*)&osvi))
-	{
-		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-		if(!GetVersionEx((OSVERSIONINFO*)&osvi)) 
-			return 0;
-	}
-
-	if (osvi.dwPlatformId == VER_PLATFORM_WIN32_NT && osvi.dwMajorVersion == 5 && osvi.dwMinorVersion == 1){
-		if (osvi.wServicePackMajor >= 2)
-			return 1;
-	}
-	return 0;
-}
-
-int IsRunningXPSP2OrHigher()
+bool IsRunningXPSP2()
 {
-	switch(thePrefs.GetWindowsVersion())
-	{
-		case _WINVER_95_:
-		case _WINVER_98_:
-		case _WINVER_NT4_:
-		case _WINVER_2K_:
-		case _WINVER_ME_:
-			return 0;
-			break;
-		case _WINVER_XP_:
-			return IsRunningXPSP2();
-			break;
-		default:
-			return 1;
+	OSVERSIONINFOEX osvi;
+	osvi.dwOSVersionInfoSize = (DWORD)sizeof(OSVERSIONINFOEX);
+
+	if (!GetVersionEx((OSVERSIONINFO*)&osvi)) {
+		osvi.dwOSVersionInfoSize = (DWORD)sizeof(OSVERSIONINFO);
+		if (!GetVersionEx((OSVERSIONINFO*)&osvi))
+			return false;
 	}
+
+	return osvi.dwPlatformId == VER_PLATFORM_WIN32_NT
+		&& osvi.dwMajorVersion == 5
+		&& osvi.dwMinorVersion == 1
+		&& osvi.wServicePackMajor >= 2;
+}
+#pragma warning(pop)
+
+bool IsRunningXPSP2OrHigher()
+{
+	WORD wv = thePrefs.GetWindowsVersion();
+	if (wv == _WINVER_XP_)
+		return IsRunningXPSP2();
+	return (wv > _WINVER_XP_);
 }
 
 uint64 GetFreeDiskSpaceX(LPCTSTR pDirectory)
@@ -1664,16 +1656,16 @@ EED2KFileType GetED2KFileTypeID(LPCTSTR pszFileName)
 	if (pszExt == NULL)
 		return ED2KFT_ANY;
 	CString strExt(pszExt);
-	strExt.MakeLower();
 
 	SED2KFileType ft;
-	ft.pszExt = strExt;
+	ft.pszExt = strExt.MakeLower();
 	ft.iFileType = ED2KFT_ANY;
 	const SED2KFileType* pFound = (SED2KFileType*)bsearch(&ft, g_aED2KFileTypes, _countof(g_aED2KFileTypes), sizeof g_aED2KFileTypes[0], CompareE2DKFileType);
 	if (pFound != NULL)
 		return pFound->iFileType;
 	return ED2KFT_ANY;
 }
+
 
 // Retuns the ed2k file type string ID which is to be used for publishing+searching
 LPCSTR GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
@@ -1691,18 +1683,22 @@ LPCSTR GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
 	return NULL;
 }
 
-// Retuns the ed2k file type integer ID which is to be used for publishing+searching
+// Returns the ed2k file type integer ID which is to be used for publishing+searching
 EED2KFileType GetED2KFileTypeSearchID(EED2KFileType iFileID)
 {
-	if (iFileID == ED2KFT_AUDIO)			return ED2KFT_AUDIO;
-	if (iFileID == ED2KFT_VIDEO)			return ED2KFT_VIDEO;
-	if (iFileID == ED2KFT_IMAGE)			return ED2KFT_IMAGE;
-	if (iFileID == ED2KFT_PROGRAM)			return ED2KFT_PROGRAM;
-	if (iFileID == ED2KFT_DOCUMENT)			return ED2KFT_DOCUMENT;
-	// NOTE: Archives and CD-Images are published+searched with file type "Pro"
-	// NOTE: If this gets changed, the function 'GetED2KFileTypeSearchTerm' also needs to get updated!
-	if (iFileID == ED2KFT_ARCHIVE)			return ED2KFT_PROGRAM;
-	if (iFileID == ED2KFT_CDIMAGE)			return ED2KFT_PROGRAM;
+	switch (iFileID) {
+	case ED2KFT_AUDIO:
+	case ED2KFT_VIDEO:
+	case ED2KFT_IMAGE:
+	case ED2KFT_PROGRAM:
+	case ED2KFT_DOCUMENT:
+		return iFileID;
+		// NOTE: Archives and CD-Images are published+searched with file type "Pro"
+		// NOTE: If this gets changed, the function 'GetED2KFileTypeSearchTerm' also needs to get updated!
+	case ED2KFT_ARCHIVE:
+	case ED2KFT_CDIMAGE:
+		return ED2KFT_PROGRAM;
+	}
 	return ED2KFT_ANY;
 }
 
@@ -1745,7 +1741,7 @@ class CED2KFileTypes{
 public:
 	CED2KFileTypes(){
 		qsort(g_aED2KFileTypes, _countof(g_aED2KFileTypes), sizeof g_aED2KFileTypes[0], CompareE2DKFileType);
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		// check for duplicate entries
 		LPCTSTR pszLast = g_aED2KFileTypes[0].pszExt;
 		for (int i = 1; i < _countof(g_aED2KFileTypes); i++){
@@ -1949,6 +1945,14 @@ CString GetErrorMessage(DWORD dwError, DWORD dwFlags)
 	return strError;
 }
 
+BOOL GetExceptionMessage(const CException& ex, LPTSTR lpszErrorMsg, UINT nMaxError)
+{
+	BOOL ret = ex.GetErrorMessage(lpszErrorMsg, nMaxError);
+	if (lpszErrorMsg)
+		lpszErrorMsg[(ret && nMaxError) ? nMaxError - 1 : 0] = 0; //terminate string
+	return ret;
+}
+
 LPCTSTR GetShellExecuteErrMsg(DWORD dwShellExecError)
 {
 	/* The error codes returned from 'ShellExecute' consist of the 'old' WinExec
@@ -2140,7 +2144,7 @@ typedef struct tagTHREADNAME_INFO
 		info.dwFlags = 0; 
 		__try 
 		{ 
-			RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(DWORD), (DWORD *)&info); 
+			RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(DWORD), (ULONG_PTR *)&info); 
 		} __except (EXCEPTION_CONTINUE_EXECUTION) { } 
 		delete [] buffer;
 	}
@@ -2190,7 +2194,7 @@ bool IsGoodIP(uint32 nIP, bool forceCheck)
 	// 255.255.255.255					invalid
 
 	if (nIP==0 || (uint8)nIP==127 || (uint8)nIP>=224){
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		if (nIP==0x0100007F && thePrefs.GetAllowLocalHostIP())
 			return true;
 #endif
@@ -2289,9 +2293,7 @@ void Debug(LPCTSTR pszFmtMsg, ...)
 	CString strBuff;
 
 	// Mod Adu
-	// TheKing0 - per avere la DebugSend anche in _BETA
-//#ifdef _DEBUG || _BETA
-#if defined(_DEBUG) || defined(_BETA) 
+#if defined(ADU_BETA)
 	time_t tNow = time(NULL);
 	int iTimeLen = _tcsftime(strBuff.GetBuffer(40), 40, _T("%H:%M:%S "), localtime(&tNow));
 	strBuff.ReleaseBuffer(iTimeLen);
@@ -3405,7 +3407,7 @@ void Sort(CSimpleArray<const CString*>& apstr, int (__cdecl *pfnCompare)(const v
 
 void AddAutoStart()
 {
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	RemAutoStart();
 	CString strKeyName;
 	strKeyName = _T("eMuleAutoStart");
@@ -4059,4 +4061,11 @@ bool AddIconGrayscaledToImageList(CImageList& rList, HICON hIcon)
 		DeleteObject(iinfo.hbmMask);
 	}
 	return bResult;
+}
+
+CString GetResNoAmp(RESSTRIDTYPE uStringID)
+{
+	CString str(GetResString(uStringID));
+	str.Remove(_T('&'));
+	return str;
 }

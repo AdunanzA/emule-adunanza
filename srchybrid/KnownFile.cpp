@@ -20,7 +20,7 @@
 #include <share.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "DebugHelpers.h"
 #endif
 #include "emule.h"
@@ -59,10 +59,10 @@
 #pragma warning(default:4100) // unreferenced formal parameter
 extern wchar_t * __cdecl ID3_GetStringW(const ID3_Frame *frame, ID3_FieldID fldName);
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 // Meta data version
@@ -115,7 +115,7 @@ CKnownFile::~CKnownFile()
 	m_bitmapSharedStatusBar.DeleteObject();
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CKnownFile::AssertValid() const
 {
 	CAbstractFile::AssertValid();
@@ -126,8 +126,6 @@ void CKnownFile::AssertValid() const
 	(void)m_nCompleteSourcesCount;
 	(void)m_nCompleteSourcesCountLo;
 	(void)m_nCompleteSourcesCountHi;
-	m_ClientUploadList.AssertValid();
-	m_AvailPartFrequency.AssertValid();
 	(void)m_strDirectory;
 	(void)m_strFilePath;
 	(void)m_iPartCount;
@@ -236,15 +234,13 @@ void CKnownFile::UpdateFileRatingCommentAvail(bool bForceUpdate)
 	UINT uRatings = 0;
 	UINT uUserRatings = 0;
 
-	for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
-	{
-		Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
-		if (!m_bHasComment && !entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty())
+	for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;) {
+		const Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
+		if (!m_bHasComment && !entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION)).IsEmpty())
 			m_bHasComment = true;
-		UINT rating = (UINT)entry->GetIntTagValue(TAG_FILERATING);
-		if (rating != 0)
-		{
-			uRatings++;
+		UINT rating = (UINT)entry->GetIntTagValue(Kademlia::CKadTagNameString(TAG_FILERATING));
+		if (rating != 0) {
+			++uRatings;
 			uUserRatings += rating;
 		}
 	}
@@ -395,7 +391,7 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client){
 	}
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void Dump(const Kademlia::WordList& wordlist)
 {
 	Kademlia::WordList::const_iterator it;
@@ -2202,7 +2198,7 @@ CString CKnownFile::GetInfoSummary(bool bNoFormatCommands) const
 	if (strType.IsEmpty())
 		strType = _T("-");
 	CString dbgInfo;
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	dbgInfo.Format(_T("\nAICH Part HashSet: %s\nAICH Rec HashSet: %s"), m_FileIdentifier.HasExpectedAICHHashCount() ? _T("Yes") : _T("No")
 		, IsAICHRecoverHashSetAvailable() ? _T("Yes") : _T("No"));
 #endif

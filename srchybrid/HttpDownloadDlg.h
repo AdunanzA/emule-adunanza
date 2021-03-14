@@ -21,7 +21,6 @@ class CHttpDownloadDlg : public CDialog
 public:
 //Constructors / Destructors
 	CHttpDownloadDlg(CWnd* pParent = NULL);
-	static bool X;
 //Public Member variables
 	CString m_strTitle;
 	CString m_sURLToDownload;

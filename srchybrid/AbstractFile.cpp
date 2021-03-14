@@ -24,14 +24,14 @@
 #include "opcodes.h"
 #include "Packets.h"
 #include "StringConversion.h"
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "DebugHelpers.h"
 #endif
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 IMPLEMENT_DYNAMIC(CAbstractFile, CObject)
@@ -80,10 +80,9 @@ CAbstractFile::~CAbstractFile()
 	}
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CAbstractFile::AssertValid() const
 {
-	CObject::AssertValid();
 	(void)m_strFileName;
 	(void)m_FileIdentifier;
 	(void)m_nFileSize;
@@ -93,12 +92,11 @@ void CAbstractFile::AssertValid() const
 	(void)m_uUserRating;
 	CHECK_BOOL(m_bHasComment);
 	CHECK_BOOL(m_bCommentLoaded);
-	taglist.AssertValid();
 }
 
 void CAbstractFile::Dump(CDumpContext& dc) const
 {
-	CObject::Dump(dc);
+
 }
 #endif
 
@@ -417,8 +415,8 @@ void CAbstractFile::RefilterKadNotes(bool bUpdate){
 	{
 		m_kadNotes.GetNext(pos1);
 		Kademlia::CEntry* entry = m_kadNotes.GetAt(pos2);
-		if (!entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty()){
-			CString strCommentLower(entry->GetStrTagValue(TAG_DESCRIPTION));
+		if (!entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION)).IsEmpty()) {
+			CString strCommentLower(entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION)));
 			// Verified Locale Dependency: Locale dependent string conversion (OK)
 			strCommentLower.MakeLower();
 

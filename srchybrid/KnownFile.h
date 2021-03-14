@@ -154,7 +154,7 @@ public:
 	CArray<uint16/*, uint16*/> m_AvailPartFrequency;
 	CCollection* m_pCollection;
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	// Diagnostic Support
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

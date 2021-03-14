@@ -117,7 +117,7 @@ private:
 	int		m_oldcx;
 	int		m_oldcy;
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	HTREEITEM h_debug,h_blocks,debug1,debug2,debug3,debug4,debug5;
 	CMap<const unsigned char *,const unsigned char *,HTREEITEM *,HTREEITEM *> blockFiles;
 #endif

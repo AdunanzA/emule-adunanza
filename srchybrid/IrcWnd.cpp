@@ -30,12 +30,6 @@
 #include "ColourPopup.h"
 #include "SmileySelector.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Request from IRC-folks: don't use similar colors for Status and Info messages
 #define	STATUS_MSG_COLOR		RGB(0,128,0)		// dark green
 #define	INFO_MSG_COLOR			RGB(192,0,0)		// mid red

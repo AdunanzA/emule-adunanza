@@ -14,7 +14,7 @@
 #include "PPgScheduler.h"
 #include "PPgProxy.h"
 #include "PPgMessages.h"
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 #include "PPgDebug.h"
 #endif
 #include "otherfunctions.h"
@@ -45,7 +45,7 @@ public:
 	CPPgProxy		m_wndProxy;
 	CPPgAdunanzA    m_wndAdunanzA;
 	CPPgMessages	m_wndMessages;
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 	CPPgDebug		m_wndDebug;
 #endif
 

@@ -23,13 +23,6 @@
 #include "ED2KLink.h"
 #include "Preferences.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #define	PREF_INI_SECTION	_T("DirectDownloadDlg")
 
 IMPLEMENT_DYNAMIC(CDirectDownloadDlg, CDialog)

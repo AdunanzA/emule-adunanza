@@ -36,13 +36,6 @@
 #include "ServerWnd.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #define	SERVER_MET_FILENAME	_T("server.met")
 
 CServerList::CServerList()
@@ -511,7 +504,7 @@ void CServerList::GetUserSortedServers()
 		list.AddTail((CServer*)serverListCtrl.GetItemData(i));
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CServerList::Dump()
 {
 	int i = 1;

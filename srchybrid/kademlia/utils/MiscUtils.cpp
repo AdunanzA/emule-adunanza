@@ -32,12 +32,6 @@ there client on the eMule forum..
 #include "./MiscUtils.h"
 #include "../../Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace Kademlia;
 
 CString CMiscUtils::m_sAppDirectory;

@@ -51,12 +51,6 @@
 #include "AdunanzA.h"
 #include "PartFile.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 //>>> ::Automatic Firewalled Retries
 static	uint8	m_iFirewalledRetries = 0;
 static	DWORD	m_dwFirewalledTimer = NULL;
@@ -1372,7 +1366,7 @@ VOID CALLBACK CUploadQueue::UploadTimer(HWND /*hwnd*/, UINT, UINT_PTR, DWORD /*d
             sec++;
 			// *** 5 seconds **********************************************
 			if (sec >= 5) {
-#ifdef _DEBUG
+#ifdef ADU_BETA
 				if (thePrefs.m_iDbgHeap > 0 && !AfxCheckMemory())
 					AfxDebugBreak();
 #endif

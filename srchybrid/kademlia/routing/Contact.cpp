@@ -44,10 +44,10 @@ there client on the eMule forum..
 #include "../../emuledlg.h"
 #include "../../kademliawnd.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 using namespace Kademlia;

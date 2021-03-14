@@ -18,13 +18,6 @@
 #include <dbghelp.h>
 #include "mdump.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
 										 CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
 										 CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
@@ -176,7 +169,7 @@ LONG CMiniDumper::TopLevelFilter(struct _EXCEPTION_POINTERS* pExceptionInfo)
 	if (szResult[0] != _T('\0'))
 		MessageBox(NULL, szResult, m_szAppName, MB_ICONINFORMATION | MB_OK);
 
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	// Exit the process only in release builds, so that in debug builds the exceptio is passed to a possible
 	// installed debugger
 	ExitProcess(0);

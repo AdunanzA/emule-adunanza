@@ -23,10 +23,10 @@
 #include <zlib/zlib.h>
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -67,7 +67,7 @@ void CArchiveRecovery::recover(CPartFile *partFile, bool preview, bool bCreatePa
 	// Get the current filled list for this file
 	CTypedPtrList<CPtrList, Gap_Struct*> *filled = new CTypedPtrList<CPtrList, Gap_Struct*>;
 	partFile->GetFilledList(filled);
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	{
 		int i = 0;
 		TRACE("%s: filled\n", __FUNCTION__);

@@ -51,19 +51,10 @@
 #include "CommentDialogLst.h"
 #include "MediaInfo.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #define COLLAPSE_ONLY	0
 #define EXPAND_ONLY		1
 #define EXPAND_COLLAPSE	2
-
 #define	TREE_WIDTH		10
-
 
 //////////////////////////////////////////////////////////////////////////////
 // CSearchResultFileDetailSheet
@@ -1117,7 +1108,7 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 								    strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIOHIGH);
 							    else if (tag->GetInt() == -2)
 								    strTag = GetResString(IDS_PRIORITY) + _T(": ") + GetResString(IDS_PRIOLOW);
-						    #ifdef _DEBUG
+						    #ifdef ADU_BETA
 							    else
 								    strTag.Format(_T("%s: %d (***Unknown***)"), GetResString(IDS_PRIORITY), tag->GetInt());
 						    #endif
@@ -1138,7 +1129,7 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 									    strTag.Format(_T("%s: "), strTagName);
 								    }
 								    else{
-								    #ifdef _DEBUG
+								    #ifdef ADU_BETA
 									    strTag.Format(_T("Unknown tag #%02X: "), tag->GetNameID());
 								    #else
 									    bUnkTag = true;
@@ -1167,7 +1158,7 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 									    strTag += szBuff;
 								    }
 								    else if (!bSkipTag){
-								    #ifdef _DEBUG
+								    #ifdef ADU_BETA
 									    CString strBuff;
 									    strBuff.Format(_T("Unknown value type=#%02X"), tag->GetType());
 									    strTag += strBuff;
@@ -1188,7 +1179,7 @@ void CSearchListCtrl::OnLvnGetInfoTip(NMHDR *pNMHDR, LRESULT *pResult)
 				    }
 			    }
     
-    #ifdef USE_DEBUG_DEVICE
+    #ifdef ADU_BETA
 			    if (file->GetClientsCount()){
 					bool bFirst = true;
 				    if (file->GetClientID() && file->GetClientPort()){
@@ -1824,7 +1815,7 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
 							strBuffer.AppendFormat(_T(" (%u)"), iClients);
 					}
 				}
-			#ifdef _DEBUG
+			#ifdef ADU_BETA
 				if (src->GetKadPublishInfo() == 0)
 					strBuffer += _T(" | -");
 				else
@@ -1906,7 +1897,7 @@ void CSearchListCtrl::GetItemDisplayText(const CSearchFile *src, int iSubItem, L
 				_tcsncpy(pszText, GetResString(IDS_CANCELLED), cchTextMax);
 			else if (src->IsConsideredSpam() && thePrefs.IsSearchSpamFilterEnabled())
 				_tcsncpy(pszText, GetResString(IDS_SPAM), cchTextMax);
-#ifdef _DEBUG
+#ifdef ADU_BETA
 			{
 				pszText[cchTextMax - 1] = _T('\0');
 				CString strBuffer(pszText);

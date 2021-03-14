@@ -25,12 +25,6 @@
 #include "MenuCmds.h"
 #include "StringConversion.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 IMPLEMENT_DYNAMIC(CFileDetailDialogName, CResizablePage)
 
 BEGIN_MESSAGE_MAP(CFileDetailDialogName, CResizablePage)

@@ -42,10 +42,10 @@
 #include "Log.h"
 #include "TransferWnd.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 //	members of CUpDownClient
@@ -176,7 +176,7 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
 			//Both have the same lowID, Same serverIP and Port..
             return true;
 
-#if defined(_DEBUG)
+#if defined(ADU_BETA)
 		if ( HasValidBuddyID() && tocomp->HasValidBuddyID() )
 		{
 			//JOHNTODO: This is for future use to see if this will be needed...
@@ -1696,7 +1696,7 @@ void CUpDownClient::UDPReaskForDownload()
 
 void CUpDownClient::UpdateDisplayedInfo(bool force)
 {
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	force = true;
 #endif
     DWORD curTick = ::GetTickCount();

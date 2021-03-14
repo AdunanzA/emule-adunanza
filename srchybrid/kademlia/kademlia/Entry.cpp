@@ -39,10 +39,10 @@ there client on the eMule forum..
 #include "../../RemoteSettings.h"
 #include "../../emule.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 using namespace Kademlia;
@@ -627,7 +627,7 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CDataIO* pData, bool bIncludesAI
 		m_pliPublishingIPs->AddTail(sToAdd);
 	}
 	RecalcualteTrustValue();
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (m_aAICHHashs.GetCount() == 1)
 		DebugLog(_T("Loaded 1 AICH Hash (%s, publishers %u of %u) for file %s"), m_aAICHHashs[0].GetString(), m_anAICHHashPopularity[0], m_pliPublishingIPs->GetCount(), m_uSourceID.ToHexString());
 	else if (m_aAICHHashs.GetCount() > 1)

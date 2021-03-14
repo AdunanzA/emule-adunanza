@@ -23,23 +23,24 @@
 #define KADEMLIA_VERSION1_46c			0x01 /*45b - 46c*/
 #define KADEMLIA_VERSION2_47a			0x02 /*47a*/
 #define KADEMLIA_VERSION3_47b			0x03 /*47b*/
+#define KADEMLIA_VERSION4_47c			0x04 /*47c*/
 #define KADEMLIA_VERSION5_48a			0x05 // -0.48a
-#define KADEMLIA_VERSION6_49aBETA		0x06 // -0.49aBETA1, needs to support: OP_FWCHECKUDPREQ (!), obfuscation, direct callbacks, source type 6, UDP firewallcheck
+#define KADEMLIA_VERSION6_49aBETA		0x06 // -0.49aBETA1, needs to support: OP_FWCHECKUDPREQ (!), obfuscation, direct callbacks, source type 6, UDP firewall check
 #define KADEMLIA_VERSION7_49a			0x07 // -0.49a needs to support OP_KAD_FWTCPCHECK_ACK, KADEMLIA_FIREWALLED2_REQ
 #define KADEMLIA_VERSION8_49b			0x08 // TAG_KADMISCOPTIONS, KADEMLIA2_HELLO_RES_ACK
 #define KADEMLIA_VERSION9_50a			0x09 // handling AICH hashes on keyword storage
-#define KADEMLIA_VERSION				0x09 // Change CT_EMULE_MISCOPTIONS2 if Kadversion becomes >= 15 (0x0F)
-#define PREFFILE_VERSION				0x14	//<<-- last change: reduced .dat, by using .ini
+#define KADEMLIA_VERSION				0x0a // -Change CT_EMULE_MISCOPTIONS2 if Kad version becomes >= 15 (0x0F)
+#define PREFFILE_VERSION				0x14 //<<-- last change: reduced .dat, by using .ini
 #define PARTFILE_VERSION				0xe0
 #define PARTFILE_SPLITTEDVERSION		0xe1
 #define PARTFILE_VERSION_LARGEFILE		0xe2
-#define SOURCEEXCHANGE2_VERSION			4		// replaces the version sent in MISC_OPTIONS flag fro SX1
+#define SOURCEEXCHANGE2_VERSION			4	 // replaces the version sent in MISC_OPTIONS flag from SX1
 
 #define CREDITFILE_VERSION		0x12
 #define CREDITFILE_VERSION_29	0x11
 #define COMPILE_DATE			__DATE__
 #define COMPILE_TIME			__TIME__
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #define EMULE_GUID				_T("EMULE-{4EADC6FC-516F-4b7c-9066-97D893649570}-DEBUG")
 #else
 #define EMULE_GUID				_T("EMULE-{4EADC6FC-516F-4b7c-9066-97D893649570}")
@@ -86,7 +87,7 @@
 #define KADEMLIADISCONNECTDELAY	MIN2S(20)	//20 mins
 #define	KADEMLIAMAXINDEX		50000		//Total keyword indexes.
 #define	KADEMLIAMAXENTRIES		60000		//Total keyword entries.
-#define KADEMLIAMAXSOUCEPERFILE 1000		//Max number of sources per file in index.
+#define KADEMLIAMAXSOURCEPERFILE 1000		//Max number of sources per file in index.
 #define KADEMLIAMAXNOTESPERFILE	150			//Max number of notes per entry in index.
 #define KADEMLIAFIREWALLCHECKS	4			//Firewallcheck Request at a time
 #define ADUSPLASHTIME		SEC(10)		//tigerjact lo porto a 10 //3O seconds, used for splash window timeout.
@@ -450,6 +451,7 @@
 #define TAG_SOURCEIP			"\xFE"	// <uint32>
 #define TAG_SOURCETYPE			"\xFF"	// <uint8>
 
+#define	TAGTYPE_NONE			0x00
 #define	TAGTYPE_HASH			0x01
 #define	TAGTYPE_STRING			0x02
 #define	TAGTYPE_UINT32			0x03
@@ -461,6 +463,7 @@
 #define	TAGTYPE_UINT8			0x09
 #define	TAGTYPE_BSOB			0x0A
 #define	TAGTYPE_UINT64			0x0B
+#define	TAGTYPE_UINT			0xFE //general uint: 8, 16, 32, 64 bits
 
 #define TAGTYPE_STR1			0x11
 #define TAGTYPE_STR2			0x12

@@ -5,10 +5,10 @@
 #include "Preferences.h"
 #include "langids.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 static HINSTANCE s_hLangDLL = NULL;
@@ -448,19 +448,39 @@ CString CPreferences::GetHtmlCharset()
 
 static HHOOK s_hRTLWindowsLayoutOldCbtFilterHook = NULL;
 
-LRESULT CALLBACK RTLWindowsLayoutCbtFilterHook(int code, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK RTLWindowsLayoutCbtFilterHook(int code, WPARAM wParam, LPARAM lParam) noexcept
 {
-	if (code == HCBT_CREATEWND)
-	{
+	if (code == HCBT_CREATEWND) {
 		//LPCREATESTRUCT lpcs = ((LPCBT_CREATEWND)lParam)->lpcs;
 
 		//if ((lpcs->style & WS_CHILD) == 0)
 		//	lpcs->dwExStyle |= WS_EX_LAYOUTRTL;	// doesn't seem to have any effect, but shouldn't hurt
 
-		HWND hWnd = (HWND)wParam;
-		if ((GetWindowLong(hWnd, GWL_STYLE) & WS_CHILD) == 0) {
-			SetWindowLong(hWnd, GWL_EXSTYLE, GetWindowLong(hWnd, GWL_EXSTYLE) | WS_EX_LAYOUTRTL);
-		}
+		if ((::GetWindowLongPtr((HWND)wParam, GWL_STYLE) & WS_CHILD) == 0)
+			::SetWindowLongPtr((HWND)wParam, GWL_EXSTYLE, ::GetWindowLongPtr((HWND)wParam, GWL_EXSTYLE) | WS_EX_LAYOUTRTL);
 	}
 	return CallNextHookEx(s_hRTLWindowsLayoutOldCbtFilterHook, code, wParam, lParam);
+}
+
+void CemuleApp::EnableRTLWindowsLayout()
+{
+	BOOL(WINAPI *pfnSetProcessDefaultLayout)(DWORD dwFlags);
+	(FARPROC&)pfnSetProcessDefaultLayout = GetProcAddress(GetModuleHandle(_T("user32")), "SetProcessDefaultLayout");
+	if (pfnSetProcessDefaultLayout)
+		(*pfnSetProcessDefaultLayout)(LAYOUT_RTL);
+
+	s_hRTLWindowsLayoutOldCbtFilterHook = SetWindowsHookEx(WH_CBT, RTLWindowsLayoutCbtFilterHook, NULL, GetCurrentThreadId());
+}
+
+void CemuleApp::DisableRTLWindowsLayout()
+{
+	if (s_hRTLWindowsLayoutOldCbtFilterHook) {
+		VERIFY(UnhookWindowsHookEx(s_hRTLWindowsLayoutOldCbtFilterHook));
+		s_hRTLWindowsLayoutOldCbtFilterHook = NULL;
+
+		BOOL(WINAPI *pfnSetProcessDefaultLayout)(DWORD dwFlags);
+		(FARPROC&)pfnSetProcessDefaultLayout = GetProcAddress(GetModuleHandle(_T("user32")), "SetProcessDefaultLayout");
+		if (pfnSetProcessDefaultLayout)
+			(*pfnSetProcessDefaultLayout)(0);
+	}
 }

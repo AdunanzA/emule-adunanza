@@ -29,12 +29,6 @@
 #include "ListenSocket.h"
 #include "preferences.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // CClientDetailPage
@@ -123,13 +117,13 @@ BOOL CClientDetailPage::OnSetActive()
 			buffer = GetResString(IDS_SUPPORTED);
 		else
 			buffer = GetResString(IDS_IDENTNOSUPPORT);
-#if defined(_DEBUG)
+#if defined(ADU_BETA)
 		if (client->IsObfuscatedConnectionEstablished())
 			buffer += _T("(In Use)");
 #endif
 		GetDlgItem(IDC_OBFUSCATION_STAT)->SetWindowText(buffer);
 
-#if defined(_DEBUG) || defined(ADU_BETA_EXTRAS)
+#if defined(ADU_BETA)
 		// Stefano Picerno: Voglio vedere l'indirizzo IP del client
 		buffer.Format(_T("%s:%d"), ipstr( client->GetIP() ),  client->GetUserPort() );
 #else
@@ -224,7 +218,7 @@ BOOL CClientDetailPage::OnSetActive()
 		else
 			GetDlgItem(IDC_DSCORE)->SetWindowText(_T("-"));
 
-#if defined(_DEBUG) || defined(ADU_BETA_EXTRAS)
+#if defined(ADU_BETA)
 		// Stefano Picerno: Voglio vedere l'indirizzo IP del client KADU
 		buffer.Format(_T("%s:%d"), ipstr( client->GetIP() ),  client->GetKadPort() );
 #else

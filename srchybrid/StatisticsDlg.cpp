@@ -35,18 +35,6 @@
 #include "Kademlia/Kademlia/Prefs.h"
 #include "kademlia/kademlia/UDPFirewallTester.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-#ifdef _DEBUG
-extern _CRT_ALLOC_HOOK g_pfnPrevCrtAllocHook;
-#endif
-
-
 // CStatisticsDlg dialog
 
 IMPLEMENT_DYNAMIC(CStatisticsDlg, CDialog)
@@ -80,7 +68,7 @@ CStatisticsDlg::~CStatisticsDlg()
 {
 	delete m_TimeToolTips;
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	POSITION pos = blockFiles.GetStartPosition();
 	while (pos != NULL) 
 	{
@@ -3040,50 +3028,28 @@ void CStatisticsDlg::ShowStatistics(bool forceUpdate)
 		stattree.SetItemText( h_Adu_Ext_updl , cbuffer );
 		// - End AdunanzA Statistics
 	}
-#ifdef _DEBUG
-	if (g_pfnPrevCrtAllocHook)
+#ifdef ADU_BETA
+	_CrtMemState memState;
+	_CrtMemCheckpoint(&memState);
+
+	cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Free"),memState.lSizes[ 0 ],memState.lCounts[ 0 ] );
+	stattree.SetItemText(debug1, cbuffer);
+	cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Normal"),memState.lSizes[ 1 ],memState.lCounts[ 1 ] );
+	stattree.SetItemText(debug2, cbuffer);
+	cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("CRT"),memState.lSizes[ 2 ],memState.lCounts[ 2 ] );
+	stattree.SetItemText(debug3, cbuffer);
+	cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Ignore"),memState.lSizes[ 3 ],memState.lCounts[ 3 ] );
+	stattree.SetItemText(debug4, cbuffer);
+	cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Client"),memState.lSizes[ 4 ],memState.lCounts[ 4 ] );
+	stattree.SetItemText(debug5, cbuffer);
+
+	POSITION pos = blockFiles.GetStartPosition();
+	while (pos != NULL) 
 	{
-		_CrtMemState memState;
-		_CrtMemCheckpoint(&memState);
-
-		cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Free"),memState.lSizes[ 0 ],memState.lCounts[ 0 ] );
-		stattree.SetItemText(debug1, cbuffer);
-		cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Normal"),memState.lSizes[ 1 ],memState.lCounts[ 1 ] );
-		stattree.SetItemText(debug2, cbuffer);
-		cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("CRT"),memState.lSizes[ 2 ],memState.lCounts[ 2 ] );
-		stattree.SetItemText(debug3, cbuffer);
-		cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Ignore"),memState.lSizes[ 3 ],memState.lCounts[ 3 ] );
-		stattree.SetItemText(debug4, cbuffer);
-		cbuffer.Format(_T("%s: %u bytes in %u blocks"),_T("Client"),memState.lSizes[ 4 ],memState.lCounts[ 4 ] );
-		stattree.SetItemText(debug5, cbuffer);
-
-		extern CMap<const unsigned char*, const unsigned char*, UINT, UINT> g_allocations;
-
-		POSITION pos = blockFiles.GetStartPosition();
-		while (pos != NULL) 
-		{
-			const unsigned char* pszFileName;
-			HTREEITEM* pTag;
-			blockFiles.GetNextAssoc(pos, pszFileName, pTag);
-			stattree.SetItemText(*pTag, _T(""));
-		}
-		pos = g_allocations.GetStartPosition();
-		while (pos != NULL) 
-		{
-			const unsigned char* pszFileName;
-			UINT count;
-			g_allocations.GetNextAssoc(pos, pszFileName, count);
-			HTREEITEM* pTag;
-			if (blockFiles.Lookup(pszFileName, pTag) == 0) 
-			{
-				pTag = new HTREEITEM;
-				*pTag = stattree.InsertItem(_T("0"), debug2);
-				stattree.SetItemData(*pTag, 1);
-				blockFiles.SetAt(pszFileName, pTag);
-			}
-			cbuffer.Format(_T("%s : %u blocks"), pszFileName, count);
-			stattree.SetItemText(*pTag, cbuffer);
-		}
+		const unsigned char* pszFileName;
+		HTREEITEM* pTag;
+		blockFiles.GetNextAssoc(pos, pszFileName, pTag);
+		stattree.SetItemText(*pTag, _T(""));
 	}
 #endif
 
@@ -3405,19 +3371,16 @@ void CStatisticsDlg::CreateMyTree()
 	h_total_size_left_on_drive=stattree.InsertItem(GetResString(IDS_DWTOT_FS),h_total_downloads);
 	h_total_size_needed=stattree.InsertItem(GetResString(IDS_DWTOT_TSN),h_total_downloads);
 
-#ifdef _DEBUG
-	if (g_pfnPrevCrtAllocHook)
-	{
-		h_debug = stattree.InsertItem( _T("Debug info") );stattree.SetItemData(h_debug,0);
-		h_blocks = stattree.InsertItem(_T("Blocks"),h_debug);stattree.SetItemData(h_blocks,1);
-		debug1 =  stattree.InsertItem(_T("Free"),h_blocks);stattree.SetItemData(debug1,1);
-		debug2 =  stattree.InsertItem(_T("Normal"),h_blocks);stattree.SetItemData(debug2,1);
-		debug3 =  stattree.InsertItem(_T("CRT"),h_blocks);stattree.SetItemData(debug3,1);
-		debug4 =  stattree.InsertItem(_T("Ignore"),h_blocks);stattree.SetItemData(debug4,1);
-		debug5 =  stattree.InsertItem(_T("Client"),h_blocks);stattree.SetItemData(debug5,1);
-		stattree.Expand(h_debug,TVE_EXPAND);
-		stattree.Expand(h_blocks,TVE_EXPAND);
-	}
+#ifdef ADU_BETA
+	h_debug = stattree.InsertItem(_T("Debug info")); stattree.SetItemData(h_debug, 0);
+	h_blocks = stattree.InsertItem(_T("Blocks"), h_debug); stattree.SetItemData(h_blocks, 1);
+	debug1 = stattree.InsertItem(_T("Free"), h_blocks); stattree.SetItemData(debug1, 1);
+	debug2 = stattree.InsertItem(_T("Normal"), h_blocks); stattree.SetItemData(debug2, 1);
+	debug3 = stattree.InsertItem(_T("CRT"), h_blocks); stattree.SetItemData(debug3, 1);
+	debug4 = stattree.InsertItem(_T("Ignore"), h_blocks); stattree.SetItemData(debug4, 1);
+	debug5 = stattree.InsertItem(_T("Client"), h_blocks); stattree.SetItemData(debug5, 1);
+	stattree.Expand(h_debug, TVE_EXPAND);
+	stattree.Expand(h_blocks, TVE_EXPAND);
 #endif
 
 #ifdef USE_MEM_STATS

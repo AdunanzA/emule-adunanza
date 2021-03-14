@@ -13,7 +13,7 @@ typedef	  signed int		sint32;
 typedef unsigned __int64	uint64;
 typedef   signed __int64	sint64;
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "Debug_FileSize.h"
 #define USE_DEBUG_EMFILESIZE
 typedef CEMFileSize			EMFileSize;

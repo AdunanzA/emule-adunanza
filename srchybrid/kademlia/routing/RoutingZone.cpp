@@ -67,16 +67,9 @@ there client on the eMule forum..
 #include "../../ipfilter.h"
 #include "../../AdunanzA.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace Kademlia;
 
 void DebugSend(LPCTSTR pszMsg, uint32 uIP, uint16 uUDPPort);
-
 
 CString CRoutingZone::m_sFilename;
 CUInt128 CRoutingZone::uMe = (ULONG)0;
@@ -166,19 +159,6 @@ CRoutingZone::~CRoutingZone()
 	// All branches are deleted, show the contact list in the GUI.
 	if (m_pSuperZone == NULL)
 		theApp.emuledlg->kademliawnd->StartUpdateContacts();
-}
-
-bool FileExist(LPCTSTR filename)
-{
-	WIN32_FIND_DATA findData;
-	ZeroMemory(&findData, sizeof(findData));
-	HANDLE hFind = FindFirstFile( filename, &findData );
-	if (hFind == INVALID_HANDLE_VALUE)
-		return false;
-
-	FindClose( hFind );
-	hFind = NULL;
-	return true;
 }
 
 void CRoutingZone::ReadFile(CString strSpecialNodesdate)
@@ -430,7 +410,7 @@ void CRoutingZone::WriteFile()
 	}
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CRoutingZone::DbgWriteBootstrapFile()
 {
 	DebugLogWarning(_T("Writing special bootstrap nodes.dat - not intended for normal use"));
@@ -598,7 +578,7 @@ bool CRoutingZone::Add(CContact* pContact, bool& bUpdate, bool& bOutIPVerified)
 					
 				}
 				else{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 					// just for outlining, get removed anyway
 					//debug logging stuff - remove later
 					if (pContact->GetUDPKey().GetKeyValue(theApp.GetPublicIP(false)) == 0){
@@ -1064,7 +1044,7 @@ bool CRoutingZone::IsAcceptableContact(const CContact* pToCheck) const
 			return true; // node exists already in our routing table, thats fine
 	}
 	// if the node is not yet know, check if we out IP limitations would hit
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	return CRoutingBin::CheckGlobalIPLimits(pToCheck->GetIPAddress(), pToCheck->GetUDPPort(), true);
 #else
 	return CRoutingBin::CheckGlobalIPLimits(pToCheck->GetIPAddress(), pToCheck->GetUDPPort(), false);

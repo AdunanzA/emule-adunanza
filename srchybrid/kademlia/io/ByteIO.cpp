@@ -32,12 +32,6 @@ there client on the eMule forum..
 #include "./ByteIO.h"
 #include "./IOException.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace Kademlia;
 
 CByteIO::CByteIO(byte* pbyBuffer, uint32 uAvailable)

@@ -24,13 +24,6 @@
 #include "emuledlg.h"
 #include "StringConversion.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 void LogV(UINT uFlags, LPCTSTR pszFmt, va_list argp)
 {
 	AddLogTextV(uFlags, DLP_DEFAULT, pszFmt, argp);

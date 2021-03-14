@@ -83,7 +83,7 @@ public:
 // CTag
 
 class CTag
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	: public CObject
 #endif
 {
@@ -131,7 +131,7 @@ public:
 	
 	CString GetFullInfo(CString (*pfnDbgGetFileMetaTagName)(UINT uMetaTagID) = NULL) const;
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	// Diagnostic Support
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

@@ -20,13 +20,6 @@
 #include "StdAfx.h"
 #include "ReadWriteLock.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 CReadWriteLock::CReadWriteLock()
 {
 	m_nReadLocks = 0;

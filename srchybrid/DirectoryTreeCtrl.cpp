@@ -24,13 +24,6 @@
 
 #define TM_FOUNDNETWORKDRIVE		(WM_USER + 0x101)	// : shareSubdir - Multi-threading
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 /////////////////////////////////////////////
 // written by robert rostek - tecxx@rrs.at //
 /////////////////////////////////////////////

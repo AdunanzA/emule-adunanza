@@ -38,12 +38,6 @@ there client on the eMule forum..
 #include "../../SafeFile.h"
 #include "../../Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace Kademlia;
 
 // This may look confusing that the normal methods use le() and the LE methods don't.

@@ -47,13 +47,6 @@
 #include "RemoteSettings.h"
 #include <share.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 typedef CSimpleArray<CKnownFile*> CSimpleKnownFileArray;
 #define	SHAREDFILES_FILE	_T("sharedfiles.dat")
 
@@ -158,7 +151,7 @@ public:
 	UINT GetNextPublishTime() const { return m_tNextPublishKeywordTime; }
 	void SetNextPublishTime(UINT tNextPublishKeywordTime) { m_tNextPublishKeywordTime = tNextPublishKeywordTime; }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	void Dump();
 #endif
 
@@ -202,7 +195,7 @@ void CPublishKeywordList::readFile()
 					while (nkeys) {
 						CStringW ThisFileName = klist_file.ReadStringUTF8();
 						UINT32 ThisPublicTIme = klist_file.ReadUInt32();
-						pPubKw = new CPublishKeyword(ThisFileName);//klist_file.ReadStringUTF8());
+						pPubKw = new CPublishKeyword(Kademlia::CKadTagValueString(ThisFileName));//klist_file.ReadStringUTF8());
 						pPubKw->SetNextPublishTime(ThisPublicTIme);//klist_file.ReadUInt32());
 						m_lstKeywords.AddTail(pPubKw);
 							
@@ -301,20 +294,16 @@ CPublishKeyword* CPublishKeywordList::FindKeyword(const CStringW& rstrKeyword, P
 void CPublishKeywordList::AddKeywords(CKnownFile* pFile)
 {
 	const Kademlia::WordList& wordlist = pFile->GetKadKeywords();
-	//ASSERT( wordlist.size() > 0 );
-	Kademlia::WordList::const_iterator it;
-	for (it = wordlist.begin(); it != wordlist.end(); it++)
-	{
+	//ASSERT( !wordlist.empty() );
+	for (Kademlia::WordList::const_iterator it = wordlist.begin(); it != wordlist.end(); ++it) {
 		const CStringW& strKeyword = *it;
 		CPublishKeyword* pPubKw = FindKeyword(strKeyword);
-		if (pPubKw == NULL)
-		{
-			pPubKw = new CPublishKeyword(strKeyword);
+		if (pPubKw == NULL) {
+			pPubKw = new CPublishKeyword(Kademlia::CKadTagValueString(strKeyword));
 			m_lstKeywords.AddTail(pPubKw);
 			SetNextPublishTime(0);
 		}
-		if(pPubKw->AddRef(pFile) && pPubKw->GetNextPublishTime() > MIN2S(30))
-		{
+		if (pPubKw->AddRef(pFile) && pPubKw->GetNextPublishTime() > MIN2S(30)) {
 			// User may be adding and removing files, so if this is a keyword that
 			// has already been published, we reduce the time, but still give the user
 			// enough time to finish what they are doing.
@@ -383,7 +372,7 @@ void CPublishKeywordList::PurgeUnreferencedKeywords()
 	}
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CPublishKeywordList::Dump()
 {
 	int i = 0;
@@ -518,7 +507,7 @@ CSharedFileList::~CSharedFileList(){
 	// : SafeHash
 	delete m_keywords;
 
-#ifdef _BETA
+#ifdef ADU_BETA
 	// On Beta builds we created a testfile, delete it when closing eMule
 	CString tempDir = thePrefs.GetMuleDirectory(EMULE_INCOMINGDIR);
 	if (tempDir.Right(1)!=_T("\\"))
@@ -660,7 +649,7 @@ void CSharedFileList::FindSharedFiles()
 	if (tempDir.Right(1)!=_T("\\"))
 		tempDir+=_T("\\");
 
-#ifdef _BETA
+#ifdef ADU_BETA
 	// In Betaversion we create a testfile which is published in order to make testing easier
 	// by allowing to easily find files which are published and shared by "new" nodes
 	CStdioFile f;

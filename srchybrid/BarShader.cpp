@@ -20,13 +20,6 @@
 #include "barshader.h"
 #include "Preferences.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // Why does _USE_MATH_DEFINES work in debug builds, but not in release builds??
 #ifndef M_PI
 #define M_PI       3.14159265358979323846

@@ -89,12 +89,12 @@ CKademliaWnd::CKademliaWnd(CWnd* pParent /*=NULL*/)
 	m_pacONBSIPs = NULL;
 	m_pbtnWnd = new CDropDownButton;
 
-	icon_kadsea=NULL;
+	icon_kadsea = NULL;
 }
 
 CKademliaWnd::~CKademliaWnd()
 {
-	if (m_pacONBSIPs){
+	if (m_pacONBSIPs) {
 		m_pacONBSIPs->Unbind();
 		m_pacONBSIPs->Release();
 	}
@@ -105,7 +105,7 @@ CKademliaWnd::~CKademliaWnd()
 	delete m_pbtnWnd;
 
 	if (icon_kadsea)
-		VERIFY( DestroyIcon(icon_kadsea) );
+		VERIFY(DestroyIcon(icon_kadsea));
 }
 
 BOOL CKademliaWnd::SaveAllSettings()
@@ -124,11 +124,11 @@ BOOL CKademliaWnd::OnInitDialog()
 	m_kadLookupGraph->Init();
 	searchList->Init();
 
-    // Initalize Toolbar
+	// Initalize Toolbar
 	CRect rcBtn1;
 	rcBtn1.top = 5;
 	rcBtn1.left = WND1_BUTTON_XOFF;
-	rcBtn1.right = rcBtn1.left + WND1_BUTTON_WIDTH + WND1_NUM_BUTTONS*DFLT_TOOLBAR_BTN_WIDTH;
+	rcBtn1.right = rcBtn1.left + WND1_BUTTON_WIDTH + WND1_NUM_BUTTONS * DFLT_TOOLBAR_BTN_WIDTH;
 	rcBtn1.bottom = rcBtn1.top + WND1_BUTTON_HEIGHT;
 	m_pbtnWnd->Init(false);
 	m_pbtnWnd->MoveWindow(&rcBtn1);
@@ -138,7 +138,7 @@ BOOL CKademliaWnd::OnInitDialog()
 	m_pbtnWnd->ModifyStyle((theApp.m_ullComCtrlVer >= MAKEDLLVERULL(6, 16, 0, 0)) ? TBSTYLE_TRANSPARENT : 0, TBSTYLE_TOOLTIPS);
 	m_pbtnWnd->SetExtendedStyle(m_pbtnWnd->GetExtendedStyle() | TBSTYLE_EX_MIXEDBUTTONS);
 
-	TBBUTTON atb1[1+WND1_NUM_BUTTONS] = {0};
+	TBBUTTON atb1[1 + WND1_NUM_BUTTONS] = { 0 };
 	atb1[0].iBitmap = 0;
 	atb1[0].idCommand = IDC_KADICO1;
 	atb1[0].fsState = TBSTATE_ENABLED;
@@ -158,7 +158,7 @@ BOOL CKademliaWnd::OnInitDialog()
 	atb1[2].iString = -1;
 	m_pbtnWnd->AddButtons(_countof(atb1), atb1);
 
-	TBBUTTONINFO tbbi = {0};
+	TBBUTTONINFO tbbi = { 0 };
 	tbbi.cbSize = sizeof tbbi;
 	tbbi.dwMask = TBIF_SIZE | TBIF_BYINDEX;
 	tbbi.cx = WND1_BUTTON_WIDTH;
@@ -172,7 +172,7 @@ BOOL CKademliaWnd::OnInitDialog()
 	// So, to circumvent such problems, the toolbar control should be created right with
 	// the needed size so that we do not really need to call the 'GetMaxSize' function.
 	// Although it would be better to call it to adapt for system metrics basically.
-	if (theApp.m_ullComCtrlVer > MAKEDLLVERULL(5,81,0,0))
+	if (theApp.m_ullComCtrlVer > MAKEDLLVERULL(5, 81, 0, 0))
 	{
 		CSize size;
 		m_pbtnWnd->GetMaxSize(&size);
@@ -180,7 +180,7 @@ BOOL CKademliaWnd::OnInitDialog()
 		m_pbtnWnd->GetWindowRect(&rc);
 		ScreenToClient(&rc);
 		// the with of the toolbar should already match the needed size (see comment above)
-		ASSERT( size.cx == rc.Width() );
+		ASSERT(size.cx == rc.Width());
 		m_pbtnWnd->MoveWindow(rc.left, rc.top, size.cx, rc.Height());
 	}
 
@@ -210,16 +210,16 @@ BOOL CKademliaWnd::OnInitDialog()
 	searchList->UpdateKadSearchCount();
 	m_contactListCtrl->UpdateKadContactCount();
 
-	if (thePrefs.GetUseAutocompletion()){
+	if (thePrefs.GetUseAutocompletion()) {
 		m_pacONBSIPs = new CCustomAutoComplete();
 		m_pacONBSIPs->AddRef();
-		if (m_pacONBSIPs->Bind(::GetDlgItem(m_hWnd, IDC_BOOTSTRAPIP), ACO_UPDOWNKEYDROPSLIST | ACO_AUTOSUGGEST | ACO_FILTERPREFIXES ))
+		if (m_pacONBSIPs->Bind(::GetDlgItem(m_hWnd, IDC_BOOTSTRAPIP), ACO_UPDOWNKEYDROPSLIST | ACO_AUTOSUGGEST | ACO_FILTERPREFIXES))
 			m_pacONBSIPs->LoadList(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + ONBOOTSTRAP_STRINGS_PROFILE);
 	}
 
-	CheckDlgButton(IDC_RADCLIENTS,1);
+	CheckDlgButton(IDC_RADCLIENTS, 1);
 	ShowLookupGraph(false);
-	
+
 	return true;
 }
 
@@ -234,7 +234,7 @@ void CKademliaWnd::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_KADICO1, *m_pbtnWnd);
 }
 
-BOOL CKademliaWnd::PreTranslateMessage(MSG* pMsg) 
+BOOL CKademliaWnd::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
@@ -272,7 +272,7 @@ void CKademliaWnd::OnBnClickedBootstrapbutton()
 		int iPos;
 		if ((iPos = strIP.Find(_T(':'))) != -1)
 		{
-			GetDlgItem(IDC_BOOTSTRAPPORT)->SetWindowText(strIP.Mid(iPos+1));
+			GetDlgItem(IDC_BOOTSTRAPPORT)->SetWindowText(strIP.Mid(iPos + 1));
 			strIP = strIP.Left(iPos);
 			GetDlgItem(IDC_BOOTSTRAPIP)->SetWindowText(strIP);
 		}
@@ -283,12 +283,12 @@ void CKademliaWnd::OnBnClickedBootstrapbutton()
 		nPort = (uint16)_ttoi(strPort);
 
 		// invalid IP/Port
-		if (strIP.GetLength()<7 || nPort==0)
+		if (strIP.GetLength() < 7 || nPort == 0)
 			return;
 
 		if (m_pacONBSIPs && m_pacONBSIPs->IsBound())
 			m_pacONBSIPs->AddItem(strIP + _T(":") + strPort, 0);
-		if( !Kademlia::CKademlia::IsRunning() )
+		if (!Kademlia::CKademlia::IsRunning())
 		{
 			Kademlia::CKademlia::Start();
 			theApp.emuledlg->ShowConnectionState();
@@ -301,14 +301,14 @@ void CKademliaWnd::OnBnClickedBootstrapbutton()
 		GetDlgItemText(IDC_BOOTSTRAPURL, strURL);
 		if (strURL.IsEmpty() || (strURL.Find(_T("://")) == -1)) {
 			// not a valid URL
-			LogError(LOG_STATUSBAR, GetResString(IDS_INVALIDURL) );
+			LogError(LOG_STATUSBAR, GetResString(IDS_INVALIDURL));
 			return;
 		}
 		UpdateNodesDatFromURL(strURL);
 	}
 	else
 	{
-		if( !Kademlia::CKademlia::IsRunning() )
+		if (!Kademlia::CKademlia::IsRunning())
 		{
 			Kademlia::CKademlia::Start();
 			theApp.emuledlg->ShowConnectionState();
@@ -335,7 +335,7 @@ void CKademliaWnd::SetAllIcons()
 	m_ctrlBootstrap.SetIcon(_T("KadBootstrap"));
 
 	if (icon_kadsea)
-		VERIFY( DestroyIcon(icon_kadsea) );
+		VERIFY(DestroyIcon(icon_kadsea));
 	icon_kadsea = theApp.LoadIcon(_T("KadCurrentSearches"), 16, 16);
 	((CStatic*)GetDlgItem(IDC_KADICO2))->SetIcon(icon_kadsea);
 
@@ -357,11 +357,11 @@ void CKademliaWnd::Localize()
 	GetDlgItem(IDC_SSTATIC7)->SetWindowText(GetResString(IDS_SV_PORT) + _T(":"));
 	GetDlgItem(IDC_NODESDATLABEL)->SetWindowText(GetResString(IDS_BOOTSRAPNODESDAT));
 	GetDlgItem(IDC_FIREWALLCHECKBUTTON)->SetWindowText(GetResString(IDS_KAD_RECHECKFW));
-	
-	SetDlgItemText(IDC_RADCLIENTS,GetResString(IDS_RADCLIENTS));
+
+	SetDlgItemText(IDC_RADCLIENTS, GetResString(IDS_RADCLIENTS));
 
 	UpdateControlsState();
-	UpdateButtonTitle( m_pbtnWnd->IsButtonChecked(MP_VIEW_KADLOOKUP)==TRUE);
+	UpdateButtonTitle(m_pbtnWnd->IsButtonChecked(MP_VIEW_KADLOOKUP) == TRUE);
 	m_contactHistogramCtrl->Localize();
 	m_contactListCtrl->Localize();
 	searchList->Localize();
@@ -392,11 +392,11 @@ void CKademliaWnd::UpdateControlsState()
 
 	GetDlgItem(IDC_BOOTSTRAPBUTTON)->EnableWindow(
 		!Kademlia::CKademlia::IsConnected()
-		&& (  (IsDlgButtonChecked(IDC_RADIP)>0 && !strBootstrapIP.IsEmpty()
-				&& (strBootstrapIP.Find(_T(':')) != -1 || !strBootstrapPort.IsEmpty()))
-		    || IsDlgButtonChecked(IDC_RADCLIENTS) != 0
-			|| (IsDlgButtonChecked(IDC_RADNODESURL) != 0 && !strBootstrapUrl.IsEmpty() ))
-			);
+		&& ((IsDlgButtonChecked(IDC_RADIP) > 0 && !strBootstrapIP.IsEmpty()
+			&& (strBootstrapIP.Find(_T(':')) != -1 || !strBootstrapPort.IsEmpty()))
+			|| IsDlgButtonChecked(IDC_RADCLIENTS) != 0
+			|| (IsDlgButtonChecked(IDC_RADNODESURL) != 0 && !strBootstrapUrl.IsEmpty()))
+	);
 }
 
 UINT CKademliaWnd::GetContactCount() const
@@ -439,7 +439,7 @@ void CKademliaWnd::ContactRef(const Kademlia::CContact* contact)
 	m_contactListCtrl->ContactRef(contact);
 }
 
-void CKademliaWnd::UpdateNodesDatFromURL(CString strURL){
+void CKademliaWnd::UpdateNodesDatFromURL(CString strURL) {
 	CString strTempFilename;
 	strTempFilename.Format(_T("%stemp-%d-nodes.dat"), thePrefs.GetMuleDirectory(EMULE_CONFIGDIR), ::GetTickCount());
 
@@ -454,13 +454,13 @@ void CKademliaWnd::UpdateNodesDatFromURL(CString strURL){
 		return;
 	}
 
-	if (!Kademlia::CKademlia::IsRunning()){
+	if (!Kademlia::CKademlia::IsRunning()) {
 		Kademlia::CKademlia::Start();
 		theApp.emuledlg->ShowConnectionState();
 	}
 
 	Kademlia::CKademlia::GetRoutingZone()->ReadFile(strTempFilename);
-	(void)_tremove(strTempFilename);	
+	(void)_tremove(strTempFilename);
 
 }
 
@@ -511,7 +511,7 @@ void CKademliaWnd::SetSearchGraph(Kademlia::CLookupHistory* pLookupHistory, bool
 	}
 }
 
-void CKademliaWnd::OnNMDblclkSearchlist(NMHDR *pNMHDR, LRESULT *pResult)
+void CKademliaWnd::OnNMDblclkSearchlist(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LPNMITEMACTIVATE pItemInfo = (LPNMITEMACTIVATE)pNMHDR;
 	if (pItemInfo->iItem >= 0)
@@ -526,7 +526,7 @@ void CKademliaWnd::OnNMDblclkSearchlist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 }
 
-void CKademliaWnd::OnListModifiedSearchlist(NMHDR* /*pNMHDR*/, LRESULT *pResult)
+void CKademliaWnd::OnListModifiedSearchlist(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
 	POSITION pos = searchList->GetFirstSelectedItemPosition();
 	if (pos != NULL)
@@ -552,7 +552,7 @@ void CKademliaWnd::ShowLookupGraph(bool bShow)
 		iIcon = 0;
 		m_pbtnWnd->CheckButton(MP_VIEW_KADCONTACTS);
 	}
-	TBBUTTONINFO tbbi = {0};
+	TBBUTTONINFO tbbi = { 0 };
 	tbbi.cbSize = sizeof tbbi;
 	tbbi.dwMask = TBIF_IMAGE;
 	tbbi.iImage = iIcon;
@@ -570,7 +570,7 @@ void CKademliaWnd::UpdateButtonTitle(bool bLookupGraph)
 		if (m_kadLookupGraph->HasLookup())
 			strText.Format(_T("%s (%s)"), GetResString(IDS_LOOKUPGRAPH), m_kadLookupGraph->GetCurrentLookupTitle());
 		else
-			strText =  GetResString(IDS_LOOKUPGRAPH);
+			strText = GetResString(IDS_LOOKUPGRAPH);
 	}
 	else
 		strText.Format(_T("%s (%i)"), GetResString(IDS_KADCONTACTLAB), m_contactListCtrl->GetItemCount());
@@ -586,18 +586,18 @@ void CKademliaWnd::UpdateContactCount()
 BOOL CKademliaWnd::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	switch (wParam)
-	{ 
-		case IDC_KADICO1:
-			ShowLookupGraph(m_contactListCtrl->IsWindowVisible() == TRUE ? true : false);
-			break;
-		case MP_VIEW_KADCONTACTS:
-			ShowLookupGraph(false);
-			break;
-		case MP_VIEW_KADLOOKUP:
-			ShowLookupGraph(true);
-			break;
-		default:
-			return CWnd::OnCommand(wParam, lParam);
+	{
+	case IDC_KADICO1:
+		ShowLookupGraph(m_contactListCtrl->IsWindowVisible() == TRUE ? true : false);
+		break;
+	case MP_VIEW_KADCONTACTS:
+		ShowLookupGraph(false);
+		break;
+	case MP_VIEW_KADLOOKUP:
+		ShowLookupGraph(true);
+		break;
+	default:
+		return CWnd::OnCommand(wParam, lParam);
 	}
 	return TRUE;
 }

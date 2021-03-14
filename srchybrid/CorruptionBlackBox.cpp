@@ -23,10 +23,10 @@
 #include "clientlist.h"
 #include "opcodes.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -191,7 +191,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos){
 	}
 	uint64 nDbgVerifiedBytes = 0;
 	//uint32 nDbgOldEntries = m_aaRecords[nPart].GetCount();
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	CMap<int, int, int, int> mapDebug;
 #endif
 	for (int i= 0; i < m_aaRecords[nPart].GetCount(); i++){
@@ -237,7 +237,7 @@ void CCorruptionBlackBox::VerifiedData(uint64 nStartPos, uint64 nEndPos){
 			}
 		}
 	}
-/*#ifdef _DEBUG
+/*#ifdef ADU_BETA
 	uint32 nClients = mapDebug.GetCount();
 #else
 	uint32 nClients = 0;

@@ -24,13 +24,6 @@
 #include "SplitterControl.h"
 #include "MenuCmds.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // from free unRAR, Alexander L. Roshal
 class EncodeFileName
 {

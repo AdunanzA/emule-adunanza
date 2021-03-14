@@ -19,12 +19,6 @@
 #include "stdafx.h"
 #include "emule.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 static LPCTSTR s_szPropOldWndProc = _T("PropBuddyButtonOldWndProc");
 static LPCTSTR s_szPropBuddyData = _T("PropBuddyButtonData");
 
@@ -104,9 +98,6 @@ bool InitAttachedBrowseButton(HWND hwndButton, HICON &ricoBrowse)
 {
 	// Showing an icon button works for all Windows versions *except* Windows XP w/ active styles
 	if (theApp.IsXPThemeActive())
-		return false;
-	// However, do not stress system resources for non-NT systems.
-	if (afxIsWin95())
 		return false;
 
 	if (ricoBrowse == NULL)

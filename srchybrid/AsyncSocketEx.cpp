@@ -69,10 +69,10 @@ to tim.kosse@gmx.de
 #include "AsyncSocketExLayer.h"
 #endif //NOLAYERS
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 #ifndef CCRITICALSECTIONWRAPPERINCLUDED
@@ -1075,11 +1075,9 @@ BOOL CAsyncSocketEx::SetSockOpt(int nOptionName, const void* lpOptionValue, int 
 	return setsockopt(m_SocketData.hSocket, nLevel, nOptionName, (LPSTR)lpOptionValue, nOptionLen) != SOCKET_ERROR;
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CAsyncSocketEx::AssertValid() const
 {
-	CObject::AssertValid();
-
 	(void)m_SocketData;
 	(void)m_lEvent;
 	(void)m_pAsyncGetHostByNameBuffer;
@@ -1108,9 +1106,9 @@ void CAsyncSocketEx::AssertValid() const
 }
 #endif
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CAsyncSocketEx::Dump(CDumpContext& dc) const
 {
-	CObject::Dump(dc);
+
 }
 #endif

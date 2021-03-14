@@ -33,13 +33,6 @@ typedef struct {
 #endif
 #endif//HAVE_WMSDK_H
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 CStringStream& CStringStream::operator<<(LPCTSTR psz)
 {
 	str += psz;

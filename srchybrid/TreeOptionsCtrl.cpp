@@ -155,10 +155,10 @@ to maintain a single distribution point for the source code.
 
 //////////////// Macros / Locals /////////////////////////////////////
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 

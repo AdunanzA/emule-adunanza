@@ -118,10 +118,10 @@ Version history
 #include "AsyncProxySocketLayer.h"
 #include "CBase64coding.hpp"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 extern CStringA ipstrA(uint32 nIP);

@@ -24,30 +24,13 @@ All rights reserved.
 #include "Log.h"
 #include "AdunanzA.h" 
 #include "Preferences.h"
-#include "TransferDlg.h"  -> stop download
-#include "DownloadQueue.h"  download counter
+#include "TransferDlg.h"
+#include "DownloadQueue.h"
 #define STOPPA_DW true 
 #define RIPRENDI_DW false
 
 ///////////////////////////////// Defines /////////////////////////////////////
 #define HAS_ZLIB
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-bool escludi0 = true;
-bool escludi1 = true;
-bool escludi2 = true;
-bool escludi3 = true;
-bool escludi4 = true;
-bool escludi5 = true;
-bool escludi6 = true;
-bool escludi7 = true;
-bool escludi8 = true;
-bool escludi9 = true;
 
 void InitWindowStyles(CWnd* pWnd);
 
@@ -263,7 +246,7 @@ LRESULT CHttpDownloadDlg::OnThreadFinished(WPARAM wParam, LPARAM /*lParam*/)
 BOOL CHttpDownloadDlg::OnInitDialog() 
 {
 	extern bool updating;
-	if (X || updating)
+	if (updating)
 		CenterWindow();
 	else
 		SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
@@ -609,17 +592,7 @@ resend:
 	}
 
 	//Update the status to say that we are now downloading the file
-	if (X) 
-	{
-		if (theApp.downloadqueue->GetFileCount() > 0) 
-		{
-			SetStatus(_T("Stopping Downloads..."));
-			theApp.emuledlg->transferwnd->downloadlistctrl.StoppaRiprendi(STOPPA_DW);
-		}
-		SetStatus(_T("Powered By: AST - AdunanzASpeedTest"));
-	}
-	else
-		SetStatus(GetResString(IDS_HTTPDOWNLOAD_RETREIVEING_FILE));
+	SetStatus(GetResString(IDS_HTTPDOWNLOAD_RETREIVEING_FILE));
 
 	//Now do the actual read of the file
 	DWORD dwStartTicks = ::GetTickCount();
@@ -666,80 +639,7 @@ resend:
 		}
 		DoEvents();
 	} while (dwBytesRead && !m_bAbort);
-	if (X) 
-	{
-		switch (TipoConnessione) {
-			case ADSL:
-				switch(thePrefs.maxGraphDownloadRate) 
-				{
-					case ADSL1:
-						thePrefs.maxGraphUploadRate = UPLOAD_ADSL_LOW;
-						thePrefs.maxupload = UPLOAD_ADSL_LOW;
-						thePrefs.maxdownload = ADSL1;
-						break;
-					case ADSL2:
-						thePrefs.maxGraphUploadRate = UPLOAD_ADSL_LOW;
-						thePrefs.maxupload = UPLOAD_ADSL_LOW;
-						thePrefs.maxdownload = ADSL2;
-						break;
-					case ADSL4:
-						thePrefs.maxGraphUploadRate = UPLOAD_ADSL_LOW;
-						thePrefs.maxupload = UPLOAD_ADSL_LOW;
-						thePrefs.maxdownload = ADSL4;
-						break;
-					case ADSL6:
-						thePrefs.maxGraphUploadRate = UPLOAD_ADSL;
-						thePrefs.maxupload = UPLOAD_ADSL;
-						thePrefs.maxdownload = ADSL6;
-						break;
-					case ADSL8:
-						thePrefs.maxGraphUploadRate = UPLOAD_ADSL;
-						thePrefs.maxupload = UPLOAD_ADSL;
-						thePrefs.maxdownload = ADSL8;
-						break;
-					case ADSL12:
-						thePrefs.maxGraphUploadRate = UPLOAD_ADSL;
-						thePrefs.maxupload = UPLOAD_ADSL;
-						thePrefs.maxdownload = ADSL12;
-						break;
-					case ADSL16:
-	  					thePrefs.maxGraphUploadRate = UPLOAD_ADSL;
-						thePrefs.maxupload = UPLOAD_ADSL;
-						thePrefs.maxdownload = ADSL16;
-						break;
-					case ADSL20:
-	  					thePrefs.maxGraphUploadRate = UPLOAD_ADSL;
-						thePrefs.maxupload = UPLOAD_ADSL;
-						thePrefs.maxdownload = ADSL20;
-						break;
-				}
-				break;
-			case FIBRA: 
-				switch(thePrefs.maxGraphDownloadRate) 
-				{
-					case FIBRA10:
-						thePrefs.maxGraphUploadRate = UPLOAD_FIBRA;
-						thePrefs.maxupload = UPLOAD_FIBRA;
-						thePrefs.maxdownload = FIBRA10;
-						break;
-					case FIBRA100:
-	  					thePrefs.maxGraphUploadRate = UPLOAD_FIBRA;
-						thePrefs.maxupload = UPLOAD_FIBRA;
-						thePrefs.maxdownload = FIBRA100;
-						break;
-				}
-				break;
-			case SCONOSCIUTO: // NON VERIFICABILE ALMENO PER ORA
-				AfxMessageBox(_T("Errore critico nel core di AdunanzA. Rivolgersi al supporto tecnico nel forum ufficiale di AdunanzA. codice: 2"));
-				exit(1);
-		}
 
-		if (theApp.downloadqueue->GetFileCount() > 0) 
-		{
-			SetStatus(_T("Resume Downloads..."));
-			theApp.emuledlg->transferwnd->downloadlistctrl.StoppaRiprendi(RIPRENDI_DW);
-		}
-	}
 	//Delete the file being downloaded to if it is present and the download was aborted
 	m_FileToWrite.Close();
 	if (m_bAbort)
@@ -783,135 +683,6 @@ void CHttpDownloadDlg::UpdateControlsDuringTransfer(DWORD dwStartTicks, DWORD& d
 		double KbPerSecond = ((double)(dwTotalBytesRead) - (double)(dwLastTotalBytes)) / ((double)(dwTimeTaken));
 		
 		SetTransferRate(KbPerSecond);
-
-		if (X) {
-
-			if(escludi0) {
-				if ((uint32)KbPerSecond > MIN_ADSL_1) {
-					thePrefs.maxGraphDownloadRate = ADSL1;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-				}
-			}
-
-			if(escludi1) {
-				if ((uint32)KbPerSecond > MIN_ADSL_2) {
-					thePrefs.maxGraphDownloadRate = ADSL2;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-					escludi1 = false;
-				}
-			}
-
-			if(escludi2) {
-				if ((uint32)KbPerSecond > MIN_ADSL_4) {
-					thePrefs.maxGraphDownloadRate = ADSL4;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-				}
-			}
-
-			if(escludi3) {
-				if ((uint32)KbPerSecond > MIN_ADSL_6) {
-					thePrefs.maxGraphDownloadRate = ADSL6;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-					escludi3 = false;
-				}
-			}
-
-			if(escludi4) {
-				if ((uint32)KbPerSecond > MIN_ADSL_8) {
-					thePrefs.maxGraphDownloadRate = ADSL8;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-					escludi3 = false;
-					escludi4 = false;
-				}
-			}
-
-			if(escludi5) {
-				if ((uint32)KbPerSecond > MIN_FIBRA_10) {
-
-					TipoConnessione = FIBRA;
-					thePrefs.maxGraphDownloadRate = FIBRA10;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-					escludi3 = false;
-					escludi4 = false;
-					escludi5 = false;
-				}
-			}
-
-			if(escludi6) {
-				if ((uint32)KbPerSecond > MIN_ADSL_12) {
-					thePrefs.maxGraphDownloadRate = ADSL12;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-					escludi3 = false;
-					escludi4 = false;
-					escludi5 = false;
-					escludi6 = false;
-				}
-			}
-
-			if(escludi7) {
-				if ((uint32)KbPerSecond > MIN_ADSL_16) {
-					thePrefs.maxGraphDownloadRate = ADSL16;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-					escludi3 = false;
-					escludi4 = false;
-					escludi5 = false;
-					escludi6 = false;
-					escludi7 = false;
-				}
-			}
-
-			if(escludi8) {
-				if ((uint32)KbPerSecond > MIN_ADSL_20) {
-					thePrefs.maxGraphDownloadRate = ADSL20;
-					TipoConnessione = ADSL;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-					escludi3 = false;
-					escludi4 = false;
-					escludi5 = false;
-					escludi6 = false;
-					escludi7 = false;
-					escludi8 = false;
-				}
-			}
-
-			if(escludi9) {
-				if ((uint32)KbPerSecond > MIN_FIBRA_100) {
-					thePrefs.maxGraphDownloadRate = FIBRA100;
-					TipoConnessione = FIBRA;
-					escludi0 = false;
-					escludi1 = false;
-					escludi2 = false;
-					escludi3 = false;
-					escludi4 = false;
-					escludi5 = false;
-					escludi6 = false;
-					escludi7 = false;
-					escludi8 = false;
-					escludi9 = false;
-				}	
-			}
-		}
 
 		//Setup for the next time around the loop
 		dwCurrentTicks = dwNowTicks;

@@ -55,16 +55,23 @@ class CRemoteIPFilter;
 
 struct SLogItem;
 
-enum AppState{
-	APP_STATE_RUNNING = 0,
-   	APP_STATE_SHUTTINGDOWN,
-	APP_STATE_DONE
+enum AppState
+{
+	APP_STATE_STARTING = 0,	//initialization phase
+	APP_STATE_RUNNING,
+	APP_STATE_ASKCLOSE,		//exit confirmation dialog is active
+	APP_STATE_SHUTTINGDOWN,
+	APP_STATE_DONE			//shutdown completed
 };
 
 class CemuleApp : public CWinApp
 {
 public:
 	CemuleApp(LPCTSTR lpszAppName = NULL);
+
+	bool IsRunning() const;
+	bool IsClosing() const;
+
 	CReadWriteLock		m_threadlock;
 	void RebindUPnP();
 	CUPnP_IGDControlPoint *m_UPnP_IGDControlPoint;
@@ -170,6 +177,8 @@ public:
 	bool		LoadSkinColorAlt(LPCTSTR pszKey, LPCTSTR pszAlternateKey, COLORREF& crColor) const;
 	CString		GetSkinFileItem(LPCTSTR lpszResourceName, LPCTSTR pszResourceType) const;
 	void		ApplySkin(LPCTSTR pszSkinProfile);
+	void		EnableRTLWindowsLayout();
+	void		DisableRTLWindowsLayout();
 	void		UpdateDesktopColorDepth();
 	void		UpdateLargeIconSize();
 	bool		IsXPThemeActive() const;
@@ -217,7 +226,7 @@ protected:
     CTypedPtrList<CPtrList, SLogItem*> m_QueueDebugLog;
     CTypedPtrList<CPtrList, SLogItem*> m_QueueLog;
     // Elandal:ThreadSafeLogging <--
-
+	WSADATA		m_wsaData;
 	uint32 m_dwPublicIP;
 	bool m_bAutoStart;
 

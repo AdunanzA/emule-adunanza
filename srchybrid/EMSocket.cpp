@@ -15,7 +15,7 @@
 //along with this program; if not, write to the Free Software
 //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "stdafx.h"
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "DebugHelpers.h"
 #endif
 #include "emule.h"
@@ -28,10 +28,10 @@
 #include "emuleDlg.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -1066,7 +1066,7 @@ void CEMSocket::TruncateQueues() {
     sendLocker.Unlock();
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CEMSocket::AssertValid() const
 {
 	CEncryptedStreamSocket::AssertValid();
@@ -1085,8 +1085,6 @@ void CEMSocket::AssertValid() const
 	(void)pendingPacketSize;
 	CHECK_ARR(sendbuffer, sendblen);
 	(void)sent;
-	controlpacket_queue.AssertValid();
-	standartpacket_queue.AssertValid();
 	CHECK_BOOL(m_currentPacket_is_controlpacket);
     //(void)sendLocker;
     (void)m_numberOfSentBytesCompleteFile;
@@ -1101,7 +1099,7 @@ void CEMSocket::AssertValid() const
 }
 #endif
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CEMSocket::Dump(CDumpContext& dc) const
 {
 	CEncryptedStreamSocket::Dump(dc);
@@ -1164,7 +1162,7 @@ bool CEMSocket::UseBigSendBuffer()
 	val = 0;
 	vallen = sizeof(int);
 	GetSockOpt(SO_SNDBUF, &val, &vallen);
-#if defined(_DEBUG) || defined(_BETA)
+#if defined(ADU_BETA)
 	if (val == BIGSIZE)
 		theApp.QueueDebugLogLine(false, _T("Increased Sendbuffer for uploading socket from %uKB to %uKB"), oldval/1024, val/1024);
 	else

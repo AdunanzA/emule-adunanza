@@ -114,14 +114,7 @@
 #include "AduWizard.h"
 #include "AduWebBrowser.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 bool first = false;
-bool CHttpDownloadDlg::X;
 bool WizardNotOpen = false;
 extern bool WizardAdunanzA();
 
@@ -729,79 +722,14 @@ void CALLBACK CemuleDlg::StartupTimer(HWND /*hwnd*/, UINT idEvent, UINT_PTR uiMs
 				{
 					theApp.emuledlg->CloseConnection();
 					thePrefs.m_AduNoTips = true;
-					if (WizardAdunanzA())
-					{
-						extern bool X;
-						if (X) 
-						{
-							X = false;
-							CHttpDownloadDlg::X = false;
-							thePrefs.MaxConperFive = 150;
-							extern bool escludi0;
-							extern bool escludi1;
-							extern bool escludi2;
-							extern bool escludi3;
-							extern bool escludi4;
-							extern bool escludi5;
-							extern bool escludi6;
-							extern bool escludi7;
-							extern bool escludi8;
-							extern bool escludi9;
-							extern bool isAutomatic;
-							extern void ConfiguraAdunanza();
-							if (isAutomatic) 
-							{
-								if (escludi0 == true && escludi1 == true && escludi2 == true && escludi3 == true && escludi4 == true && escludi5 == true && escludi6 == true && escludi7 == true && escludi8 == true && escludi9 == true) 
-								{
-									AfxMessageBox(_T("Il server risulta essere offline. Verrà lanciata la configurazione manuale."));
-									AduWizard WizardPersonalizzato;
-									WizardPersonalizzato.DoModal();
-								}
-							}
-							ConfiguraAdunanza();
-							//AfxMessageBox(_T("La configurazione è stata effettuata correttamente. Per il corretto funzionamento della rete KAdu, si consiglia il riavvio di eMule AdunanzA."),MB_ICONINFORMATION);
-						
-							escludi0 = true;
-							escludi1 = true;
-							escludi2 = true;
-							escludi3 = true;
-							escludi4 = true;
-							escludi5 = true;
-							escludi6 = true;
-							escludi7 = true;
-							escludi8 = true;
-							escludi9 = true;
-
-							switch (thePrefs.maxGraphUploadRate) 
-							{
-								case UPLOAD_ADSL: thePrefs.m_AduMaxUpSlots = UPLOAD_SLOT_ADSL; thePrefs.adsl_fiber = ADSL; break;
-								case UPLOAD_ADSL_LOW: thePrefs.m_AduMaxUpSlots = UPLOAD_SLOT_ADSL_LOW; thePrefs.adsl_fiber = ADSL; break;
-								case UPLOAD_FIBRA: thePrefs.m_AduMaxUpSlots = UPLOAD_SLOT_FIBRA; thePrefs.adsl_fiber = FIBRA; break;
-							}
-
-							theApp.emuledlg->statisticswnd->SetARange(false, thePrefs.GetMaxGraphUploadRate(true));
-							theApp.emuledlg->statisticswnd->SetARange(true, thePrefs.maxGraphDownloadRate);
-							theApp.scheduler->SaveOriginals();
-							theApp.emuledlg->preferenceswnd->m_wndConnection.LoadSettings();
-							theApp.emuledlg->preferenceswnd->m_wndAdunanzA.LoadSettings();
-							DeleteFile(thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("speed_test.adu"));
-							}
-						}
-					else { 
-						AfxMessageBox(_T("Errore critico nel core di AdunanzA. Rivolgersi al supporto tecnico nel forum ufficiale di AdunanzA. codice: 1"),MB_ICONEXCLAMATION);
-						exit(EXIT_FAILURE);
-					}
+					WizardAdunanzA();
+				}
 				WizardNotOpen = true;
 				thePrefs.m_AduNoTips = false;
 				theApp.emuledlg->StartConnection();
-
-				//  -> Da implementare nella next version!!
-				//::AfxBeginThread(ConfiguraPerNuoviUtenti, NULL, 0, 0, 0, NULL);  -> Controllo IP nuovi.
-				//  -> hash sicuro
 				theApp.emuledlg->StopTimer();
 				}
 		}
-	}
 	CATCH_DFLT_EXCEPTIONS(_T("CemuleDlg::StartupTimer"))
 }
 
@@ -965,7 +893,7 @@ void CemuleDlg::AddLogText(UINT uFlags, LPCTSTR pszText)
 		else
 			AfxMessageBox(pszText);
 	}
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 	Debug(_T("%s\n"), pszText);
 #endif
 
@@ -1259,15 +1187,6 @@ void CemuleDlg::ShowTransferRate(bool bForceAll)
 		else
 			_sntprintf(buffer2, _countof(buffer2), _T("(%s) - %s"), GetResString(IDS_DISCONNECTED), strTransferRate);
 		buffer2[_countof(buffer2) - 1] = _T('\0');
-		// Win98: '\r\n' is not displayed correctly in tooltip
-		if (afxIsWin95()) {
-			LPTSTR psz = buffer2;
-			while (*psz) {
-				if (*psz == _T('\r') || *psz == _T('\n'))
-					*psz = _T(' ');
-				psz++;
-			}
-		}
 		TraySetToolTip(buffer2);
 	}
 
@@ -1768,7 +1687,7 @@ LRESULT CemuleDlg::OnFileCompleted(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void BeBusy(UINT uSeconds, LPCSTR pszCaller)
 {
 	UINT s = 0;
@@ -1864,6 +1783,7 @@ void CemuleDlg::OnDestroy()
 bool CemuleDlg::CanClose()
 {
 	DestroySplash();
+
 	if(thePrefs.confirmExit)
 		CheckDlgButton(IDC_DONTASKMEAGAINCB,0);
 	else
@@ -1872,8 +1792,14 @@ bool CemuleDlg::CanClose()
 	if (theApp.m_app_state == APP_STATE_RUNNING && thePrefs.IsConfirmExitEnabled())
 	{
 		CAskExit ExitDlg;
-		if (ExitDlg.DoModal()!= IDYES)
-		    return false;
+		if (ExitDlg.DoModal() != IDYES)
+		{
+			if (theApp.m_app_state == APP_STATE_ASKCLOSE) //if the application state did not change
+				theApp.m_app_state = APP_STATE_RUNNING; //then keep running
+			return false;
+		}
+
+		theApp.m_app_state = APP_STATE_ASKCLOSE; //disable tray menu
 	}
 	return true;
 }
@@ -3316,7 +3242,7 @@ LRESULT CemuleDlg::OnKickIdle(WPARAM, LPARAM lIdleCount)
 	{
 		if (theApp.m_app_state != APP_STATE_SHUTTINGDOWN)
 		{
-//#ifdef _DEBUG
+//#ifdef ADU_BETA
 //			TCHAR szDbg[80];
 //			wsprintf(szDbg, L"%10u: lIdleCount=%d, %s", GetTickCount(), lIdleCount, (lIdleCount > 0) ? L"FreeTempMaps" : L"");
 //			SetWindowText(szDbg);
@@ -3933,7 +3859,7 @@ BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
 	//
 	if ((nEventType == DBT_DEVICEARRIVAL || nEventType == DBT_DEVICEREMOVECOMPLETE) && !IsBadReadPtr((void *)dwData, sizeof(DEV_BROADCAST_HDR)))
 	{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		CString strMsg;
 		if (nEventType == DBT_DEVICEARRIVAL)
 			strMsg += _T("DBT_DEVICEARRIVAL");
@@ -3945,7 +3871,7 @@ BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
 		if (pHdr->dbch_devicetype == DBT_DEVTYP_VOLUME && !IsBadReadPtr((void *)dwData, sizeof(DEV_BROADCAST_VOLUME)))
 		{
 			const DEV_BROADCAST_VOLUME *pVol = (DEV_BROADCAST_VOLUME *)pHdr;
-#ifdef _DEBUG
+#ifdef ADU_BETA
 			strMsg += _T(" Volume");
 			if (pVol->dbcv_flags & DBTF_MEDIA)
 				strMsg += _T(" Media");
@@ -4069,7 +3995,7 @@ BOOL CemuleDlg::OnDeviceChange(UINT nEventType, DWORD_PTR dwData)
 		{
 			DEBUG_ONLY( strMsg.AppendFormat(_T(" devicetype=0x%08x"), pHdr->dbch_devicetype) );
 		}
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		TRACE(_T("CemuleDlg::OnDeviceChange: %s\n"), strMsg);
 #endif
 	}

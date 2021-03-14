@@ -46,10 +46,10 @@ there client on the eMule forum..
 #include "../../KadSearchListCtrl.h"
 #include "../../SearchDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 LPCSTR g_aszInvKadKeywordCharsA = INV_KAD_KEYWORD_CHARS;

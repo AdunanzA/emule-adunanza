@@ -37,10 +37,10 @@
 #include "UpDownClient.h"
 #include "UserMsgs.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -379,7 +379,7 @@ void CWebServer::ProcessURL(ThreadData Data)
 	//////////////////////////////////////////////////////////////////////////
 	CoInitialize(NULL);
 
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	try{
 #endif	
 
@@ -689,7 +689,7 @@ void CWebServer::ProcessURL(ThreadData Data)
 
 	delete[] gzipOut;
 
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	}
 	catch(...){
 		AddDebugLogLine( DLP_VERYHIGH, false, _T("*** Unknown exception in CWebServer::ProcessURL") );
@@ -2541,11 +2541,11 @@ CString CWebServer::_CreateTransferList(CString Out, CWebServer *pThis, ThreadDa
 		(nCountQueueBanned > 0 && pThis->m_Params.bShowUploadQueueBanned) ||
 		(nCountQueueFriend > 0 && pThis->m_Params.bShowUploadQueueFriend))
 	{
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	DWORD dwStart = ::GetTickCount();
 #endif
 	QueueArray.QuickSort(pThis->m_Params.bQueueSortReverse);
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	AddDebugLogLine(false, _T("WebServer: Waitingqueue with %u elements sorted in %u ms"), QueueArray.GetSize(), ::GetTickCount()-dwStart);
 #endif
 	}
@@ -5072,56 +5072,50 @@ CString CWebServer::GetClientversionImage(CUpDownClient* client)
 
 CString CWebServer::_GetCommentlist(ThreadData Data)
 {
-	CWebServer *pThis = (CWebServer *)Data.pThis;
-
-	uchar FileHash[16];
-	CPartFile* pPartFile=theApp.downloadqueue->GetFileByID(_GetFileHash(_ParseURL(Data.sURL, _T("filehash")),FileHash) );
-
-	CString Out= pThis->m_Templates.sCommentList;
-
+	uchar FileHash[MDX_DIGEST_SIZE];
+	bool bHash = strmd4(_ParseURL(Data.sURL, _T("filehash")), FileHash);
+	const CPartFile* pPartFile = bHash ? theApp.downloadqueue->GetFileByID(FileHash) : NULL;
 	if (!pPartFile)
-		return _T("");
+		return CString();
+
+	const CWebServer* pThis = reinterpret_cast<CWebServer*>(Data.pThis);
+	CString Out = pThis->m_Templates.sCommentList;
+
+	CString comments;
+	comments.Format(_T("%s: %s"), (LPCTSTR)GetResString(IDS_COMMENT), (LPCTSTR)pPartFile->GetFileName());
+	Out.Replace(_T("[COMMENTS]"), comments);
 
 	CString commentlines;
-	Out.Replace(_T("[COMMENTS]"), GetResString(IDS_COMMENT) + _T(": ") + pPartFile->GetFileName() );
-
 	// prepare commentsinfo-string
-	for (POSITION pos = pPartFile->srclist.GetHeadPosition(); pos != NULL; )
-	{ 
-		CUpDownClient* cur_src = pPartFile->srclist.GetNext(pos);
+	for (POSITION pos = pPartFile->srclist.GetHeadPosition(); pos != NULL;) {
+		const CUpDownClient* cur_src = pPartFile->srclist.GetNext(pos);
 		if (cur_src->HasFileRating() || !cur_src->GetFileComment().IsEmpty())
-		{
-			commentlines.AppendFormat( pThis->m_Templates.sCommentListLine,
-				_SpecialChars(cur_src->GetUserName()),
-				_SpecialChars(cur_src->GetClientFilename()),
-				_SpecialChars(cur_src->GetFileComment()),
-				_SpecialChars(GetRateString(cur_src->GetFileRating()))
-				);
-		} 
-	} 
+			commentlines.AppendFormat(pThis->m_Templates.sCommentListLine
+				, (LPCTSTR)_SpecialChars(cur_src->GetUserName())
+				, (LPCTSTR)_SpecialChars(cur_src->GetClientFilename())
+				, (LPCTSTR)_SpecialChars(cur_src->GetFileComment())
+				, (LPCTSTR)_SpecialChars(GetRateString(cur_src->GetFileRating())));
+	}
 
 	const CTypedPtrList<CPtrList, Kademlia::CEntry*>& list = pPartFile->getNotes();
-	for(POSITION pos = list.GetHeadPosition(); pos != NULL; )
-	{
-		Kademlia::CEntry* entry = list.GetNext(pos);
-
-		commentlines.AppendFormat( pThis->m_Templates.sCommentListLine,
-			_T(""),
-			_SpecialChars(entry->GetCommonFileName()),
-			_SpecialChars(entry->GetStrTagValue(TAG_DESCRIPTION)),
-			_SpecialChars(GetRateString((UINT)entry->GetIntTagValue(TAG_FILERATING)) )
-			);
+	for (POSITION pos = list.GetHeadPosition(); pos != NULL;) {
+		const Kademlia::CEntry* entry = list.GetNext(pos);
+		commentlines.AppendFormat(pThis->m_Templates.sCommentListLine
+			, _T("")
+			, (LPCTSTR)_SpecialChars(entry->GetCommonFileName())
+			, (LPCTSTR)_SpecialChars(entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION)))
+			, (LPCTSTR)_SpecialChars(GetRateString((UINT)entry->GetIntTagValue(Kademlia::CKadTagNameString(TAG_FILERATING)))));
 	}
-	
-	Out.Replace(_T("[COMMENTLINES]"), commentlines );
 
-	Out.Replace(_T("[COMMENTS]"),  _T("")  );
+	Out.Replace(_T("[COMMENTLINES]"), commentlines);
+
+	Out.Replace(_T("[COMMENTS]"), _T(""));
 	Out.Replace(_T("[USERNAME]"), GetResString(IDS_QL_USERNAME));
 	Out.Replace(_T("[FILENAME]"), GetResString(IDS_DL_FILENAME));
 	Out.Replace(_T("[COMMENT]"), GetResString(IDS_COMMENT));
 	Out.Replace(_T("[RATING]"), GetResString(IDS_QL_RATING));
 	Out.Replace(_T("[CLOSE]"), GetResString(IDS_CW_CLOSE));
-	Out.Replace(_T("[CharSet]"), HTTPENCODING );
+	Out.Replace(_T("[CharSet]"), HTTPENCODING);
 
 	return Out;
 }

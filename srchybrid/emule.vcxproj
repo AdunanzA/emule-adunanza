@@ -9,14 +9,6 @@
       <Configuration>ADU</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|Win32">
-      <Configuration>Template</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Template|x64">
-      <Configuration>Template</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>eMule_AdnzA</ProjectName>
@@ -33,19 +25,12 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ADU|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v142</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -55,9 +40,6 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ADU|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Template|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ADU|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -78,9 +60,6 @@
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='ADU|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='ADU|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='ADU|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Template|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|x64'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|x64'" />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ADU|Win32'">
     <MASM>
@@ -141,11 +120,13 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>..\site_config;.;..;..\id3lib\include;..\ATL\include;$(ProjectDir)\..\ixml\src\inc;$(ProjectDir)\..\upnp\src\inc;$(ProjectDir)\..\upnp\inc;$(ProjectDir)\..\threadutil\inc;$(ProjectDir)\..\ixml\inc;pthreads\pthreads\inc;upnp\inc;ixml\inc;upnplib\threadutil\inc;$(ProgramW6432)\Microsoft SDKs\Speech\v11.0\Include;dx\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN64;_WINDWIN32;_WINDOWS;NDEBUG;ID3LIB_LINKOPTION=1;_RELEASE;SUPPORT_LARGE_FILES;UPNP_STATIC_LIB;_WIN32;PTW32_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ADU_BETA;ID3LIB_LINKOPTION=1;SUPPORT_LARGE_FILES;UPNP_STATIC_LIB;PTW32_STATIC_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <UndefinePreprocessorDefinitions>_USE_32BIT_TIME_T</UndefinePreprocessorDefinitions>
       <CallingConvention>FastCall</CallingConvention>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
     </ClCompile>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -155,7 +136,6 @@
       <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;gdiplus.lib;ADSIId.lib;crypt32.lib;wmvcore.lib;zlib.lib;cryptlib.lib;id3lib.lib;CxImage.lib;libpng.lib;ResizableLib.lib;miniupnpc.lib;pthread.lib;upnpLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\cryptopp\x64\Output\Release;.\CxImage\Release\;..\id3lib\libprj\;..\libpng\projects\visualc9\x64\LIB Release;..\ResizableLib\Release_Static;.\miniupnpc\x64\Release\;upnplib\win32project\x64\Release;pthreads\pthreads\x64\Release;7_SDK\Lib\x64;dx\Lib\x64;$(ProgramW6432)\Microsoft SDKs\Windows\v7.1\Lib\x64\;$(ProgramW6432)\Microsoft SDKs\Speech\v11.0\Lib;..\zlib\projects\visualc6\Win32_LIB_Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <UACExecutionLevel>AsInvoker</UACExecutionLevel>
       <IgnoreSpecificDefaultLibraries>Uafxcwd.lib;Libcmtd.lib;kernel32.lib;advapi32.lib;user32.lib;gdi32.lib;shell32.lib;comdlg32.lib;version.lib;mpr.lib;rasapi32.lib;winmm.lib;winspool.lib;vfw32.lib;secur32.lib;oleacc.lib;oledlg.lib;sensapi.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <DelayLoadDLLs>oleacc.dll;gdiplus.dll;ws2_32.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -166,6 +146,9 @@
       </LinkTimeCodeGeneration>
     </Link>
     <Manifest />
+    <Manifest>
+      <AdditionalManifestFiles>res/emule.manifest %(AdditionalManifestFiles)</AdditionalManifestFiles>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFile.cpp" />
@@ -202,6 +185,28 @@
     <ClCompile Include="I18n.cpp" />
     <ClCompile Include="Ini2.cpp" />
     <ClCompile Include="IPFilter.cpp" />
+    <ClCompile Include="kademlia\io\BufferedFileIO.cpp" />
+    <ClCompile Include="kademlia\io\ByteIO.cpp" />
+    <ClCompile Include="kademlia\io\DataIO.cpp" />
+    <ClCompile Include="kademlia\io\FileIO.cpp" />
+    <ClCompile Include="kademlia\io\IOException.cpp" />
+    <ClCompile Include="kademlia\kademlia\Entry.cpp" />
+    <ClCompile Include="kademlia\kademlia\Indexed.cpp" />
+    <ClCompile Include="kademlia\kademlia\Kademlia.cpp" />
+    <ClCompile Include="kademlia\kademlia\Prefs.cpp" />
+    <ClCompile Include="kademlia\kademlia\Search.cpp" />
+    <ClCompile Include="kademlia\kademlia\SearchManager.cpp" />
+    <ClCompile Include="kademlia\kademlia\UDPFirewallTester.cpp" />
+    <ClCompile Include="kademlia\net\KademliaUDPListener.cpp" />
+    <ClCompile Include="kademlia\net\PacketTracking.cpp" />
+    <ClCompile Include="kademlia\routing\Contact.cpp" />
+    <ClCompile Include="kademlia\routing\RoutingBin.cpp" />
+    <ClCompile Include="kademlia\routing\RoutingZone.cpp" />
+    <ClCompile Include="kademlia\utils\LittleEndian.cpp" />
+    <ClCompile Include="kademlia\utils\LookupHistory.cpp" />
+    <ClCompile Include="kademlia\utils\MiscUtils.cpp" />
+    <ClCompile Include="kademlia\utils\ThreadName.cpp" />
+    <ClCompile Include="kademlia\utils\UInt128.cpp" />
     <ClCompile Include="KnownFile.cpp" />
     <ClCompile Include="KnownFileList.cpp" />
     <ClCompile Include="LastCommonRouteFinder.cpp" />
@@ -276,28 +281,6 @@
     <ClCompile Include="Version.cpp" />
     <ClCompile Include="WebSocket.cpp" />
     <ClCompile Include="ZIPFile.cpp" />
-    <ClCompile Include="kademlia\io\BufferedFileIO.cpp" />
-    <ClCompile Include="kademlia\io\ByteIO.cpp" />
-    <ClCompile Include="kademlia\routing\Contact.cpp" />
-    <ClCompile Include="kademlia\io\DataIO.cpp" />
-    <ClCompile Include="kademlia\kademlia\Entry.cpp" />
-    <ClCompile Include="kademlia\io\FileIO.cpp" />
-    <ClCompile Include="kademlia\kademlia\Indexed.cpp" />
-    <ClCompile Include="kademlia\io\IOException.cpp" />
-    <ClCompile Include="kademlia\kademlia\Kademlia.cpp" />
-    <ClCompile Include="kademlia\net\KademliaUDPListener.cpp" />
-    <ClCompile Include="kademlia\utils\LittleEndian.cpp" />
-    <ClCompile Include="kademlia\utils\LookupHistory.cpp" />
-    <ClCompile Include="kademlia\utils\MiscUtils.cpp" />
-    <ClCompile Include="kademlia\net\PacketTracking.cpp" />
-    <ClCompile Include="kademlia\kademlia\Prefs.cpp" />
-    <ClCompile Include="kademlia\routing\RoutingBin.cpp" />
-    <ClCompile Include="kademlia\routing\RoutingZone.cpp" />
-    <ClCompile Include="kademlia\kademlia\Search.cpp" />
-    <ClCompile Include="kademlia\kademlia\SearchManager.cpp" />
-    <ClCompile Include="kademlia\utils\ThreadName.cpp" />
-    <ClCompile Include="kademlia\kademlia\UDPFirewallTester.cpp" />
-    <ClCompile Include="kademlia\utils\UInt128.cpp" />
     <ClCompile Include="IrcMain.cpp" />
     <ClCompile Include="IrcSocket.cpp" />
     <ClCompile Include="AdunanzA.cpp" />
@@ -775,8 +758,34 @@
     <ClInclude Include="HttpClientReqSocket.h" />
     <ClInclude Include="Ini2.h" />
     <ClInclude Include="IPFilter.h" />
+    <ClInclude Include="kademlia\io\BufferedFileIO.h" />
+    <ClInclude Include="kademlia\io\ByteIO.h" />
+    <ClInclude Include="kademlia\io\DataIO.h" />
+    <ClInclude Include="kademlia\io\FileIO.h" />
+    <ClInclude Include="kademlia\io\IOException.h" />
+    <ClInclude Include="kademlia\kademlia\Defines.h" />
+    <ClInclude Include="kademlia\kademlia\Entry.h" />
+    <ClInclude Include="kademlia\kademlia\Error.h" />
+    <ClInclude Include="kademlia\kademlia\Indexed.h" />
+    <ClInclude Include="kademlia\kademlia\Kademlia.h" />
+    <ClInclude Include="kademlia\kademlia\Prefs.h" />
+    <ClInclude Include="kademlia\kademlia\Search.h" />
+    <ClInclude Include="kademlia\kademlia\SearchManager.h" />
+    <ClInclude Include="kademlia\kademlia\Tag.h" />
+    <ClInclude Include="kademlia\kademlia\UDPFirewallTester.h" />
+    <ClInclude Include="kademlia\net\KademliaUDPListener.h" />
+    <ClInclude Include="kademlia\net\PacketTracking.h" />
+    <ClInclude Include="kademlia\routing\Contact.h" />
+    <ClInclude Include="kademlia\routing\Maps.h" />
+    <ClInclude Include="kademlia\routing\RoutingBin.h" />
+    <ClInclude Include="kademlia\routing\RoutingZone.h" />
     <ClInclude Include="kademlia\utils\KadClientSearcher.h" />
     <ClInclude Include="kademlia\utils\KadUDPKey.h" />
+    <ClInclude Include="kademlia\utils\LittleEndian.h" />
+    <ClInclude Include="kademlia\utils\LookupHistory.h" />
+    <ClInclude Include="kademlia\utils\MiscUtils.h" />
+    <ClInclude Include="kademlia\utils\ThreadName.h" />
+    <ClInclude Include="kademlia\utils\UInt128.h" />
     <ClInclude Include="KnownFile.h" />
     <ClInclude Include="KnownFileList.h" />
     <ClInclude Include="langids.h" />
@@ -838,32 +847,6 @@
     <ClInclude Include="WebServices.h" />
     <ClInclude Include="WebSocket.h" />
     <ClInclude Include="ZIPFile.h" />
-    <ClInclude Include="kademlia\io\BufferedFileIO.h" />
-    <ClInclude Include="kademlia\io\ByteIO.h" />
-    <ClInclude Include="kademlia\routing\Contact.h" />
-    <ClInclude Include="kademlia\io\DataIO.h" />
-    <ClInclude Include="kademlia\kademlia\Defines.h" />
-    <ClInclude Include="kademlia\kademlia\Entry.h" />
-    <ClInclude Include="kademlia\kademlia\Error.h" />
-    <ClInclude Include="kademlia\io\FileIO.h" />
-    <ClInclude Include="kademlia\kademlia\Indexed.h" />
-    <ClInclude Include="kademlia\io\IOException.h" />
-    <ClInclude Include="kademlia\kademlia\Kademlia.h" />
-    <ClInclude Include="kademlia\net\KademliaUDPListener.h" />
-    <ClInclude Include="kademlia\utils\LittleEndian.h" />
-    <ClInclude Include="kademlia\utils\LookupHistory.h" />
-    <ClInclude Include="kademlia\routing\Maps.h" />
-    <ClInclude Include="kademlia\utils\MiscUtils.h" />
-    <ClInclude Include="kademlia\net\PacketTracking.h" />
-    <ClInclude Include="kademlia\kademlia\Prefs.h" />
-    <ClInclude Include="kademlia\routing\RoutingBin.h" />
-    <ClInclude Include="kademlia\routing\RoutingZone.h" />
-    <ClInclude Include="kademlia\kademlia\Search.h" />
-    <ClInclude Include="kademlia\kademlia\SearchManager.h" />
-    <ClInclude Include="kademlia\kademlia\Tag.h" />
-    <ClInclude Include="kademlia\utils\ThreadName.h" />
-    <ClInclude Include="kademlia\kademlia\UDPFirewallTester.h" />
-    <ClInclude Include="kademlia\utils\UInt128.h" />
     <ClInclude Include="IrcMain.h" />
     <ClInclude Include="IrcSocket.h" />
     <ClInclude Include="3DPreviewControl.h" />

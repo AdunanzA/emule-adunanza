@@ -47,10 +47,10 @@
 #include "SHAHashSet.h"
 #include "Log.h"
 #include "FirewallOpener.h" 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -2854,7 +2854,7 @@ bool CListenSocket::IsValidSocket(CClientReqSocket* totest)
 	return socket_list.Find(totest) != NULL;
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CListenSocket::Debug_ClientDeleted(CUpDownClient* deleted)
 {
 	for (POSITION pos = socket_list.GetHeadPosition(); pos != NULL;)

@@ -22,13 +22,6 @@
 #include "UserMsgs.h"
 #include "VisualStylesXP.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 // _WIN32_WINNT >= 0x0501 (XP only)
 #define _WM_THEMECHANGED                0x031A	
 #define _ON_WM_THEMECHANGED()														\

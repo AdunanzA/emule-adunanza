@@ -18,10 +18,10 @@
 #include "emule.h"
 #include "PreferencesDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -50,7 +50,7 @@ CPreferencesDlg::CPreferencesDlg()
 	m_wndProxy.m_psp.dwFlags &= ~PSH_HASHELP;
 	m_wndMessages.m_psp.dwFlags &= ~PSH_HASHELP;
 	m_wndAdunanzA.m_psp.dwFlags &= ~PSH_HASHELP;
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 	m_wndDebug.m_psp.dwFlags &= ~PSH_HASHELP;
 #endif
 
@@ -70,7 +70,7 @@ CPreferencesDlg::CPreferencesDlg()
 	CTreePropSheet::SetPageIcon(&m_wndTweaks, _T("TWEAK"));
 	CTreePropSheet::SetPageIcon(&m_wndMessages, _T("MESSAGES"));
 	CTreePropSheet::SetPageIcon(&m_wndAdunanzA, _T("ClientAdunanza"));
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 	CTreePropSheet::SetPageIcon(&m_wndDebug, _T("Preferences"));
 #endif
 	AddPage(&m_wndGeneral);
@@ -89,7 +89,7 @@ CPreferencesDlg::CPreferencesDlg()
 	AddPage(&m_wndWebServer);
 	AddPage(&m_wndTweaks);
 	AddPage(&m_wndAdunanzA);
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 	AddPage(&m_wndDebug);
 #endif
 
@@ -177,7 +177,7 @@ void CPreferencesDlg::Localize()
 		pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_WS)));
 		pTree->SetItemText(GetPageTreeItem(c++), RemoveAmbersand(GetResString(IDS_PW_TWEAK)));
 		pTree->SetItemText(GetPageTreeItem(c++), _T("AdunanzA") );
-	#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+	#if defined(ADU_BETA)
 		pTree->SetItemText(GetPageTreeItem(c++), _T("Debug"));
 	#endif
 	}

@@ -8,12 +8,6 @@
 #include "CreditsDlg.h"
 #include "CreditsThread.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 // drawable area of the dialog
 #define SCREEN_LEFT		6

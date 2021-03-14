@@ -57,7 +57,7 @@ CKadLookupGraph::CKadLookupGraph()
 	m_penAux.CreatePen(PS_SOLID, 1, RGB(192, 192, 192));
 	m_penRed.CreatePen(PS_SOLID, 1, RGB(255, 32, 32));
 
-	m_iMaxNumLabelWidth = 3*8;
+	m_iMaxNumLabelWidth = 3 * 8;
 	m_iMaxLabelHeight = 8;
 	m_bInitializedFontMetrics = false;
 	m_pLookupHistory = NULL;
@@ -98,18 +98,18 @@ void CKadLookupGraph::Init()
 	m_pToolTip->Create(this);
 	m_pToolTip->SetDelayTime(TTDT_AUTOPOP, 5000);
 	m_pToolTip->SetDelayTime(TTDT_INITIAL, 3000);
-	m_pToolTip->SetDelayTime(TTDT_RESHOW,  2000);
+	m_pToolTip->SetDelayTime(TTDT_RESHOW, 2000);
 	EnableToolTips();
 	m_pToolTip->AddTool(this);
 	m_pToolTip->Activate(FALSE);
 }
 
-BOOL CKadLookupGraph::PreTranslateMessage(MSG* pMsg) 
+BOOL CKadLookupGraph::PreTranslateMessage(MSG* pMsg)
 {
-   if (NULL != m_pToolTip)            
-      m_pToolTip->RelayEvent(pMsg);
-   
-   return CWnd::PreTranslateMessage(pMsg);
+	if (NULL != m_pToolTip)
+		m_pToolTip->RelayEvent(pMsg);
+
+	return CWnd::PreTranslateMessage(pMsg);
 }
 
 
@@ -177,7 +177,7 @@ void CKadLookupGraph::OnPaint()
 		dc.DrawText(_T("888"), 3, &rcLabel, DT_CALCRECT);
 		m_iMaxNumLabelWidth = rcLabel.Width();
 		if (m_iMaxNumLabelWidth <= 0)
-			m_iMaxNumLabelWidth = 3*8;
+			m_iMaxNumLabelWidth = 3 * 8;
 		m_iMaxLabelHeight = tm.tmHeight;
 		if (m_iMaxLabelHeight <= 0)
 			m_iMaxLabelHeight = 8;
@@ -257,7 +257,7 @@ void CKadLookupGraph::OnPaint()
 		// Convert it to uint64 by cutting of the less significant bits for easier and fast calculating
 		uint64 uScalingDistance = 0;
 		uint8 byStartChunk;
-		for (byStartChunk = 0;  byStartChunk < 3; byStartChunk++)
+		for (byStartChunk = 0; byStartChunk < 3; byStartChunk++)
 		{
 			if (uTmpScalingDistance.Get32BitChunk(byStartChunk) > 0)
 			{
@@ -301,14 +301,14 @@ void CKadLookupGraph::OnPaint()
 			//if (m_bDbgLog)
 			//	AddDebugLogLine(false, _T("KadGraph: Drawing Node %u of %u, Distance: %s, Y-Pos: %u"), (iVisibleNodes - i) + 1, iVisibleNodes, uTmpDist.ToHexString(), uDrawYPos); 
 
-			ASSERT( uDrawYPos <= (uHistHeight) );
+			ASSERT(uDrawYPos <= (uHistHeight));
 			uint32 nXOffset = 0;
 			//if (uMaxNodes > iVisibleNodes && !m_pLookupHistory->IsSearchStopped()) // Fixed width for ongoing searches
 			//	nXOffset = NODE_ENTRY_WIDTH * (uMaxNodes - iVisibleNodes);
 			CPoint pointNode(uHistWidth - nXOffset - (i * uNodeEntryWidth), (uint32)uDrawYPos);
 			m_aNodesDrawRects.Add(CRect(pointNode, CSize(NODE_ENTRY_WIDTH, NODE_ENTRY_HEIGHT)));
 		}
-		ASSERT( iVisibleNodes == m_aNodesDrawRects.GetCount() );
+		ASSERT(iVisibleNodes == m_aNodesDrawRects.GetCount());
 
 		// find HotItem (if any)
 		m_iHotItemIdx = (-1);
@@ -336,7 +336,7 @@ void CKadLookupGraph::OnPaint()
 		// start drawing, beginning with the arrowClines connecting the nodes
 		// if possible use GDI+ for Anti Aliasing
 		extern bool g_bGdiPlusInstalled;
-		ULONG_PTR gdiplusToken = 0;	
+		ULONG_PTR gdiplusToken = 0;
 		Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 		if (g_bGdiPlusInstalled && Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL) == Gdiplus::Ok)
 		{
@@ -420,27 +420,27 @@ void CKadLookupGraph::OnPaint()
 						aptPoly[0].y = pointTo.y;
 
 						// build the line vector
-						vecLine[0] = (float) aptPoly[0].x - pFrom.x;
-						vecLine[1] = (float) aptPoly[0].y - pFrom.y;
+						vecLine[0] = (float)aptPoly[0].x - pFrom.x;
+						vecLine[1] = (float)aptPoly[0].y - pFrom.y;
 
 						// build the arrow base vector - normal to the line
 						vecLeft[0] = -vecLine[1];
 						vecLeft[1] = vecLine[0];
 
 						// setup length parameters
-						float fLength = (float) sqrt(vecLine[0] * vecLine[0] + vecLine[1] * vecLine[1]);
+						float fLength = (float)sqrt(vecLine[0] * vecLine[0] + vecLine[1] * vecLine[1]);
 						float th = nWidth / (2.0f * fLength);
 						float ta = nWidth / (2.0f * (tanf(0.3f) / 2.0f) * fLength);
 
 						// find the base of the arrow
-						pBase.x = (int) (aptPoly[0].x + -ta * vecLine[0]);
-						pBase.y = (int) (aptPoly[0].y + -ta * vecLine[1]);
+						pBase.x = (int)(aptPoly[0].x + -ta * vecLine[0]);
+						pBase.y = (int)(aptPoly[0].y + -ta * vecLine[1]);
 
 						// build the points on the sides of the arrow
-						aptPoly[1].x = (int) (pBase.x + th * vecLeft[0]);
-						aptPoly[1].y = (int) (pBase.y + th * vecLeft[1]);
-						aptPoly[2].x = (int) (pBase.x + -th * vecLeft[0]);
-						aptPoly[2].y = (int) (pBase.y + -th * vecLeft[1]);
+						aptPoly[1].x = (int)(pBase.x + th * vecLeft[0]);
+						aptPoly[1].y = (int)(pBase.y + th * vecLeft[1]);
+						aptPoly[2].x = (int)(pBase.x + -th * vecLeft[0]);
+						aptPoly[2].y = (int)(pBase.y + -th * vecLeft[1]);
 						dc.MoveTo(pFrom);
 						dc.LineTo(aptPoly[0].x, aptPoly[0].y);
 						dc.Polygon(aptPoly, 3);
@@ -471,13 +471,13 @@ void CKadLookupGraph::OnPaint()
 			else if (sEntry->m_bForcedInteresting)
 				byIconIdx = 2;
 			else
-				ASSERT( false );
+				ASSERT(false);
 
 			if (m_iHotItemIdx >= 0 && !abHotItemConnected[i])
 				m_iml.DrawEx(&dc, byIconIdx, pointNode, CSize(0, 0), CLR_NONE, GetSysColor(COLOR_WINDOW), ILD_BLEND50);
-			else	
+			else
 				m_iml.Draw(&dc, byIconIdx, pointNode, ILD_NORMAL);
-				
+
 
 			if (sEntry->m_dwAskedSearchItemTime > 0)
 			{
@@ -488,28 +488,28 @@ void CKadLookupGraph::OnPaint()
 					pointIndicator.y -= 20;
 				else
 					pointIndicator.y += 20;
-				
+
 				switch (m_pLookupHistory->GetType())
 				{
-					case Kademlia::CSearch::FILE:
-					case Kademlia::CSearch::KEYWORD:
-					case Kademlia::CSearch::NOTES:
-					{
-						int nOverlayImage = 0;
-						if (sEntry->m_uRespondedSearchItem > 0)
-							nOverlayImage = 1;
-						else if (sEntry->m_dwAskedSearchItemTime + SEC2MS(5) < ::GetTickCount())
-							nOverlayImage = 2;
-						m_iml.Draw(&dc, 4, pointIndicator, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
-						break;
-					}
-					case Kademlia::CSearch::STOREFILE:
-						m_iml.Draw(&dc, 6, pointIndicator, ILD_NORMAL);
-						break;
-					case Kademlia::CSearch::STOREKEYWORD:
-					case Kademlia::CSearch::STORENOTES:
-						m_iml.Draw(&dc, 5, pointIndicator, ILD_NORMAL);
-						break;
+				case Kademlia::CSearch::FILE:
+				case Kademlia::CSearch::KEYWORD:
+				case Kademlia::CSearch::NOTES:
+				{
+					int nOverlayImage = 0;
+					if (sEntry->m_uRespondedSearchItem > 0)
+						nOverlayImage = 1;
+					else if (sEntry->m_dwAskedSearchItemTime + SEC2MS(5) < ::GetTickCount())
+						nOverlayImage = 2;
+					m_iml.Draw(&dc, 4, pointIndicator, ILD_NORMAL | INDEXTOOVERLAYMASK(nOverlayImage));
+					break;
+				}
+				case Kademlia::CSearch::STOREFILE:
+					m_iml.Draw(&dc, 6, pointIndicator, ILD_NORMAL);
+					break;
+				case Kademlia::CSearch::STOREKEYWORD:
+				case Kademlia::CSearch::STORENOTES:
+					m_iml.Draw(&dc, 5, pointIndicator, ILD_NORMAL);
+					break;
 
 					/* Nothing to show
 					case CSearch::NODE:
@@ -642,7 +642,7 @@ void CKadLookupGraph::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	CMenu menu;
 	menu.CreatePopupMenu();
 	menu.AppendMenu(MF_STRING, MP_AUTOKADLOOKUPGRAPH, GetResString(IDS_AUTOKADLOOKUPGRAPH));
-	menu.CheckMenuItem(MP_AUTOKADLOOKUPGRAPH , thePrefs.GetAutoShowLookups() ? MF_CHECKED : MF_UNCHECKED);
+	menu.CheckMenuItem(MP_AUTOKADLOOKUPGRAPH, thePrefs.GetAutoShowLookups() ? MF_CHECKED : MF_UNCHECKED);
 	menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, this);
 }
 
@@ -658,6 +658,6 @@ void CKadLookupGraph::OnSwitchAutoLookup()
 }
 
 bool CKadLookupGraph::GetAutoShowLookups() const
-{ 
-	return thePrefs.GetAutoShowLookups(); 
+{
+	return thePrefs.GetAutoShowLookups();
 }

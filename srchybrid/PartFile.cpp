@@ -22,7 +22,7 @@
 #ifndef FSCTL_SET_SPARSE
 #define FSCTL_SET_SPARSE                CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 49, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
 #endif
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "DebugHelpers.h"
 #endif
 #include "emule.h"
@@ -62,13 +62,6 @@
 #include "CollectionViewDialog.h"
 #include "Collection.h"
 #include "RemoteSettings.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 // Barry - use this constant for both places
 #define PROGRESS_HEIGHT 3
@@ -421,7 +414,7 @@ CPartFile::~CPartFile()
 
 }
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 void CPartFile::AssertValid() const
 {
 	CKnownFile::AssertValid();
@@ -429,11 +422,7 @@ void CPartFile::AssertValid() const
 	(void)m_LastSearchTime;
 	(void)m_LastSearchTimeKad;
 	(void)m_TotalSearchesKad;
-	srclist.AssertValid();
-	A4AFsrclist.AssertValid();
 	(void)lastseencomplete;
-	m_hpartfile.AssertValid();
-	m_FileCompleteMutex.AssertValid();
 	(void)src_stats;
 	(void)net_stats;
 	CHECK_BOOL(m_bPreviewing);
@@ -463,18 +452,12 @@ void CPartFile::AssertValid() const
 	CHECK_BOOL(newdate);
 	(void)lastpurgetime;
 	(void)m_LastNoNeededCheck;
-	gaplist.AssertValid();
-	requestedblocks_list.AssertValid();
-	m_SrcpartFrequency.AssertValid();
 	ASSERT( percentcompleted >= 0.0F && percentcompleted <= 100.0F );
-	corrupted_list.AssertValid();
 	(void)availablePartsCount;
 	(void)m_ClientSrcAnswered;
 	(void)s_LoadBar;
 	(void)s_ChunkBar;
 	(void)m_lastRefreshedDLDisplay;
-	m_downloadingSourceList.AssertValid();
-	m_BufferedData_list.AssertValid();
 	(void)m_nTotalBufferData;
 	(void)m_nLastBufferFlushTime;
 	(void)m_category;
@@ -834,7 +817,7 @@ EPartFileLoadResult CPartFile::ImportShareazaTempfile(LPCTSTR in_directory,LPCTS
 		error->Delete();
 		return PLR_FAILED_OTHER;
 	}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	catch(...){
 		LogError(LOG_STATUSBAR, GetResString(IDS_ERR_METCORRUPT), in_filename, GetFileName());
 		ASSERT(0);
@@ -1256,7 +1239,7 @@ EPartFileLoadResult CPartFile::LoadPartFile(LPCTSTR in_directory,LPCTSTR in_file
 		error->Delete();
 		return PLR_FAILED_METFILE_CORRUPT;
 	}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	catch(...){
 		LogError(LOG_STATUSBAR, GetResString(IDS_ERR_METCORRUPT), m_partmetfilename, GetFileName());
 		ASSERT(0);
@@ -2029,7 +2012,7 @@ bool CPartFile::IsAlreadyRequested(uint64 start, uint64 end, bool bCheckBuffers)
 bool CPartFile::ShrinkToAvoidAlreadyRequested(uint64& start, uint64& end) const
 {
 	ASSERT( start <= end );
-#ifdef _DEBUG
+#ifdef ADU_BETA
     uint64 startOrig = start;
     uint64 endOrig = end;
 #endif
@@ -2293,7 +2276,7 @@ void CPartFile::FillGap(uint64 start, uint64 end)
 
 void CPartFile::UpdateCompletedInfos()
 {
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	uint64 uTotalGaps = 0; 
 
 	for (POSITION pos = gaplist.GetHeadPosition();pos !=  0;){ 
@@ -3265,7 +3248,7 @@ void CPartFile::AddSources(CSafeMemFile* sources, uint32 serverip, uint16 server
 				continue;
 			}
 			if (theApp.clientlist->IsBannedClient(userid)){
-#ifdef _DEBUG
+#ifdef ADU_BETA
 				if (thePrefs.GetLogBannedClients()){
 					CUpDownClient* pClient = theApp.clientlist->FindClientByIP(userid);
 					AddDebugLogLine(false, _T("Ignored source (IP=%s) received from server - banned client %s"), ipstr(userid), pClient->DbgGetClientInfo());
@@ -4471,7 +4454,7 @@ bool CPartFile::HashSinglePart(UINT partnumber, bool* pbAICHReportedOK)
 		if (bMD4Checked && bAICHChecked && bMD4Error != bAICHError)
 			DebugLogError(_T("AICH and MD4 HashSet disagree on verifying part %u for file %s. MD4: %s - AICH: %s"), partnumber
 			, GetFileName(), bMD4Error ? _T("Corrupt") : _T("OK"), bAICHError ? _T("Corrupt") : _T("OK"));
-#ifdef _DEBUG
+#ifdef ADU_BETA
 		else
 			DebugLog(_T("Verifying part %u for file %s. MD4: %s - AICH: %s"), partnumber , GetFileName()
 			, bMD4Checked ? (bMD4Error ? _T("Corrupt") : _T("OK")) : _T("Unavailable"), bAICHChecked ? (bAICHError ? _T("Corrupt") : _T("OK")) : _T("Unavailable"));	
@@ -4821,7 +4804,7 @@ time_t CPartFile::getTimeRemainingSimple_Preview() const
 {
 	if (GetDatarate() == 0)
 		return -1;
-		time_t bufferpart = ((GetFileSize() / 100) * thePrefs.m_BufferStreaming) - GetCompletedSize();
+		time_t bufferpart = (((uint64)GetFileSize() / 100) * thePrefs.m_BufferStreaming) - GetCompletedSize();
 		if (bufferpart <= 0)
 			return 0;
 		else
@@ -5406,7 +5389,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 					continue;
 				}
 				if (theApp.clientlist->IsBannedClient(dwIDED2K)){
-#ifdef _DEBUG
+#ifdef ADU_BETA
 					if (thePrefs.GetLogBannedClients()){
 						CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwIDED2K);
 						AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - banned client %s"), ipstr(dwIDED2K), pClient->DbgGetClientInfo());
@@ -5443,7 +5426,7 @@ void CPartFile::AddClientSources(CSafeMemFile* sources, uint8 uClientSXVersion, 
 					continue;
 				}
 				if (theApp.clientlist->IsBannedClient(dwID)){
-#ifdef _DEBUG
+#ifdef ADU_BETA
 					if (thePrefs.GetLogBannedClients()){
 						CUpDownClient* pClient = theApp.clientlist->FindClientByIP(dwID);
 						AddDebugLogLine(false, _T("Ignored source (IP=%s) received via source exchange - banned client %s"), ipstr(dwID), pClient->DbgGetClientInfo());
@@ -5530,7 +5513,7 @@ uint32 CPartFile::WriteToBuffer(uint64 transize, const BYTE *data, uint64 start,
 
 	//MORPH - Optimization, don't check this twice only use the loop to write into gap 
 	// Occasionally packets are duplicated, no point writing it twice
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	if (IsComplete(start, end, false))
 	{
 		if (thePrefs.GetVerbose())
@@ -5958,7 +5941,7 @@ UINT AFX_CDECL CPartFile::AllocateSpaceThread(LPVOID lpParam)
 
 		return 1;
 	}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	catch(...)
 	{
 
@@ -6044,34 +6027,27 @@ void CPartFile::UpdateFileRatingCommentAvail(bool bForceUpdate)
 	UINT uRatings = 0;
 	UINT uUserRatings = 0;
 
-	for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;)
-	{
+	for (POSITION pos = srclist.GetHeadPosition(); pos != NULL;) {
 		const CUpDownClient* cur_src = srclist.GetNext(pos);
 		if (!m_bHasComment && cur_src->HasFileComment())
 			m_bHasComment = true;
-		if (cur_src->HasFileRating())
-		{
-			uRatings++;
+		if (cur_src->HasFileRating()) {
+			++uRatings;
 			uUserRatings += cur_src->GetFileRating();
 		}
 	}
-	for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
-	{
-		Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
-		if (!m_bHasComment && !entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty())
+	for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; ) {
+		const Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
+		if (!m_bHasComment && !entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION)).IsEmpty())
 			m_bHasComment = true;
-		UINT rating = (UINT)entry->GetIntTagValue(TAG_FILERATING);
-		if (rating != 0)
-		{
-			uRatings++;
+		UINT rating = (UINT)entry->GetIntTagValue(Kademlia::CKadTagNameString(TAG_FILERATING));
+		if (rating != 0) {
+			++uRatings;
 			uUserRatings += rating;
 		}
 	}
 
-	if (uRatings)
-		m_uUserRating = (uint32)ROUND((float)uUserRatings / uRatings);
-	else
-		m_uUserRating = 0;
+	m_uUserRating = uRatings ? (uint32)ROUND(uUserRatings / (float)uRatings) : 0;
 
 	if (bOldHasComment != m_bHasComment || uOldUserRatings != m_uUserRating || bForceUpdate)
 		UpdateDisplayedInfo(true);
@@ -7132,7 +7108,7 @@ int CPartFileFlushThread::Run()
 		VERIFY( PostMessage(theApp.emuledlg->m_hWnd,TM_FILEALLOCEXC,(WPARAM)m_partfile,(LPARAM)error) );
 		return 1;
 	}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	catch(...)
 	{
 		VERIFY( PostMessage(theApp.emuledlg->m_hWnd,TM_FILEALLOCEXC,(WPARAM)m_partfile,0) );
@@ -7631,7 +7607,7 @@ int CPartHashThread::Run()
 			if (bMD4Checked && bAICHChecked && bMD4Error != bAICHError)
 				DebugLogError(_T("AICH and MD4 HashSet disagree on verifying part %u for file %s. MD4: %s - AICH: %s"), partnumber
 				, m_pOwner->GetFileName(), bMD4Error ? _T("Corrupt") : _T("OK"), bAICHError ? _T("Corrupt") : _T("OK"));
-#ifdef _DEBUG
+#ifdef ADU_BETA
 			else
 				DebugLog(_T("Verifying part %u for file %s. MD4: %s - AICH: %s"), partnumber , m_pOwner->GetFileName()
 				, bMD4Checked ? (bMD4Error ? _T("Corrupt") : _T("OK")) : _T("Unavailable"), bAICHChecked ? (bAICHError ? _T("Corrupt") : _T("OK")) : _T("Unavailable"));	

@@ -18,13 +18,6 @@
 #include "EnBitmap.h"
 #include <atlimage.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 const int HIMETRIC_INCH	= 2540;
 
 //////////////////////////////////////////////////////////////////////

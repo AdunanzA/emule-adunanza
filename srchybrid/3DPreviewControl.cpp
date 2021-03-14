@@ -2,13 +2,6 @@
 #include "eMule.h"
 #include "3DPreviewControl.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 CBarShader C3DPreviewControl::s_preview(16,32); 
 
 // C3DPreviewControl

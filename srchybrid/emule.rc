@@ -12,7 +12,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Lingua di sistema resources
+// Neutral resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
@@ -801,13 +801,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "Completing the wizard",IDC_WIZ1_TITLE,115,7,195,24
     LTEXT           "To close this wizard, click Finish.",IDC_WIZ1_BTN_HINT,115,178,195,8
-    LTEXT           "Selezionando la modalità ""Automatica'', AdunanzA eseguirà automaticamente il test di prestazione per impostare i settaggi migliori alla propria configurazione.",IDC_STATIC,126,67,178,28,WS_DISABLED
-    LTEXT           "Si raccomanda quindi di chiudere tutti i programmi in background e di NON usare la rete durante il test.",IDC_STATIC,125,95,177,19,WS_DISABLED
-    CONTROL         "Automatica (Raccomandata) - In fase di sviluppo...",IDC_RADIO2,
-                    "Button",BS_AUTORADIOBUTTON | WS_DISABLED,115,54,188,12
-    CONTROL         "Manuale",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,115,118,102,13
-    LTEXT           "Selezionando la modalità ""Manuale"", vi saranno richiesti le informazioni sul vostro tipo di connessione attualmente in uso. Attualmente è disponibile solo la modalità manuale. La modalità automatica sarà disponibile nelle prossime versioni di AdunanzA.",IDC_STATIC,126,131,170,41
-    LTEXT           "Scegliere la modalità di configurazione:",IDC_STATIC,115,35,128,14
+    LTEXT           "Complimenti! Verrà lanciata la configurazione manuale per completare  il setup di eMule AdunanzA",IDC_STATIC,115,34,184,20
 END
 
 IDD_LISTVIEW_SEARCH DIALOGEX 0, 0, 284, 65
@@ -1308,232 +1302,457 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 AAAEMULEAPP             ICON                    "res\\adu_icon.ico"
+
 AABCOLLECTIONFILETYPE   ICON                    "res\\emuleCollectionFileType.ico"
+
 VLCICON                 ICON                    "res\\vlc.ico"
+
 COLOUR                  ICON                    "res\\colour.ico"
+
 BOLD                    ICON                    "res\\bold.ico"
+
 UNDERLINE               ICON                    "res\\underline.ico"
+
 RESETFORMAT             ICON                    "res\\resetformat.ico"
+
 EMPTY                   ICON                    "res\\Empty.ico"
+
 CONNECT                 ICON                    "res\\ConnectDo.ico"
+
 DISCONNECT              ICON                    "res\\ConnectDrop.ico"
+
 STOPCONNECTING          ICON                    "res\\ConnectStop.ico"
+
 KADEMLIA                ICON                    "res\\Kad.ico"
+
 SERVER                  ICON                    "res\\Server.ico"
+
 SEARCH                  ICON                    "res\\Search.ico"
+
 TRANSFER                ICON                    "res\\Transfer.ico"
+
 SHAREDFILES             ICON                    "res\\SharedFiles.ico"
+
 STATISTICS              ICON                    "res\\Statistics.ico"
+
 MESSAGES                ICON                    "res\\Messages.ico"
+
 IRC                     ICON                    "res\\IRC.ico"
+
 IRCCLIPBOARD            ICON                    "res\\IRCClipboard.ico"
+
 PREFERENCES             ICON                    "res\\Preferences.ico"
+
 TOOLS                   ICON                    "res\\Tools.ico"
+
 HELP                    ICON                    "res\\Help.ico"
+
 TRAYCONNECTED           ICON                    "res\\TrayConnected.ico"
+
 TRAYNOTCONNECTED        ICON                    "res\\TrayDisconnected.ico"
+
 TRAYLOWID               ICON                    "res\\TrayLowID.ico"
+
 DISPLAY                 ICON                    "res\\Display.ico"
+
 SECURITY                ICON                    "res\\Security.ico"
+
 WEB                     ICON                    "res\\Web.ico"
+
 SHAREDFILESLIST         ICON                    "res\\SharedFilesList.ico"
+
 TWEAK                   ICON                    "res\\Tweak.ico"
+
 NOTIFICATIONS           ICON                    "res\\Notifications.ico"
+
 CONNECTION              ICON                    "res\\Connection.ico"
+
 FOLDERS                 ICON                    "res\\Folders.ico"
+
 PROXY                   ICON                    "res\\Proxy.ico"
+
 SEARCHPARAMS            ICON                    "res\\SearchParams.ico"
+
 SEARCHMETHOD_KADSERVER  ICON                    "res\\KadServer.ico"
+
 SEARCHMETHOD_SERVER     ICON                    "res\\ServerSearch.ico"
+
 SEARCHMETHOD_FILEDONKEY ICON                    "res\\Filedonkey.ico"
+
 SEARCHMETHOD_GLOBAL     ICON                    "res\\Global.ico"
+
 SEARCHMETHOD_KADEMLIA   ICON                    "res\\SearchKad.ico"
+
 SEARCHMETHOD_SERVERACTIVE ICON                    "res\\SearchServerActive.ico"
+
 SEARCHMETHOD_GLOBALACTIVE ICON                    "res\\SearchGlobalActive.ico"
+
 SEARCHMETHOD_KADEMLIAACTIVE ICON                    "res\\SearchKadActive.ico"
+
 SEARCHRESULTS           ICON                    "res\\SearchResults.ico"
+
 SERVERLIST              ICON                    "res\\ServerList.ico"
+
 SERVERINFO              ICON                    "res\\ServerInfo.ico"
+
 ADDSERVER               ICON                    "res\\ServerAdd.ico"
+
 SERVERUPDATEMET         ICON                    "res\\ServersUpdate.ico"
+
 STATSDETAIL             ICON                    "res\\StatisticsDetail.ico"
+
 STATSCUMULATIVE         ICON                    "res\\StatsCumulative.ico"
+
 STATSGENERIC            ICON                    "res\\StatsGeneric.ico"
+
 STATSDAY                ICON                    "res\\StatsDay.ico"
+
 STATSMONTH              ICON                    "res\\StatsMonth.ico"
+
 STATSYEAR               ICON                    "res\\StatsYear.ico"
+
 STATSCLIENTS            ICON                    "res\\User.ico"
+
 STATSTIME               ICON                    "res\\StatsTime.ico"
+
 STATSPROJECTED          ICON                    "res\\StatsProjected.ico"
+
 STATSRECORDS            ICON                    "res\\Records.ico"
+
 HARDDISK                ICON                    "res\\HardDisk.ico"
+
 UP0DOWN0                ICON                    "res\\Up0down0.ico"
+
 UP1DOWN1                ICON                    "res\\Up1down1.ico"
+
 UP1DOWN0                ICON                    "res\\Up1down0.ico"
+
 UP0DOWN1                ICON                    "res\\Up0down1.ico"
+
 TRANSFERUPDOWN          ICON                    "res\\TransferUpDown.ico"
+
 UPLOAD                  ICON                    "res\\Upload.ico"
+
 CONNECTEDNOTNOT         ICON                    "res\\ConnectedNotNot.ico"
+
 CONNECTEDNOTLOW         ICON                    "res\\ConnectedNotLow.ico"
+
 CONNECTEDNOTHIGH        ICON                    "res\\ConnectedNotHigh.ico"
+
 CONNECTEDLOWNOT         ICON                    "res\\ConnectedLowNot.ico"
+
 CONNECTEDLOWLOW         ICON                    "res\\ConnectedLowLow.ico"
+
 CONNECTEDLOWHIGH        ICON                    "res\\ConnectedLowHigh.ico"
+
 CONNECTEDHIGHNOT        ICON                    "res\\ConnectedHighNot.ico"
+
 CONNECTEDHIGHLOW        ICON                    "res\\ConnectedHighLow.ico"
+
 CONNECTEDHIGHHIGH       ICON                    "res\\ConnectedHighHigh.ico"
+
 CONVERT                 ICON                    "res\\Convert.ico"
+
 INFO                    ICON                    "res\\Info.ico"
+
 CANCEL                  ICON                    "res\\Cancel.ico"
+
 FORWARD                 ICON                    "res\\NavigateForward.ico"
+
 BACK                    ICON                    "res\\NavigateBack.ico"
+
 CLOSETAB                ICON                    "res\\CloseTab.ico"
+
 CLOSETABSELECTED        ICON                    "res\\CloseTabSelected.ico"
+
 DOWNLOAD                ICON                    "res\\Download.ico"
+
 MESSAGE                 ICON                    "res\\Message.ico"
+
 MESSAGEPENDING          ICON                    "res\\MessagePending.ico"
+
 CHAT                    ICON                    "res\\Chat.ico"
+
 LOG                     ICON                    "res\\Log.ico"
+
 FRIEND                  ICON                    "res\\Friend.ico"
+
 FRIENDNOCLIENT          ICON                    "res\\Friends1.ico"
+
 FRIENDWITHCLIENT        ICON                    "res\\Friends2.ico"
+
 FRIENDCONNECTED         ICON                    "res\\Friends3.ico"
+
 CLIENTEDONKEY           ICON                    "res\\ClientDefault.ico"
+
 CLIENTEDONKEYHYBRID     ICON                    "res\\ClienteDonkeyHybrid.ico"
+
 CLIENTEDONKEYHYBRIDPLUS ICON                    "res\\ClienteDonkeyHybridPlus.ico"
+
 CLIENTMLDONKEY          ICON                    "res\\ClientMLDonkey.ico"
+
 CLIENTMLDONKEYPLUS      ICON                    "res\\ClientMLDonkeyPlus.ico"
+
 CLIENTSHAREAZA          ICON                    "res\\ClientShareaza.ico"
+
 CLIENTSECUREOVL         ICON                    "res\\ClientSecureHashOvl.ico"
+
 CLIENTSHAREAZAPLUS      ICON                    "res\\ClientShareazaPlus.ico"
+
 CLIENTCOMPATIBLEPLUS    ICON                    "res\\ClientCompatiblePlus.ico"
+
 CLIENTEDONKEYPLUS       ICON                    "res\\ClientDefaultPlus.ico"
+
 CLIENTCOMPATIBLE        ICON                    "res\\ClientCompatible.ico"
+
 CLIENTAMULE             ICON                    "res\\ClientAMule.ico"
+
 CLIENTAMULEPLUS         ICON                    "res\\ClientAMulePlus.ico"
+
 CLIENTLPHANT            ICON                    "res\\ClientLPhant.ico"
+
 CLIENTLPHANTPLUS        ICON                    "res\\ClientLPhantPlus.ico"
+
 SRCDOWNLOADING          ICON                    "res\\Client0.ico"
+
 SRCCONNECTING           ICON                    "res\\Client1.ico"
+
 SRCONQUEUE              ICON                    "res\\Client2.ico"
+
 SRCNNPQF                ICON                    "res\\Client3.ico"
+
 SRCUNKNOWN              ICON                    "res\\Client4.ico"
+
 CONTACT0                ICON                    "res\\Contact0.ico"
+
 CONTACT1                ICON                    "res\\Contact1.ico"
+
 CONTACT2                ICON                    "res\\Contact2.ico"
+
 CONTACT3                ICON                    "res\\Contact3.ico"
+
 CONTACT4                ICON                    "res\\Contact4.ico"
+
 KADFILESEARCH           ICON                    "res\\KadFileSearch.ico"
+
 KADWORDSEARCH           ICON                    "res\\KadWordSearch.ico"
+
 KADNODESEARCH           ICON                    "res\\KadNodeSearch.ico"
+
 KADSTOREFILE            ICON                    "res\\KadStoreFile.ico"
+
 KADSTOREWORD            ICON                    "res\\KadStoreWord.ico"
+
 SPEED                   ICON                    "res\\Speed.ico"
+
 SPEEDMIN                ICON                    "res\\SpeedMin.ico"
+
 SPEEDMAX                ICON                    "res\\SpeedMax.ico"
+
 RESTOREWINDOW           ICON                    "res\\RestoreWindow.ico"
+
 EXIT                    ICON                    "res\\Exit.ico"
+
 CLIENTSKNOWN            ICON                    "res\\ClientsKnown.ico"
+
 CLIENTSONQUEUE          ICON                    "res\\ClientsOnQueue.ico"
+
 KADCURRENTSEARCHES      ICON                    "res\\KadCurrentSearches.ico"
+
 KADCONTACTLIST          ICON                    "res\\KadContactList.ico"
+
 KADBOOTSTRAP            ICON                    "res\\KadBootstrap.ico"
+
 IPFILTER                ICON                    "res\\IPFilter.ico"
+
 PAUSE                   ICON                    "res\\Pause.ico"
+
 PREVIEW                 ICON                    "res\\Preview.ico"
+
 RESUME                  ICON                    "res\\Start.ico"
+
 STOP                    ICON                    "res\\Stop.ico"
+
 RENAME                  ICON                    "res\\FileRename.ico"
+
 ED2KLINK                ICON                    "res\\eD2kLink.ico"
+
 PASTELINK               ICON                    "res\\eD2kLinkPaste.ico"
+
 FILEINFO                ICON                    "res\\FileInfo.ico"
+
 MEDIAINFO               ICON                    "res\\MediaInfo.ico"
+
 METADATA                ICON                    "res\\MetaData.ico"
+
 FILECOMMENTS            ICON                    "res\\FileComments.ico"
+
 FILECOMMENTSOVL         ICON                    "res\\FileCommentsOvl.ico"
+
 FILERENAME              ICON                    "res\\FileRename.ico"
+
 CATEGORY                ICON                    "res\\Category.ico"
+
 OPENFILE                ICON                    "res\\FileOpen.ico"
+
 OPENFOLDER              ICON                    "res\\FolderOpen.ico"
+
 FILEPRIORITY            ICON                    "res\\FilePriority.ico"
+
 PRIORITY                ICON                    "res\\Priority.ico"
+
 FRIENDSLOT              ICON                    "res\\FriendSlot.ico"
+
 ADDFRIEND               ICON                    "res\\UserAdd.ico"
+
 DELETEFRIEND            ICON                    "res\\UserDelete.ico"
+
 CLIENTDETAILS           ICON                    "res\\UserDetails.ico"
+
 VIEWFILES               ICON                    "res\\UserFiles.ico"
+
 SENDMESSAGE             ICON                    "res\\UserMessage.ico"
+
 SCHEDULER               ICON                    "res\\Scheduler.ico"
+
 WIZARD                  ICON                    "res\\Wizard.ico"
+
 LISTADD                 ICON                    "res\\ListAdd.ico"
+
 LISTREMOVE              ICON                    "res\\ListRemove.ico"
+
 RESTORE                 ICON                    "res\\Restore.ico"
+
 EXPANDALL               ICON                    "res\\ExpandAll.ico"
+
 EXPANDMAIN              ICON                    "res\\ExpandAll2.ico"
+
 COLLAPSE                ICON                    "res\\Collapse.ico"
+
 DELETE                  ICON                    "res\\Delete.ico"
+
 CLEARCOMPLETE           ICON                    "res\\DeleteAll.ico"
+
 DELETESELECTED          ICON                    "res\\DeleteSelected.ico"
+
 COPY                    ICON                    "res\\Copy.ico"
+
 COPYSELECTED            ICON                    "res\\CopySelected.ico"
+
 COPYVISIBLE             ICON                    "res\\CopyVisible.ico"
+
 EXPORTALL               ICON                    "res\\ExportAll.ico"
+
 SEARCHFILETYPE_ANY      ICON                    "res\\FileTypeAny.ico"
+
 SEARCHFILETYPE_ARCHIVE  ICON                    "res\\FileTypeArchive.ico"
+
 SEARCHFILETYPE_AUDIO    ICON                    "res\\FileTypeAudio.ico"
+
 SEARCHFILETYPE_CDIMAGE  ICON                    "res\\FileTypeCDImage.ico"
+
 SEARCHFILETYPE_PICTURE  ICON                    "res\\FileTypePicture.ico"
+
 SEARCHFILETYPE_PROGRAM  ICON                    "res\\FileTypeProgram.ico"
+
 SEARCHFILETYPE_VIDEO    ICON                    "res\\FileTypeVideo.ico"
+
 SEARCHFILETYPE_DOCUMENT ICON                    "res\\FileTypeDocument.ico"
+
 RATING_NOTRATED         ICON                    "res\\FileRating0.ico"
+
 RATING_FAKE             ICON                    "res\\FileRating1.ico"
+
 RATING_POOR             ICON                    "res\\FileRating2.ico"
+
 RATING_FAIR             ICON                    "res\\FileRating3.ico"
+
 RATING_GOOD             ICON                    "res\\FileRating4.ico"
+
 RATING_EXCELLENT        ICON                    "res\\FileRating5.ico"
+
 FILESHAREDSERVER        ICON                    "res\\FileSharedServer.ico"
+
 FILESHAREDKAD           ICON                    "res\\FileSharedKad.ico"
+
 SPLITWINDOW             ICON                    "res\\SplitWindow.ico"
+
 DOWNLOADFILES           ICON                    "res\\DownloadFiles.ico"
+
 COLLECTION_VIEW         ICON                    "res\\emuleCollView.ico"
+
 COLLECTION_ADD          ICON                    "res\\emuleCollAdd.ico"
+
 COLLECTION_EDIT         ICON                    "res\\emuleCollEdit.ico"
+
 COLLECTION_SEARCH       ICON                    "res\\emuleCollSearch.ico"
+
 ALLFILES                ICON                    "res\\all.ico"
+
 INCOMPLETE              ICON                    "res\\incomplete.ico"
+
 INCOMING                ICON                    "res\\Incoming.ico"
+
 SEARCHEDIT              ICON                    "res\\SearchEdit.ico"
+
 FILTERCLEAR2            ICON                    "res\\clear2.ico"
+
 FILTERCLEAR1            ICON                    "res\\clear1.ico"
+
 ARCHIVE_PREVIEW         ICON                    "res\\ArchivePreview.ico"
+
 OVERLAYSECUREOBFU       ICON                    "res\\Clientsecurehasobfuhovl.ico"
+
 OVERLAYOBFU             ICON                    "res\\Clientobfuovl.ico"
+
 SHAREDFOLDEROVL         ICON                    "res\\SharedFolderOvl.ico"
+
 NOACCESSFOLDEROVL       ICON                    "res\\NoAccessFolderOvl.ico"
+
 SMILEY_SMILE            ICON                    "res\\Smiley_Smile.ico"
+
 SMILEY_CRY              ICON                    "res\\Smiley_Cry.ico"
+
 SMILEY_DISGUST          ICON                    "res\\Smiley_Disgust.ico"
+
 SMILEY_HAPPY            ICON                    "res\\Smiley_Happy.ico"
+
 SMILEY_LAUGH            ICON                    "res\\Smiley_Laugh.ico"
+
 SMILEY_LOVE             ICON                    "res\\Smiley_Love.ico"
+
 SMILEY_SAD              ICON                    "res\\Smiley_Sad.ico"
+
 SMILEY_SEALED           ICON                    "res\\Smiley_Sealed.ico"
+
 SMILEY_SKEPTIC          ICON                    "res\\Smiley_Skeptic.ico"
+
 SMILEY_TONGUE           ICON                    "res\\Smiley_Tongue.ico"
+
 SMILEY_WINK             ICON                    "res\\Smiley_Wink.ico"
+
 SMILEY_PH34R            ICON                    "res\\Smiley_Ph34r.ico"
+
 SMILEY_INTEREST         ICON                    "res\\Smiley_Interest.ico"
+
 SMILEY_OMG              ICON                    "res\\Smiley_omg.ico"
+
 SMILEY_SADQ             ICON                    "res\\Smiley_sadq.ico"
+
 SMILEY_SMILEQ           ICON                    "res\\Smiley_smileq.ico"
+
 SMILEY_LOOKSIDE         ICON                    "res\\Smiley_lookside.ico"
+
 BROWSEFOLDERSMALL       ICON                    "res\\Browse8.ico"
+
 PULSANTEA3              ICON                    "res\\Adunanza.ico"
+
 CLIENTFASTWEB           ICON                    "res\\FastWeb.ico"
+
 CLIENTADUNANZA          ICON                    "res\\icon1.ico"
-//EVOLUTION               ICON                    "res\\Evolution.ico"
+
 BN_KADU                 ICON                    "res\\KAdu.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1541,12 +1760,19 @@ BN_KADU                 ICON                    "res\\KAdu.ico"
 //
 
 IDB_UP                  BITMAP                  "res\\ListViewSortUp.bmp"
+
 IDB_DOWN                BITMAP                  "res\\ListViewSortDown.bmp"
+
 IDB_UP2X                BITMAP                  "res\\ListViewSortUp2x.bmp"
+
 IDB_DOWN2X              BITMAP                  "res\\ListViewSortDown2x.bmp"
+
 TRAYBTN_BLUE            BITMAP                  "res\\TrayBtnBlue.bmp"
+
 TRAYBTN_METALLIC        BITMAP                  "res\\TrayBtnMetallic.bmp"
+
 TRAYBTN_HOMESTEAD       BITMAP                  "res\\TrayBtnHomestead.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1555,6 +1781,7 @@ TRAYBTN_HOMESTEAD       BITMAP                  "res\\TrayBtnHomestead.bmp"
 
 IDR_HTTPDOWNLOAD_ANI    AVI                     "res\\inetdownload.avi"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // JPG
@@ -1562,15 +1789,20 @@ IDR_HTTPDOWNLOAD_ANI    AVI                     "res\\inetdownload.avi"
 
 ABOUT                   JPG                     "res\\logo.jpg"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // GIF
 //
 
 IDR_TASKBAR             GIF                     "res\\taskbarNotifier.gif"
+
 IDR_WIZ1_WATERMARK      GIF                     "res\\mule_wiz.jpg"
+
 IDR_WIZ1_HEADER         GIF                     "res\\mule_wiz_hdr.jpg"
+
 IDR_ATTENTION           GIF                     "res\\attention.gif"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1578,6 +1810,7 @@ IDR_ATTENTION           GIF                     "res\\attention.gif"
 //
 
 IDR_WIDECHARLOWERMAP    WIDECHARMAP             "res\\WideCharLowerMap.bin"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1662,25 +1895,45 @@ END
 //
 
 IDR_HTML_MINIMULE       HTML                    "res\\MiniMule.htm"
+
 IDR_HTML_SPLASHWND      HTML                    "res\\htmlSplashWnd.htm"
+
 CONNECTED.GIF           HTML                    "res\\Connected.gif"
+
 CONNECTEDNOTNOT.GIF     HTML                    "res\\ConnectedNotNot.gif"
+
 CONNECTEDNOTLOW.GIF     HTML                    "res\\ConnectedNotLow.gif"
+
 CONNECTEDNOTHIGH.GIF    HTML                    "res\\ConnectedNotHigh.gif"
+
 CONNECTEDLOWNOT.GIF     HTML                    "res\\ConnectedLowNot.gif"
+
 CONNECTEDLOWLOW.GIF     HTML                    "res\\ConnectedLowLow.gif"
+
 CONNECTEDLOWHIGH.GIF    HTML                    "res\\ConnectedLowHigh.gif"
+
 CONNECTEDHIGHNOT.GIF    HTML                    "res\\ConnectedHighNot.gif"
+
 CONNECTEDHIGHLOW.GIF    HTML                    "res\\ConnectedHighLow.gif"
+
 CONNECTEDHIGHHIGH.GIF   HTML                    "res\\ConnectedHighHigh.gif"
+
 UPLOAD.GIF              HTML                    "res\\Upload.gif"
+
 DOWNLOAD.GIF            HTML                    "res\\Download.gif"
+
 COMPLETED.GIF           HTML                    "res\\FileInfo.gif"
+
 FREESPACE.GIF           HTML                    "res\\HardDisk.gif"
+
 OPENINCOMING.GIF        HTML                    "res\\Incoming.gif"
+
 RESTOREWINDOW.GIF       HTML                    "res\\RestoreWindow.gif"
+
 TABLEBACKGND.GIF        HTML                    "res\\MiniMuleBack.gif"
+
 PREFERENCES.GIF         HTML                    "res\\Preferences.gif"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1795,6 +2048,10 @@ BEGIN
         BOTTOMMARGIN, 194
     END
 
+    IDD_WIZ1_GENERAL, DIALOG
+    BEGIN
+    END
+
     IDD_WIZ1_END, DIALOG
     BEGIN
         VERTGUIDE, 115
@@ -1857,12 +2114,23 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Lingua di sistema resources
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_WIZ1_END AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Tedesco (Germania) resources
+// German (Germany) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
 LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
@@ -1935,12 +2203,12 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Tedesco (Germania) resources
+#endif    // German (Germany) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Inglese (Stati Uniti) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -3050,6 +3318,7 @@ STRINGTABLE
 BEGIN
     IDS_ERR_TOOLARGEFILE    "File larger than the supported size of the edonkey protocol (>=256GB)"
     IDS_MSGONLYFRIENDS      "Accept from friends only"
+    IDS_BOOTSTRAPFAILED     "Failed to bootstrap Kad. Your nodes.dat might be outdated or there is a connection problem."
     IDS_DAY_MO_SA           "Mon-Sat"
     IDS_LIMITSOURCES        "Limit sources"
     IDS_LIMITCONS5SEC       "Limit connections/5secs"
@@ -3953,12 +4222,12 @@ BEGIN
     IDS_VIEW3               " (Shared with SubDir)"
 END
 
-#endif    // Inglese (Stati Uniti) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Italiano (Italia) resources
+// Italian (Italy) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
 LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
@@ -3990,12 +4259,14 @@ END
 // remains consistent on all systems.
 ATTENZIONE              ICON                    "res\\Attenzione.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // HTML
 //
 
 IDR_HTML_DLGADSOPTION   HTML                    "res\\DlgAdsOption.htm"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -4016,7 +4287,7 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Italiano (Italia) resources
+#endif    // Italian (Italy) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

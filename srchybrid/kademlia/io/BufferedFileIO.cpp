@@ -32,12 +32,6 @@ there client on the eMule forum..
 #include "./BufferedFileIO.h"
 #include "./IOException.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace Kademlia;
 
 void CBufferedFileIO::ReadArray(LPVOID lpResult, uint32 uByteCount)

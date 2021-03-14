@@ -20,16 +20,6 @@
 #include "Preferences.h"
 #include "Opcodes.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-#ifdef _DEBUG
-extern _CRT_ALLOC_HOOK g_pfnPrevCrtAllocHook;
-#endif
-
 #define MAXAVERAGETIME			SEC2MS(40) //millisecs
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -412,8 +402,8 @@ void CStatistics::ResetUpDatarateOverhead()
 
 #ifdef USE_MEM_STATS
 
-#ifdef _DEBUG
-#error "Does not work when _DEBUG defined!"
+#ifdef ADU_BETA
+#error "Does not work when ADU_BETA defined!"
 #endif
 
 #ifdef _AFXDLL

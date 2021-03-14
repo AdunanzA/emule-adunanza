@@ -135,7 +135,7 @@ enum EConnectingState{
 	CCS_PRECONDITIONS
 };
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	// use the 'Enums' only for debug builds, each enum costs 4 bytes (3 unused)
 #define _EClientSoftware	EClientSoftware
 #define _EChatState			EChatState

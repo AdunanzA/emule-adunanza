@@ -48,10 +48,10 @@
 #include "Log.h"
 #include "Exceptions.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 #define Irc_Version				_T("(SMIRCv00.69)")

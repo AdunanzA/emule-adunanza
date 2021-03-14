@@ -91,10 +91,10 @@ Basic Obfuscated Handshake Protocol Client <-> Server:
 #pragma warning(default:4100) // unreferenced formal parameter
 #pragma warning(default:4516) // access-declarations are deprecated; member using-declarations provide a better alternative
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 
@@ -256,7 +256,7 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags){
 					if (thePrefs.IsClientCryptLayerRequiredStrict() || (!theApp.serverconnect->AwaitingTestFromIP(sockAddr.sin_addr.S_un.S_addr)
 						&& !theApp.clientlist->IsKadFirewallCheckIP(sockAddr.sin_addr.S_un.S_addr)) )
 					{
-#if defined(_DEBUG) || defined(_BETA)
+#if defined(ADU_BETA)
 					// TODO: Remove after testing
 					AddDebugLogLine(DLP_DEFAULT, false, _T("Rejected incoming connection because Obfuscation was required but not used %s"), DbgGetIPString() );
 #endif

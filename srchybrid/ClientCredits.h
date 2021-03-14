@@ -126,7 +126,7 @@ protected:
 	void	LoadList();
 	void	InitalizeCrypting();
 	bool	CreateKeyPair();
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	bool	Debug_CheckCrypting();
 #endif
 private:

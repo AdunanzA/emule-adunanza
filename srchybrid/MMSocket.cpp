@@ -21,13 +21,6 @@
 #include "Preferences.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 CMMSocket::CMMSocket(CMMServer* pOwner)
 {
 	m_pOwner = pOwner;

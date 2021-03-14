@@ -21,13 +21,6 @@
 #include "OtherFunctions.h"
 #include "Packets.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 CServer::CServer(const ServerMet_Struct* in_data)
 {
 	port = in_data->port;

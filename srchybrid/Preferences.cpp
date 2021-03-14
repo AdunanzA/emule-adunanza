@@ -56,12 +56,6 @@
 #pragma warning(disable:4100) // unreferenced formal parameter
 #pragma warning(disable:4702) // unreachable code
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 CPreferences thePrefs;
 
 bool NoPlayer = false;
@@ -329,7 +323,7 @@ bool	CPreferences::m_bLogFilteredIPs;
 bool	CPreferences::m_bLogFileSaving;
 bool	CPreferences::m_bLogA4AF; // ZZ:DownloadManager
 bool	CPreferences::m_bLogUlDlEvents;
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 bool	CPreferences::m_bUseDebugDevice = true;
 #else
 bool	CPreferences::m_bUseDebugDevice = false;
@@ -542,7 +536,7 @@ UINT	CPreferences::m_uMinFreeDiskSpace;
 
 CPreferences::CPreferences()
 {
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	m_iDbgHeap = 1;
 #endif
 }
@@ -1824,7 +1818,7 @@ void CPreferences::SavePreferences()
 	ini.WriteString(L"AppVersion", theApp.m_strCurVersionLong);
 	//---
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	ini.WriteInt(L"DebugHeap", m_iDbgHeap);
 #endif
 
@@ -1994,7 +1988,7 @@ void CPreferences::SavePreferences()
 	ini.WriteBool(L"LogFileSaving", m_bLogFileSaving);				// do *not* use the according 'Get...' function here!
     ini.WriteBool(L"LogA4AF", m_bLogA4AF);                           // do *not* use the according 'Get...' function here!
 	ini.WriteBool(L"LogUlDlEvents", m_bLogUlDlEvents);
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 	// following options are for debugging or when using an external debug device viewer only.
 	ini.WriteInt(L"DebugServerTCP",m_iDebugServerTCPLevel);
 	ini.WriteInt(L"DebugServerUDP",m_iDebugServerUDPLevel);
@@ -2230,7 +2224,7 @@ void CPreferences::LoadPreferences()
 		m_bFirstStart = true;
 	}
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	m_iDbgHeap = ini.GetInt(L"DebugHeap", 1);
 #else
 	m_iDbgHeap = 0;
@@ -2558,7 +2552,11 @@ void CPreferences::LoadPreferences()
 	m_bMessageEnableSmileys = ini.GetBool(L"MessageEnableSmileys", true);
 
 	m_bSmartServerIdCheck = ini.GetBool(L"SmartIdCheck",true);
-	log2disk = ini.GetBool(L"SaveLogToDisk",false);
+#if ADU_BETA_MAJ > 0
+	log2disk = ini.GetBool(L"SaveLogToDisk", true);
+#else
+	log2disk = ini.GetBool(L"SaveLogToDisk", false);
+#endif
 	adsDisable2 = ini.GetBool(L"AdsDisable",false);
 	uMaxLogFileSize = ini.GetInt(L"MaxLogFileSize", 1024*1024);
 	iMaxLogBuff = ini.GetInt(L"MaxLogBuff",64) * 1024;
@@ -2566,15 +2564,20 @@ void CPreferences::LoadPreferences()
 	m_bEnableVerboseOptions=ini.GetBool(L"VerboseOptions", true);
 	if (m_bEnableVerboseOptions)
 	{
-		m_bVerbose=ini.GetBool(L"Verbose",false);
-		m_bFullVerbose=ini.GetBool(L"FullVerbose",false);
-		m_bDebugSourceExchange=ini.GetBool(L"DebugSourceExchange",false);
+		bool bDefault = false;
+#if ADU_BETA_MAJ > 0
+		bDefault = true;
+#endif
+
+		m_bVerbose=ini.GetBool(L"Verbose", bDefault);
+		m_bFullVerbose=ini.GetBool(L"FullVerbose", bDefault);
+		m_bDebugSourceExchange=ini.GetBool(L"DebugSourceExchange", bDefault);
 		m_bLogBannedClients=ini.GetBool(L"LogBannedClients", true);
 		m_bLogRatingDescReceived=ini.GetBool(L"LogRatingDescReceived",true);
 		m_bLogSecureIdent=ini.GetBool(L"LogSecureIdent",true);
 		m_bLogFilteredIPs=ini.GetBool(L"LogFilteredIPs",true);
-		m_bLogFileSaving=ini.GetBool(L"LogFileSaving",false);
-        m_bLogA4AF=ini.GetBool(L"LogA4AF",false); // ZZ:DownloadManager
+		m_bLogFileSaving=ini.GetBool(L"LogFileSaving", bDefault);
+		m_bLogA4AF=ini.GetBool(L"LogA4AF", bDefault); // ZZ:DownloadManager
 		m_bLogUlDlEvents=ini.GetBool(L"LogUlDlEvents",true);
 	}
 	else
@@ -2582,7 +2585,7 @@ void CPreferences::LoadPreferences()
 		if (m_bRestoreLastLogPane && m_iLastLogPaneID>=2)
 			m_iLastLogPaneID = 1;
 	}
-#if defined(_DEBUG) || defined(USE_DEBUG_DEVICE)
+#if defined(ADU_BETA)
 	// following options are for debugging or when using an external debug device viewer only.
 	m_iDebugServerTCPLevel = ini.GetInt(L"DebugServerTCP", 0);
 	m_iDebugServerUDPLevel = ini.GetInt(L"DebugServerUDP", 0);

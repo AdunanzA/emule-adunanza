@@ -25,12 +25,6 @@
 #include "emule.h"
 #include "MemDC.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 struct ChannelName
 {
 	ChannelName(const CString& sName, UINT uUsers, const CString& sDesc)

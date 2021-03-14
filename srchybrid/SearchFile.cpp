@@ -26,14 +26,8 @@
 #include "emule.h"
 #include "emuledlg.h"
 #include "Searchdlg.h"
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #include "DebugHelpers.h"
-#endif
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
 #endif
 
 bool IsValidSearchResultClientIPPort(uint32 nIP, uint16 nPort)
@@ -337,23 +331,21 @@ void CSearchFile::UpdateFileRatingCommentAvail(bool bForceUpdate)
 	UINT uRatings = 0;
 	UINT uUserRatings = 0;
 
-	for(POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL; )
-	{
+	for (POSITION pos = m_kadNotes.GetHeadPosition(); pos != NULL;) {
 		Kademlia::CEntry* entry = m_kadNotes.GetNext(pos);
-		if (!m_bHasComment && !entry->GetStrTagValue(TAG_DESCRIPTION).IsEmpty())
+		if (!m_bHasComment && !entry->GetStrTagValue(Kademlia::CKadTagNameString(TAG_DESCRIPTION)).IsEmpty())
 			m_bHasComment = true;
-		UINT rating = (UINT)entry->GetIntTagValue(TAG_FILERATING);
-		if (rating != 0)
-		{
-			uRatings++;
+		UINT rating = (UINT)entry->GetIntTagValue(Kademlia::CKadTagNameString(TAG_FILERATING));
+		if (rating != 0) {
+			++uRatings;
 			uUserRatings += rating;
 		}
 	}
-	
+
 	// searchfile specific
-	// the file might have had a serverrating, don't change the rating if no kad ratings were found
+	// the file might have had a server rating, don't change the rating if no kad ratings were found
 	if (uRatings)
-		m_uUserRating = (uint32)ROUND((float)uUserRatings / uRatings);
+		m_uUserRating = (uint32)ROUND(uUserRatings / (float)uRatings);
 
 	if (bOldHasComment != m_bHasComment || uOldUserRatings != m_uUserRating || bForceUpdate)
 		theApp.emuledlg->searchwnd->UpdateSearch(this);

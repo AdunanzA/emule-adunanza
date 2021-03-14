@@ -27,12 +27,6 @@
 #include "Log.h"
 #include "Sockets.h" //>>> Spike2::SLS - needed to know if we have a LowID
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#endif
-
 #define RELOADTIME					3600000 //60 minutes
 #define RESAVETIME					1200000 //20 minutes ###!!!>>>
 #define ACTIVATIONLIMIT          (	thePrefs.GetActivationLimitSLS()) //>>> Spike2::SLS - FiX from 

@@ -16,15 +16,6 @@
 #include "RemoteSettings.h"
 #include "Tlhelp32.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
-bool X = false;
-bool isAutomatic = false;  // Settarlo a true quando sarà operativo
 bool nonchiudereopzioni = false;
 void ConfiguraAdunanza(); 
 extern bool FileExist(LPCTSTR filename);
@@ -184,7 +175,6 @@ void CPPgWiz1Welcome::DoDataExchange(CDataExchange* pDX)
 
 BOOL CPPgWiz1Welcome::OnInitDialog()
 {
-	X = false;
 	CFont fontVerdanaBold;
 	CreatePointFont(fontVerdanaBold, 12*10, _T("Verdana Bold"));
 	LOGFONT lf;
@@ -369,87 +359,10 @@ CPPgWiz1End::CPPgWiz1End() : Wizard(CPPgWiz1End::IDD)
 CPPgWiz1End::~CPPgWiz1End()
 {}
 
-// Questa funzione la userò per determinare se fare o meno lo speedtest. In poche parole se il ping è troppo alto significa che la connessione è in uso eccessivamente e non si può proseguire con lo speed test (darebbe risultati falsi.)
-CString ExecCmd(CString pCmdArg) {    
-	CString strResult; // Contains result of cmdArg.    
-	HANDLE hChildStdoutRd; // Read-side, used in calls to ReadFile() to get child's stdout output.   
-	HANDLE hChildStdoutWr; // Write-side, given to child process using si struct.    
-	BOOL fSuccess;    // Create security attributes to create pipe.  
-	SECURITY_ATTRIBUTES saAttr = {sizeof(SECURITY_ATTRIBUTES)} ;   
-	saAttr.bInheritHandle       = TRUE; // Set the bInheritHandle flag so pipe handles are inherited by child process. Required.  
-	saAttr.lpSecurityDescriptor = NULL;    // Create a pipe to get results from child's stdout.   
-
-	if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))   {return strResult;}    
-	STARTUPINFO si = {sizeof(STARTUPINFO)}; // specifies startup parameters for child process.    
-	si.dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES; // STARTF_USESTDHANDLES is Required.   
-	si.hStdOutput  = hChildStdoutWr; // Requires STARTF_USESTDHANDLES in dwFlags.  
-	si.hStdError   = hChildStdoutWr; // Requires STARTF_USESTDHANDLES in dwFlags.   // si.hStdInput remains null.   
-	si.wShowWindow = SW_HIDE; // Prevents cmd window from flashing. Requires STARTF_USESHOWWINDOW in dwFlags.   
-	PROCESS_INFORMATION pi  = {0}; // Create the child process.  
-	fSuccess = CreateProcess(NULL, pCmdArg.GetBuffer(), NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &pi);       
-
-	if (!fSuccess)   
-		return strResult;
-	WaitForSingleObject(pi.hProcess, 2000);   
-	TerminateProcess(pi.hProcess, 0); // Kill process if it is still running. Tested using cmd "ping blah -n 99"   
-	if (!CloseHandle(hChildStdoutWr))   {return strResult;}    // Read output from the child process.  
-	for (;;)   {    
-		DWORD dwRead;    
-		CHAR chBuf[4096];       // Read from pipe that is the standard output for child process.      
-		bool done = !ReadFile( hChildStdoutRd, chBuf, 4096, &dwRead, NULL) || dwRead == 0;      
-		if( done )      {break;}       // Append result to string.      
-		strResult += CString( chBuf, dwRead) ;  
-	} 
-	CloseHandle( hChildStdoutRd );    // CreateProcess docs specify that these must be closed.    
-	CloseHandle( pi.hProcess );   
-	CloseHandle( pi.hThread );   
-	return strResult;
-}
-
-
-void StartConfigAdunanzA() { //SpeedTest engine -> by 
-	if(X) {
-		if (isAutomatic) {
-			//  -> Controllo ping. Se minore della tolleranza impostata allora da avviso di rete in uso da programmi di terze parti.
-retry:
-			isAutomatic = true;
-			CString str;
-			str = ExecCmd(_T("ping debian.fastweb.it -n 1"));
-			str.Replace(_T("\x0d\x0d\x0a"), _T("\x0d\x0a"));
-			int num = str.GetLength()-8;
-			str.Delete(0,num);
-			wchar_t *src, *dst; 
-			for (src = str.GetBuffer(), dst = str.GetBuffer(); *src; src++)
-				if ('0' <= *src && *src <= '9') 
-					*dst++ = *src;
-				*dst = '\0'; 
-
-			if(str.IsEmpty()) {
-				AfxMessageBox(_T("Il server risulta essere offline. Verrà lanciata la configurazione manuale."));
-				isAutomatic = false;
-				goto personalized;
-			}
-
-			if(_tstoi(str) > theApp.rm->TolleranzaTest) {
-				isAutomatic = false;
-				if(AfxMessageBox(_T("La rete risulta occupata da altri software. Chiuderli e riprovare."),MB_RETRYCANCEL | MB_ICONHAND) == IDRETRY)
-					goto retry;
-				else	
-					goto personalized;
-			}
-
-			CHttpDownloadDlg dlgDownload;
-			dlgDownload.X = true;
-			dlgDownload.m_sURLToDownload = theApp.rm->SpeedTestUrl;
-			dlgDownload.m_sFileToDownloadInto = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("speed_test.adu");
-			dlgDownload.DoModal();
-	}
-	else {
-personalized:
-			AduWizard WizardPersonalizzato;
-			WizardPersonalizzato.DoModal();
-		}
-	}
+void StartConfigAdunanzA()
+{
+	AduWizard WizardPersonalizzato;
+	WizardPersonalizzato.DoModal();
 }
 
 void ConfiguraAdunanza() { //SpeedTest Engine
@@ -567,7 +480,6 @@ void CPPgWiz1End::DoDataExchange(CDataExchange* pDX)
 
 BOOL CPPgWiz1End::OnInitDialog()
 {
-	isAutomatic = false;	 //  -> settarlo a true quando sarà pronto.
 	CheckRadioButton(IDC_RADIO2,IDC_RADIO3,IDC_RADIO3);
 	CFont fontVerdanaBold;
 	CreatePointFont(fontVerdanaBold, 12*10, _T("Verdana Bold"));
@@ -643,11 +555,8 @@ bool WizardAdunanzA() {
 	int iResult = sheet.DoModal();
 
 	if (iResult == IDCANCEL) {
-		X=false;
 		nonchiudereopzioni = true;
 	}
-	else
-		X=true;
 
 	page2.m_strNick = thePrefs.GetUserNick();
 	if (page2.m_strNick.IsEmpty())
@@ -848,12 +757,11 @@ void AduWizard::SetCustomItemsActivation()
 }
 void CPPgWiz1End::OnBnClickedRadio2()
 {
-	isAutomatic = true;
+
 }
 
 void CPPgWiz1End::OnBnClickedRadio3()
 {
-	isAutomatic = false;
 }
 
 void CPPgWiz1General::OnBnClickedButton1()
@@ -888,7 +796,7 @@ void CPPgWiz1General::OnBnClickedButton2()
 		GetDlgItem(IDC_BUTTON2)->EnableWindow(false);
 		GetDlgItem(IDC_BUTTON1)->EnableWindow(false);
 		CHttpDownloadDlg dlgDownload;
-		dlgDownload.m_sURLToDownload = _T("http://downloads.sourceforge.net/project/vlc/2.0.4/win32/vlc-2.0.4-win32.exe?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fvlc%2Ffiles%2F2.0.4%2Fwin32%2Fvlc-2.0.4-win32.exe%2Fdownload%3Faccel_key%3D60%253A1352342087%253Ahttp%25253A%2F%2Fwww.videolan.org%2Fvlc%2F%253Ac74790bd%2524fbdb249f6acefd77a9a93980cfaf560e0e504107%26click_id%3Ddcadf9d6-294c-11e2-a2c9-0200ac1d1d8a%26source%3Daccel&ts=1352342088&use_mirror=switch");
+		dlgDownload.m_sURLToDownload = _T("http://ftp.fau.de/videolan/vlc/3.0.12/win64/vlc-3.0.12-win64.exe");
 		dlgDownload.m_sFileToDownloadInto = thePrefs.GetMuleDirectory(EMULE_CONFIGDIR) + _T("vlc_installer.exe");
 		GetDlgItem(TESTO_INFO)->SetWindowText(_T("Download di VLC in corso. Attendere..."));
 		SetDlgItemTextW(TESTO_INFO2,_T(""));

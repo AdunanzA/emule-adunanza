@@ -42,12 +42,6 @@
 #pragma warning(default:4516) // access-declarations are deprecated; member using-declarations provide a better alternative
 #include "Preferences.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define	PREF_INI_SECTION	_T("CollectionCreateDlg")
 
 enum ECols

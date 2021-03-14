@@ -42,10 +42,10 @@ there client on the eMule forum..
 #include "../../emule.h"
 #include "../../AdunanzA.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 using namespace Kademlia;
@@ -766,7 +766,7 @@ bool CIndexed::AddKeyword(const CUInt128& uKeyID, const CUInt128& uSourceID, Kad
 					cavail = CalcolaStima(cavail, cfirstPublish, cpublishInterval, pubkRTK, pEntry->m_uIP == currEntry->m_uIP, now);
 				}
 
-#if ADU_BETA_MAJ > 0 && defined BETA
+#if ADU_BETA_MAJ > 0
 				CString str;
 				uSourceID.ToHexString(&str);
  

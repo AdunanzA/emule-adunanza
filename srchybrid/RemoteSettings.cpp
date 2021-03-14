@@ -44,7 +44,6 @@ unsigned char CRemoteSettings::kadOpcode;
 unsigned char CRemoteSettings::kadZOpcode;
 bool CRemoteSettings::enableAduStats;
 CString CRemoteSettings::UpdateURL;
-CString CRemoteSettings::SpeedTestUrl;
 CString CRemoteSettings::UpdateMessage;
 CString CRemoteSettings::HomeAduBrowser;
 CString CRemoteSettings::splashUrl;
@@ -83,13 +82,11 @@ CRemoteSettings::CRemoteSettings()
 	kadOpcode = 164;
 	kadZOpcode = 165;
 	m_AduValRipBanda_Std = 6;
-	SpeedTestUrl = ADU_SPEED_TEST_URL;
 	UpdateMessage = ADU_MESSAGE_UPDATE;
 	HomeAduBrowser = ADU_HOME_PAGE_BROWSER;
 	TolleranzaTest = 40;
 	CIni cfg(ConfDir, _T("Adunanza"));
 	m_AduValRipBanda_Std = cfg.GetInt(_T("AduValRipBandaStd"));
-	SpeedTestUrl = cfg.GetString(_T("SpeedTestUrl"));
 	HomeAduBrowser = cfg.GetString(_T("HomeAduBrowser"));
 	UpdateMessage = cfg.GetString(_T("UpdateMessage")); 
 	PrintAllValues();
@@ -103,7 +100,7 @@ CRemoteSettings::~CRemoteSettings()
 
 void CRemoteSettings::PrintAllValues() 
 {
-#if ADU_BETA_MAJ > 0 && defined BETA
+#if ADU_BETA_MAJ > 0
 	AddDebugLogLine(DLP_LOW, false, _T("kadRepublishTimeK: %d"),kadRepublishTimeK);
 	AddDebugLogLine(DLP_LOW, false, _T("kadRepublishTimeS: %d"),kadRepublishTimeS);
 	AddDebugLogLine(DLP_LOW, false, _T("kadRepublishTimeN: %d"),kadRepublishTimeN);
@@ -139,7 +136,6 @@ void CRemoteSettings::PrintAllValues()
 	
 	AddDebugLogLine(DLP_LOW, false, _T("TolleranzaTest %d"),TolleranzaTest);
 	AddDebugLogLine(DLP_LOW, false, _T("Updating from %s"),UpdateURL);
-	AddDebugLogLine(DLP_LOW, false, _T("SpeedTesting URL: %s"),SpeedTestUrl);
 	AddDebugLogLine(DLP_LOW, false, _T("UpdateMessage: %s"),UpdateMessage);
 	AddDebugLogLine(DLP_LOW, false, _T("current splash version: %i"),curVer);
 #endif
@@ -198,7 +194,6 @@ void CRemoteSettings::ReadSettings(CIni *docfg)
 	//tigerjact ripartirore di banda
 	m_AduValRipBanda_Std = docfg->GetInt(_T("AduValRipBandaStd"), 6);
 	UpdateURL = docfg->GetString(_T("UpdateURL"), L"ADURM_URL");
-	SpeedTestUrl = docfg->GetString(_T("SpeedTestUrl"), ADU_SPEED_TEST_URL);
 	UpdateMessage = docfg->GetString(_T("UpdateMessage"), ADU_MESSAGE_UPDATE);
 	HomeAduBrowser = docfg->GetString(_T("HomeAduBrowser"), ADU_HOME_PAGE_BROWSER);
 
@@ -251,7 +246,6 @@ void CRemoteSettings::SaveSettings()
 	cfg.WriteInt(_T("splashVer"), curVer);
 	cfg.WriteString(_T("modstringban"), toWrite);
 	cfg.WriteInt(_T("AduValRipBandaStd"), m_AduValRipBanda_Std);
-	cfg.WriteString(_T("SpeedTestUrl"), SpeedTestUrl);
 	cfg.WriteString(_T("UpdateMessage"), UpdateMessage);
 	cfg.WriteString(_T("HomeAduBrowser"), HomeAduBrowser);
 	cfg.WriteString(_T("splashURL"), splashUrl);

@@ -40,10 +40,10 @@ there client on the eMule forum..
 #pragma warning(default:4516) // access-declarations are deprecated; member using-declarations provide a better alternative
 #include "./UInt128.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+#ifdef ADU_BETA
+
+
+
 #endif
 
 using namespace Kademlia;

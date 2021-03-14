@@ -29,13 +29,6 @@
 #include "MenuCmds.h"
 #include "ChatWnd.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 IMPLEMENT_DYNAMIC(CFriendListCtrl, CMuleListCtrl)
 
 BEGIN_MESSAGE_MAP(CFriendListCtrl, CMuleListCtrl)

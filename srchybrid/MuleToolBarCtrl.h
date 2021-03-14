@@ -62,7 +62,7 @@ protected:
 	void SetAllButtonsWidth();
 	void ForceRecalcLayout();
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	void Dump();
 #endif
 

@@ -1,13 +1,6 @@
 #include "stdafx.h"
 #include "MD5Sum.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 typedef unsigned char *POINTER;
 typedef unsigned short int UINT2;
 typedef unsigned long int UINT4;

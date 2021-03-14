@@ -18,12 +18,6 @@
 #include "emule.h"
 #include "Version.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 const UINT CemuleApp::m_nVersionMjr = VERSION_MJR;
 const UINT CemuleApp::m_nVersionMin = VERSION_MIN;
 const UINT CemuleApp::m_nVersionUpd = VERSION_UPDATE;

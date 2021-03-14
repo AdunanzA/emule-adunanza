@@ -36,13 +36,6 @@
 #include "Sockets.h"
 #include "FirewallOpener.h" 
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #pragma pack(1)
 struct SServerUDPPacket
 {
@@ -594,7 +587,7 @@ bool CUDPSocket::ProcessPacket(const BYTE* packet, UINT size, UINT opcode, uint3
 		ProcessPacketError(size, opcode, nIP, nUDPPort, error);
 		//ASSERT(0);
 	}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	catch(...){
 		ProcessPacketError(size, opcode, nIP, nUDPPort, _T("Unknown exception"));
 		ASSERT(0);

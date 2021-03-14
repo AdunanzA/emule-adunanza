@@ -993,7 +993,7 @@ CXDialogTemplate::CXDialogTemplate(HWND hWnd,
 	NONCLIENTMETRICS ncm;
 	ncm.cbSize = cbProperSize;
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 	BOOL ok = 
 #endif
 		::SystemParametersInfo(SPI_GETNONCLIENTMETRICS, cbProperSize, &ncm, 0);
@@ -2013,7 +2013,7 @@ INT_PTR CALLBACK CXDialogTemplate::MsgBoxDlgProc(HWND hwnd,
 
 
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 						// verify that we can read data
 
 						DWORD dwData = 0;
@@ -2043,7 +2043,7 @@ INT_PTR CALLBACK CXDialogTemplate::MsgBoxDlgProc(HWND hwnd,
 
 						_ASSERTE(dwData == (DWORD) wParam);
 
-#endif	// _DEBUG
+#endif	// ADU_BETA
 					}
 #endif	// XMESSAGEBOX_DO_NOT_SAVE_CHECKBOX
 

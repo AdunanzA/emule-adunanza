@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #define	CATCH_DFLT_ALL(fname)
 #else
 #define	CATCH_DFLT_ALL(fname) \

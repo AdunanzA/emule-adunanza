@@ -67,7 +67,7 @@
 
 #endif//_MSC_VER>=1400
 
-#ifdef _DEBUG
+#ifdef ADU_BETA
 #define _ATL_DEBUG
 #define _ATL_DEBUG_QI
 #endif
@@ -144,27 +144,9 @@
 
 #define ARRSIZE(x)	(sizeof(x)/sizeof(x[0]))
 
-#ifdef _DEBUG
-#define malloc(s)		  _malloc_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define calloc(c, s)	  _calloc_dbg(c, s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define realloc(p, s)	  _realloc_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define _expand(p, s)	  _expand_dbg(p, s, _NORMAL_BLOCK, __FILE__, __LINE__)
-#define free(p)			  _free_dbg(p, _NORMAL_BLOCK)
-#define _msize(p)		  _msize_dbg(p, _NORMAL_BLOCK)
-#endif
-
 typedef CArray<CStringA> CStringAArray;
 typedef CStringArray CStringWArray;
 
 #define _TWINAPI(fname)	fname "W"
 
 extern "C" int __cdecl __ascii_stricmp(const char * dst, const char * src);
-
-inline BOOL afxIsWin95()
-{
-#if _MFC_VER>=0x0900
-	return FALSE;
-#else
-	return afxData.bWin95;
-#endif
-}

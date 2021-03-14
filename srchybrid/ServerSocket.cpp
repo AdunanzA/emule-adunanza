@@ -37,13 +37,6 @@
 #include "IPFilter.h"
 #include "Log.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-
 #pragma pack(1)
 struct LoginAnswer_Struct {
 	uint32	clientid;
@@ -652,7 +645,7 @@ bool CServerSocket::ProcessPacket(const BYTE* packet, uint32 size, uint8 opcode)
 		ProcessPacketError(size, opcode, error);
 		ASSERT(0);
 	}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	catch(...)
 	{
 		ProcessPacketError(size, opcode, _T("Unknown exception"));
@@ -732,7 +725,7 @@ void CServerSocket::OnError(int nErrorCode)
 
 bool CServerSocket::PacketReceived(Packet* packet)
 {
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	try {
 #endif
 		theStats.AddDownDataOverheadServer(packet->size);
@@ -758,7 +751,7 @@ bool CServerSocket::PacketReceived(Packet* packet)
 			if (thePrefs.GetVerbose())
 				DebugLogWarning(_T("Received server TCP packet with unknown protocol: protocol=0x%02x  opcode=0x%02x  size=%u"), packet ? packet->prot : 0, packet ? packet->opcode : 0, packet ? packet->size : 0);
 		}
-#ifndef _DEBUG
+#ifndef ADU_BETA
 	}
 	catch(...)
 	{
